@@ -1,0 +1,54 @@
+########################################
+# REFERENCES
+#
+# Title: Django
+# Author: Django Software Foundation
+# Date: 2022
+# Code version: 4.0.2
+# URL: https://www.djangoproject.com/download/ 
+# Software License: BSD License
+#
+# Title: django-bootstrap-v5
+# Author: Andre Bar’yudin
+# Date: 2020
+# Code version: 1.0.0
+# URL: https://django-bootstrap-v5.readthedocs.io/en/latest/installation.html 
+#
+# Title: gunicorn
+# Author: Open Source
+# Date: 2021
+# Code version: 20.1.0
+# URL: https://gunicorn.org/ 
+# Software License: MIT License
+#
+# Title: django-heroku
+# Author: Kenneth Reitz
+# Date: 2018
+# Code version: 0.3.1
+# URL: https://pypi.org/project/django-heroku/  
+# Software License: MIT License
+#
+# Title: whitenoise
+# Author: Dave Evans
+# Date: 2021
+# Code version: 6.0.0
+# URL: http://whitenoise.evans.io/en/stable/index.html 
+# Software License: MIT License
+########################################
+
+# Django is needed to run Django
+Django
+
+# gunicorn is needed by Heroku to launch the web server
+gunicorn
+
+# django-heroku is ONLY needed by Heroku for their internal process
+# if you have errors with psycopg2 or django-heroku, use the code at the bottom of settings.py to avoid the error
+# the outcome of using this bypass is that locally you will need to use either SQLite or connect to Heroku's Postgres DB
+django-heroku
+
+# Bootstrap 5
+django-bootstrap-v5
+
+# Whitenoise (for hosting static files)
+whitenoise
