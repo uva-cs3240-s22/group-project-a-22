@@ -52,3 +52,6 @@ django-bootstrap-v5
 
 # Whitenoise (for hosting static files)
 whitenoise
+
+# dj-database-url (for parsing the heroku DATABASE_URL environment variable)
+dj-database-url
