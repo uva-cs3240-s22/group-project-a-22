@@ -39,7 +39,7 @@ python manage.py migrate
 ```
 python manage.py createsuperuser
 ```
-You'll also want to setup a superuser on the postgres database. If you have already installed Heroku CLI, do that now.
+You'll also want to setup a superuser on the postgres database. If you haven't already installed Heroku CLI, do that now.
 ```
 heroku run python manage.py createsuperuser --app group-project-a22
 ```
