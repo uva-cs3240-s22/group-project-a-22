@@ -46,9 +46,11 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
+    "whitenoise",
+    "wom.apps.WomConfig",
 ]
 
-SITE_ID = 1
+SITE_ID = 2
 
 MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
