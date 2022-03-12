@@ -36,9 +36,21 @@
         <div class="d-flex flex-row">
           {% if user.is_authenticated %}
             <span class="my-auto me-2">Welcome, {{ user.username }}</span>
-            <a href="{% url "account_logout" %}" class="btn btn-outline-success">Logout</a>
+            <form method="post" action="{% url "account_logout" %}" class="my-auto">
+              {% csrf_token %}
+              {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+              {% endif %}
+              <button class="btn btn-outline-success my-auto" type="submit">Logout</button>
+            </form>
           {% else %}
-            <a class="btn btn-outline-success" href="{% provider_login_url 'google' process='login' %}">Login</a>
+            <form method="post" action="{% provider_login_url "google" process='login' %}" class="my-auto">
+              {% csrf_token %}
+              {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+              {% endif %}
+              <button class="btn btn-outline-success my-auto" type="submit">Login</button>
+            </form>
           {% endif %}
         </div>
       </div>
