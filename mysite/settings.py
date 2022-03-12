@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'group-project-a22.herokuapp.com']
 
@@ -160,8 +160,8 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
-LOGIN_REDIRECT_URL = '/wom/login'
-LOGOUT_REDIRECT_URL = '/wom/login'
+LOGIN_REDIRECT_URL = '/wom'
+LOGOUT_REDIRECT_URL = '/wom'
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {

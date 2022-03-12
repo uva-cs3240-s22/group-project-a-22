@@ -3,10 +3,5 @@ from django.shortcuts import render
 from django.template import loader
 
 
-def index(request):
-    template = loader.get_template('wom/dashboard.html')
-    return HttpResponse(template.render({}, request))
-
-
-def login(request):
-    return render(request, 'wom/googleAPI.html')
+def dashboard(request):
+    return render(request, 'wom/dashboard.html')
