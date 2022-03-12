@@ -1,4 +1,5 @@
 {% load socialaccount %}
+{% load account %}
 <html>
   <head>
     <title>Google Registration</title>
@@ -7,8 +8,9 @@
   <h1>My Google Login Project</h1>
   {% if user.is_authenticated %}
     <p>Welcome, {{ user.username }} !</p>
+    <a href="{% url "account_logout" %}">Logout</a>
   {% else %}
-    <a href="{% provider_login_url 'google' %}">Login with Google</a>
+    <a href="{% provider_login_url 'google' process='login' %}">Login with Google</a>
   {% endif %}
 
   </body>
