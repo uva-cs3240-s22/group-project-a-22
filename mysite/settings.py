@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     "wom.apps.WomConfig",
 ]
 
-SITE_ID = 2
+SITE_ID = 3
 
 MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
