@@ -33,13 +33,20 @@ class Recipe(models.Model):
 
 
 class Ingredient(models.Model):
-    recipes = models.ManyToManyField(Recipe)
     name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+
+class IngredientQuantity(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     quantity = models.FloatField()
     units = models.CharField(max_length=5)
 
     def __str__(self):
-        return self.name + " (" + str(self.quantity) + " " + self.units + ")"
+        return self.ingredient.name + " (" + str(self.quantity) + " " + self.units + ")"
 
 
 class Instruction(models.Model):
