@@ -1,0 +1,35 @@
+{% extends "wom/base.html" %}
+{% block title %}All Recipes{% endblock %}
+
+
+{% load bootstrap5 %}
+{% load static %}
+
+
+{% block content %}
+
+
+{% if object_list %}
+<div>
+
+    <h3 class="text-center">Recipes</h3>
+    <ol>
+        {% for recipe in object_list %}
+        <li>
+            <p>Name: {{ recipe.title }} </p>
+            <p>Description: {{recipe.description}} </p>
+            <p>Cooking time: {{recipe.cooking_time}} minutes </p>
+            <p>Preparation time: {{recipe.preparation_time}} minutes </p>
+            <p>Meal type: {{recipe.meal_type}} </p>
+            <p>Course: {{recipe.course}} </p>
+            <p>Date Published: {{recipe.pub_date}}</p>
+            <hr />
+        </li>
+
+        {% endfor %}
+    </ol>
+    {% else %}
+    <p>No recipes are available.</p>
+</div>
+{% endif %}
+{% endblock %}

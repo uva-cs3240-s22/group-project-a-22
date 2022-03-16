@@ -9,7 +9,6 @@ These are some instructions for setting up the development environment.
 .venv is the environment name. This can be replaced with whatever you like.
 ```
 python -m venv .venv
-
 ```
 ```
 # for Windows

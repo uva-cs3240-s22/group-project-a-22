@@ -1,0 +1,68 @@
+{# Load the libraries #}
+{% load bootstrap5 %}
+{% load static %}
+{% load socialaccount %}
+{% load account %}
+
+{# Load CSS and Javascript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'wom/base_styles.css' %}"/>
+
+{% block base_content %}
+<div class="page-container">
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <span class="navbar-brand">Word of Mouth</span>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'wom:dashboard' %}">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'wom:recipelist' %}">Recipes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'wom:createrecipe' %}">Create Recipe</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="">My Account</a>
+          </li>
+        </ul>
+
+        <div class="d-flex flex-row">
+          {% if user.is_authenticated %}
+            <span class="my-auto me-2">Welcome, {{ user.username }}</span>
+            <form method="post" action="{% url "account_logout" %}" class="my-auto">
+              {% csrf_token %}
+              {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+              {% endif %}
+              <button class="btn btn-outline-success my-auto" type="submit">Logout</button>
+            </form>
+          {% else %}
+            <form method="post" action="{% provider_login_url "google" process='login' %}" class="my-auto">
+              {% csrf_token %}
+              {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+              {% endif %}
+              <button class="btn btn-outline-success my-auto" type="submit">Login</button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="content">
+      {% block content %}{% endblock %}
+  </div>
+
+</div>
+{% endblock %}

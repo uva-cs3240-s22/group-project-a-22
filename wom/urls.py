@@ -4,5 +4,8 @@ from . import views
 
 app_name = 'wom'
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.dashboard, name='dashboard'),
+    path('createrecipe', views.createrecipe.as_view(), name='createrecipe'),
+    path('recipelist', views.recipelist.as_view(), name='recipelist'),
+
 ]

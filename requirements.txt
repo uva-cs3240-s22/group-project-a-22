@@ -55,3 +55,7 @@ whitenoise
 
 # dj-database-url (for parsing the heroku DATABASE_URL environment variable)
 dj-database-url
+
+# Google Login APIs
+django-rest-auth
+django-allauth
