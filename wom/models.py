@@ -52,3 +52,5 @@ class IngredientQuantity(models.Model):
 class Instruction(models.Model):
     text = models.CharField(max_length=500)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.text

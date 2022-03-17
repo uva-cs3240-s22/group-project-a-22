@@ -49,22 +49,19 @@
     <div class="row text-center">
         <div class="col-5">
             Ingredients
-            {% if ingredient %}
 
-            {% for i in ingredient %}
+
+            {% for i in recipe.ingredient_set.all %}
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">{{i.name}}</li>
+                <li class="list-group-item">hey {{i}}</li>
             </ul>
             {% endfor %}
 
-            {% else %}
-            <p>No ingredients available</p>
 
-            {% endif%}
         </div>
         <div class="col-7">
             Steps
-            {% if instruction %}
+            
             <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-indicators">
                   <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -73,18 +70,17 @@
                 </div>
                 <div class="carousel-inner">
                 
-                {% for i in instruction %}
-                  <div class="carousel-item active">
+                {% for i in recipe.instruction_set.all %}
+                  <!-- <div class="carousel-item active">
                     <img src="..." class="d-block w-100" alt="...">
                     <div class="carousel-caption d-none d-md-block">
-                      <h5>Step ___</h5>
-                      <p>{{i.text}}</p>
-                    </div>
-                  </div>
+                      <h5>Step ___</h5> -->
+                      <p>{{i}}</p>
+                    <!-- </div>
+                  </div> -->
                 {% endfor %}
 
-
-                </div>
+                <!-- </div> -->
                 
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
                   <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -94,12 +90,7 @@
                   <span class="carousel-control-next-icon" aria-hidden="true"></span>
                   <span class="visually-hidden">Next</span>
                 </button>
-              </div>
-              {% else %}
-                  
-                  <p>No instructions available</p>
-      
-                {% endif%}
+              </div>               
         </div>
     </div>
 </div>
