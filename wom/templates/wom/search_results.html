@@ -7,7 +7,7 @@
     <!-- <img src="..." class="card-img-top" alt="..."> -->
     <div class="card-body">
       <h5 class="card-title">
-          <a href="#" class="btn btn-primary">
+          <a href="{% url 'wom:detail' recipe.id %}" class="btn btn-primary">
               {{recipe.title}}
           </a>
         </h5>
