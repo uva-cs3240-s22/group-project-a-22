@@ -38,4 +38,8 @@ def search(request):
     else:
         post = Recipe.objects.all()    
     return render(request, template, {'post' : post})
+
+class RecipeView(generic.DetailView):
+    model = Recipe
+    template_name = 'wom/detail.html'
     

@@ -3,7 +3,9 @@ import datetime
 from django.test import TestCase
 from django.utils import timezone
 from django.urls import reverse
-from .models import Deepthoughts, Question
+
+from wom.views import search
+from .models import Recipe
 
 
 class SearchTests(TestCase):
@@ -12,6 +14,10 @@ class SearchTests(TestCase):
         search function ___ when a user clicks search after inputting
         an empty string or whitespace
         """
+        response = self.client.get(reverse('wom:search')) #?
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "No recipes available")
+        self.assertQuerysetEqual(response.context['posts'], [])
     
     def test_link_to_detail_page(self):
         """
