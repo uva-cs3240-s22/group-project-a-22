@@ -7,5 +7,6 @@ urlpatterns = [
     path('', views.dashboard, name='dashboard'),
     path('createrecipe', views.createrecipe.as_view(), name='createrecipe'),
     path('recipelist', views.recipelist.as_view(), name='recipelist'),
+    path('search/', views.search, name='search'),
 
 ]

@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
 from django.views import generic
+from django.db.models import Q
 
 from .models import Recipe
 
@@ -26,3 +27,15 @@ class recipelist(generic.ListView):
         Return the published recipes
         """
         return Recipe.objects.all()
+
+def search(request):
+    template = "wom/search_results.html"
+    
+    if request.method == 'GET':
+        search = request.GET.get('q')
+        post = Recipe.objects.filter(Q(title__icontains=search))
+        print(post)
+    else:
+        post = Recipe.objects.all()    
+    return render(request, template, {'post' : post})
+    
