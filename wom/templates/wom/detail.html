@@ -2,20 +2,24 @@
 
 {% extends "wom/base.html" %}
 {% load static %}
+{% block css %}
+{% block extrahead %}
 <link rel="stylesheet" type="text/css" href="{% static 'wom/detail.css' %}" />
+{% endblock  %}
+{% endblock css %}
 {% block title %}Recipe Title{{recipe.title}}{% endblock %}
 
 {% block content %}
 {% if recipe %}
 <div class="container">
-    <div class="row">
-        <div class="col-11 text-center">
+    <div class="row top">
+        <div class="col-sm-11 text-center">
             <h1>{{recipe.title}}</h1>
             <img src="../../static/wom/images/macandcheese-500x500.jpeg" width="500" height="400">
             <p>{{recipe.description}}</p>
         </div>
-        <div class="col-1">
-            <button type="button" class="btn btn-primary">
+        <div class="col-sm-1">
+            <button type="button" class="btn btn-primary side-btn">
                 Save
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star"
                     viewBox="0 0 16 16">
@@ -24,7 +28,7 @@
                 </svg>
 
             </button>
-            <button type="button" class="btn btn-primary">
+            <button type="button" class="btn btn-primary  side-btn">
                 Share
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share"
                     viewBox="0 0 16 16">
@@ -33,7 +37,7 @@
                 </svg>
 
             </button>
-            <button type="button" class="btn btn-primary">
+            <button type="button" class="btn btn-primary side-btn">
                 Print
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer"
                     viewBox="0 0 16 16">
@@ -47,25 +51,33 @@
         </div>
     </div>
     <div class="row text-center">
-        <div class="col-5">
-            Ingredients
-
+        <div class="col-md-5 d-flex justify-content-right flex-column ">
+            <h2>Ingredients</h2>
+            <div class="card" style="width: 21.5em;margin:0 auto;">
             <ul class="list-group list-group-flush">
                 {% for i in recipe.ingredientquantity_set.all %}
                 <li class="list-group-item"> {{i}}</li>
                 {% endfor %}
             </ul>
         </div>
-        <div class="col-7">
-            Steps
-            {% for i in recipe.instruction_set.all %}
-            <p>{{i}}</p>
-            {% endfor %}
+        </div>
+        <div class="col-md-7 d-flex justify-content-center flex-column">
+            <h2>Steps</h2>
+            <div class="card" style="width: 21.5em;margin:0 auto;">
+                <ul class="list-group list-group-flush">
+                    {% for i in recipe.instruction_set.all %}
+                    <li class="list-group-item"> {{i}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+
         </div>
     </div>
 
     {% else %}
     <p>No recipes available</p>
 
+</div>
     {% endif%}
     {% endblock %}
