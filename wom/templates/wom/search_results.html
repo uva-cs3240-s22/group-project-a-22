@@ -2,7 +2,7 @@
 {% load static %}
 {% block css %}
 {% block extrahead %}
-<link rel="stylesheet" type="text/css" href="{% static 'wom/detail.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'wom/search_results.css' %}" />
 {% endblock  %}
 {% endblock css %}
 {% block title %}Recipe Title{{recipe.title}}{% endblock %}
@@ -18,11 +18,11 @@
     <img src="../../static/wom/images/macandcheese-500x500.jpeg" class="card-img-top" alt="recipe image">
     <div class="card-body">
       <h5 class="card-title">
-          <a href="{% url 'wom:detail' recipe.id %}" class="btn btn-primary">
+          <a href="{% url 'wom:detail' recipe.id %}" >
               {{recipe.title}}
           </a>
       </h5>
-      <p class="card-text">{{recipe.description}}</p>
+      <p class="card-text" height="200" width="200">{{recipe.description}}</p>
       
     </div>
   </div>
