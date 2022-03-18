@@ -4,7 +4,9 @@
 {% block title %}Create Recipe{% endblock %}
 
 {% block content %}
-<form  method="post">
+
+  <h2 class="text-center">Create New Recipe</h2>
+  <form  method="post" style="margin-left: 5%; margin-right: 5%; margin-bottom: 5%";
     {% csrf_token %}
     {% bootstrap_form form %}
     
@@ -15,4 +17,5 @@
     {% endbuttons %}
    
 </form>
+
 {% endblock %}

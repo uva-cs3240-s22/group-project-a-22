@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
 from django.views import generic
+from wom.forms import RecipeForm
 
 from .models import Recipe
 
@@ -14,8 +15,14 @@ def dashboard(request):
 
 class createrecipe(generic.CreateView):
     model = Recipe
-    fields = ['title', 'description', 'cooking_time', 'preparation_time', 'meal_type', 'course', 'pub_date']
+    form_class = RecipeForm
+    # fields = '__all__'
+    # fields = ['title', 'description', 'cooking_time', 'preparation_time', 'meal_type', 'course', 'pub_date']
     template_name = 'wom/createrecipe.html' 
+
+    # def form_valid(self, form):
+    #     form.save()
+    #     return super(Recipe, self).form_valid(form)
     def get_success_url(self):
         return 'recipelist'
 
