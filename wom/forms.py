@@ -23,6 +23,6 @@ class RecipeForm(forms.ModelForm):
     # # modelchoicefield in django tutorial for ingredients & instructions 
     # inline formsets 
 
-    InstructionFormSet = inlineformset_factory(Recipe, Instruction, fields=('text',))
-    formset = InstructionFormSet(instance=None)
+    # InstructionFormSet = inlineformset_factory(Recipe, Instruction, fields=('text',))
+    # formset = InstructionFormSet(instance=None)
     
