@@ -23,6 +23,18 @@
             <p>Meal type: {{recipe.meal_type}} </p>
             <p>Course: {{recipe.course}} </p>
             <p>Date Published: {{recipe.pub_date}}</p>
+            <!-- <p>Instructions: {{recipe.instruction_set}}</p> -->
+            <!-- Instructions:
+                {% for instruction in recipe.instruction.all %}
+                    {{instruction.name}}
+                {% endfor %}
+            </p>
+            <p>Ingredients: 
+            {% for ingredient in recipe.ingredient_formset.all %}
+                {{ingredient.name}}
+            {% endfor %} -->
+
+            </p>
             <hr />
         </li>
 

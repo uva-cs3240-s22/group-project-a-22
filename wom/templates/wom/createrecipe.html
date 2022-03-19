@@ -9,7 +9,26 @@
   <form  method="post" style="margin-left: 5%; margin-right: 5%; margin-bottom: 5%">
     {% csrf_token %}
     {% bootstrap_form form %}
-    
+    <h4>Instructions</h4>
+    <p>You do not need to fill all of the slots.</p>
+    {{ instruction_formset.non_form_errors }}
+    {{ instruction_formset.management_form }}
+    <ol>
+    {% for form in instruction_formset %}
+      
+      <div class="d-flex py-1 inline {{ instruction_formset.prefix }}">
+        <li > 
+          {{ form.text }}
+          <!-- {{ form.DELETE }} {{ form.DELETE.label }} -->
+        </li>
+      </div>
+    {% endfor %}
+  </ol>
+    <!-- <h4>Ingredients</h4>
+    {% for form in ingredient_form %}
+      <div class="d-flex py-1 inline {{ instruction_formset.prefix }}">
+        Add ingredient: {{ form.name }}</div>
+    {% endfor %} -->
     {% buttons %}
     <button type="submit" class="btn btn-primary">
       Submit

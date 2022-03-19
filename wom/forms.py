@@ -14,15 +14,39 @@ class RecipeForm(forms.ModelForm):
     preparation_time = forms.DurationField(help_text="Example format for a 5 minute preparation time: 5:00")
     meal_type = forms.ChoiceField(
         choices=Recipe.MealTypes.choices)
-    # meal_type = forms.ChoiceField(
-    #     max_length=10, choices=Recipe.mealTypes.choices, default=Recipe.MealTypes.OTHER)
-    # course = forms.ChoiceField(
-    #     choices=Meta.model.Courses)
+    
     course = forms.ChoiceField(
         choices=Recipe.Courses.choices)
-    # # modelchoicefield in django tutorial for ingredients & instructions 
-    # inline formsets 
-
-    # InstructionFormSet = inlineformset_factory(Recipe, Instruction, fields=('text',))
-    # formset = InstructionFormSet(instance=None)
     
+class InstructionForm(forms.ModelForm):
+    class Meta:
+        model = Instruction
+        fields = ['text',]
+    text = forms.CharField(max_length=500)
+
+
+InstructionInlineFormset = inlineformset_factory(
+    Recipe,
+    Instruction,
+    form=InstructionForm,
+    extra=20,
+)
+
+class IngredientQuantityForm(forms.ModelForm):
+    class Meta:
+        model = IngredientQuantity
+        fields = ['quantity', 'units']
+    quantity = forms.FloatField()
+    units = forms.CharField(max_length=5)
+
+IngredientQuantityInlineFormset = inlineformset_factory(
+    Ingredient,
+    IngredientQuantity,
+    form=IngredientQuantityForm,
+)
+
+class IngredientForm(forms.ModelForm):
+    class Meta:
+        model = Ingredient
+        fields = ['name',]
+    name = forms.CharField(max_length=50)
