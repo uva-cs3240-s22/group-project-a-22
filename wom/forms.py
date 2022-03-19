@@ -35,7 +35,8 @@ InstructionInlineFormset = inlineformset_factory(
 class IngredientQuantityForm(forms.ModelForm):
     class Meta:
         model = IngredientQuantity
-        fields = ['quantity', 'units']
+        fields = ['ingredient','quantity', 'units']
+    ingredient = forms.ModelChoiceField(queryset=Ingredient.objects.all())
     quantity = forms.FloatField()
     units = forms.CharField(max_length=5)
 
@@ -43,6 +44,8 @@ IngredientQuantityInlineFormset = inlineformset_factory(
     Ingredient,
     IngredientQuantity,
     form=IngredientQuantityForm,
+    extra = 8,
+
 )
 
 class IngredientForm(forms.ModelForm):
@@ -50,3 +53,9 @@ class IngredientForm(forms.ModelForm):
         model = Ingredient
         fields = ['name',]
     name = forms.CharField(max_length=50)
+
+# IngredientInlineFormset = inlineformset_factory(
+#     Ingredient,
+#     Ingredient,
+#     form=IngredientForm,
+# )

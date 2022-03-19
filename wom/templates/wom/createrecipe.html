@@ -24,11 +24,25 @@
       </div>
     {% endfor %}
   </ol>
-    <!-- <h4>Ingredients</h4>
-    {% for form in ingredient_form %}
-      <div class="d-flex py-1 inline {{ instruction_formset.prefix }}">
-        Add ingredient: {{ form.name }}</div>
-    {% endfor %} -->
+    <h4>Ingredients</h4>
+    <p>You do not need to fill all of the slots.</p>
+    <ol>
+    {% for form in ingredient_quantity_formset %}
+        <li > 
+          <!-- {%for form1 in ingredient_form%}
+            Ingredient: {{ form1.name }} <br/>
+          {%endfor%} -->
+          <br/>
+          Ingredient: {{form.ingredient}}<br/>
+          <br/>
+          Quantity: {{form.quantity}}<br/>
+          <br/>
+          Units: {{form.units}}<br/>
+          <br/>
+          <!-- {{ form.DELETE }} {{ form.DELETE.label }} -->
+        </li>
+    {% endfor %}
+  </ol>
     {% buttons %}
     <button type="submit" class="btn btn-primary">
       Submit
