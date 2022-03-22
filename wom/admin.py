@@ -24,8 +24,9 @@ class RecipeAdmin(admin.ModelAdmin):
             'preparation_time',
             'cooking_time',
             'meal_type',
-            'course'
+            'course',
         ]}),
+        ('Fork Information', {'fields': ['parent'], 'classes': ['collapse']}),
         ('Date Information', {'fields': [
          'pub_date'], 'classes': ['collapse']}),
     ]
