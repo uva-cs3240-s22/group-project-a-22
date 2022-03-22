@@ -1,8 +1,5 @@
-from logging import PlaceHolder
-from random import choices
 from django import forms
-from django.forms import inlineformset_factory
-from .models import Recipe, Instruction, Ingredient, IngredientQuantity
+from .models import Recipe, Instruction, Ingredient
 
 
 class RecipeForm(forms.ModelForm):
@@ -25,13 +22,4 @@ class InstructionForm(forms.ModelForm):
 class IngredientForm(forms.ModelForm):
     class Meta:
         model = Ingredient
-        fields = ['name']
-
-
-class IngredientQuantityForm(forms.ModelForm):
-    class Meta:
-        model = IngredientQuantity
-        fields = ['ingredient', 'quantity', 'units']
-    # ingredient = forms.ModelChoiceField(queryset=Ingredient.objects.all())
-    # quantity = forms.FloatField()
-    # units = forms.CharField(max_length=5)
+        fields = ['name', 'quantity', 'units']

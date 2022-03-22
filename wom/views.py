@@ -3,9 +3,9 @@ from django.urls import reverse
 from django.views import generic
 # from wom.forms import RecipeForm, InstructionInlineFormset
 # from wom.forms import RecipeForm, InstructionInlineFormset, IngredientInlineFormset, IngredientQuantityInlineFormset
-from wom.forms import IngredientQuantityForm, RecipeForm, InstructionForm
+from wom.forms import RecipeForm, InstructionForm, IngredientForm
 
-from .models import IngredientQuantity, Instruction, Recipe
+from .models import Instruction, Recipe, Ingredient
 
 
 def dashboard(request):
@@ -21,29 +21,29 @@ def createrecipe(request):
         recipeform = RecipeForm(request.POST, instance=Recipe())
         instructionforms = [InstructionForm(request.POST,
                                             prefix=str(x), instance=Instruction()) for x in range(0, 3)]
-        ingrquantityforms = [IngredientQuantityForm(request.POST,
-                                                    prefix=str(x), instance=IngredientQuantity()) for x in range(0, 3)]
-        if recipeform.is_valid() and all([instrform.is_valid() for instrform in instructionforms]) and all([ingrquantityform.is_valid() for ingrquantityform in ingrquantityforms]):
+        ingredientforms = [IngredientForm(request.POST,
+                                          prefix=str(x), instance=Ingredient()) for x in range(0, 3)]
+        if recipeform.is_valid() and all([instrform.is_valid() for instrform in instructionforms]) and all([ingredientform.is_valid() for ingredientform in ingredientforms]):
             new_recipe = recipeform.save()
             for instrform in instructionforms:
                 new_instruction = instrform.save(commit=False)
                 new_instruction.recipe = new_recipe
                 new_instruction.save()
-            for ingrquantityform in ingrquantityforms:
-                new_ingrquantity = ingrquantityform.save(commit=False)
-                new_ingrquantity.recipe = new_recipe
-                new_ingrquantity.save()
+            for ingrform in ingredientforms:
+                new_ingredient = ingrform.save(commit=False)
+                new_ingredient.recipe = new_recipe
+                new_ingredient.save()
             return redirect(reverse('wom:recipelist'))
     else:
         recipeform = RecipeForm(instance=Recipe())
         instructionforms = [InstructionForm(request.POST,
                                             prefix=str(x), instance=Instruction()) for x in range(0, 3)]
-        ingrquantityforms = [IngredientQuantityForm(request.POST,
-                                                    prefix=str(x), instance=IngredientQuantity()) for x in range(0, 3)]
+        ingredientforms = [IngredientForm(request.POST,
+                                          prefix=str(x), instance=Ingredient()) for x in range(0, 3)]
     return render(request, 'wom/createrecipe.html', {
         'recipe_form': recipeform,
         'instruction_forms': instructionforms,
-        'ingredient_forms': ingrquantityforms
+        'ingredient_forms': ingredientforms,
     })
 
 

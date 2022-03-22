@@ -12,12 +12,12 @@
     <h4>Instructions</h4>
     <p>You do not need to fill all of the slots.</p>
     {% for instr_form in instruction_forms %}
-      {% bootstrap_form instr_form %}
+      {% bootstrap_form instr_form show_label=False %}
     {% endfor %}
     <h4>Ingredients</h4>
     <p>You do not need to fill all of the slots.</p>
     {% for ingr_form in ingredient_forms %}
-        {% bootstrap_form ingr_form %}
+      {% bootstrap_form ingr_form %}
     {% endfor %}
     {% buttons %}
     <button type="submit" class="btn btn-primary">

@@ -1,13 +1,12 @@
 from django.contrib import admin
 
-from wom.models import Ingredient, Recipe, Instruction, IngredientQuantity
+from wom.models import Ingredient, Recipe, Instruction
 
 # Register your models here.
-# admin.site.register(Recipe)
-# admin.site.register(Ingredient)
-# admin.site.register(Instruction)
-class IngredientQuantityInline(admin.TabularInline):
-    model = IngredientQuantity
+
+
+class IngredientInline(admin.TabularInline):
+    model = Ingredient
     extra = 3
 
 
@@ -29,11 +28,10 @@ class RecipeAdmin(admin.ModelAdmin):
         ('Date Information', {'fields': [
          'pub_date'], 'classes': ['collapse']}),
     ]
-    inlines = [IngredientQuantityInline, InstructionInline]
+    inlines = [IngredientInline, InstructionInline]
     list_display = ['title', 'pub_date', 'meal_type']
     list_filter = ['pub_date']
     search_fields = ['title']
 
 
 admin.site.register(Recipe, RecipeAdmin)
-admin.site.register(Ingredient)
