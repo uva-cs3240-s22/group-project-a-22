@@ -8,41 +8,17 @@
   <h2 class="text-center">Create New Recipe</h2>
   <form  method="post" style="margin-left: 5%; margin-right: 5%; margin-bottom: 5%">
     {% csrf_token %}
-    {% bootstrap_form form %}
+    {% bootstrap_form recipe_form %}
     <h4>Instructions</h4>
     <p>You do not need to fill all of the slots.</p>
-    {{ instruction_formset.non_form_errors }}
-    {{ instruction_formset.management_form }}
-    <ol>
-    {% for form in instruction_formset %}
-      
-      <div class="d-flex py-1 inline {{ instruction_formset.prefix }}">
-        <li > 
-          {{ form.text }}
-          <!-- {{ form.DELETE }} {{ form.DELETE.label }} -->
-        </li>
-      </div>
+    {% for instr_form in instruction_forms %}
+      {% bootstrap_form instr_form %}
     {% endfor %}
-  </ol>
     <h4>Ingredients</h4>
     <p>You do not need to fill all of the slots.</p>
-    <ol>
-    {% for form in ingredient_quantity_formset %}
-        <li > 
-          <!-- {%for form1 in ingredient_form%}
-            Ingredient: {{ form1.name }} <br/>
-          {%endfor%} -->
-          <br/>
-          Ingredient: {{form.ingredient}}<br/>
-          <br/>
-          Quantity: {{form.quantity}}<br/>
-          <br/>
-          Units: {{form.units}}<br/>
-          <br/>
-          <!-- {{ form.DELETE }} {{ form.DELETE.label }} -->
-        </li>
+    {% for ingr_form in ingredient_forms %}
+        {% bootstrap_form ingr_form %}
     {% endfor %}
-  </ol>
     {% buttons %}
     <button type="submit" class="btn btn-primary">
       Submit

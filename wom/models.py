@@ -27,7 +27,7 @@ class Recipe(models.Model):
         max_length=10, choices=MealTypes.choices, default=MealTypes.OTHER)
     course = models.CharField(
         max_length=10, choices=Courses.choices, default=Courses.OTHER)
-    pub_date = models.DateTimeField('Date Published', default=timezone.now())
+    pub_date = models.DateTimeField('Date Published', default=timezone.now)
 
     def __str__(self):
         return self.title
