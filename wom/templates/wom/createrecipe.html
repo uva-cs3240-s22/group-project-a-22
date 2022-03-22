@@ -11,14 +11,23 @@
     {% bootstrap_form recipe_form %}
     <h4>Instructions</h4>
     <p>You do not need to fill all of the slots.</p>
-    {% for instr_form in instruction_forms %}
-      {% bootstrap_form instr_form show_label=False %}
-    {% endfor %}
+    <ol>
+      {% for instr_form in instruction_forms %}
+      <li>
+        {% bootstrap_form instr_form show_label=False %}
+      </li>
+      {% endfor %}
+    </ol>
+    
     <h4>Ingredients</h4>
     <p>You do not need to fill all of the slots.</p>
-    {% for ingr_form in ingredient_forms %}
-      {% bootstrap_form ingr_form %}
-    {% endfor %}
+    <ol>
+      {% for ingr_form in ingredient_forms %}
+      <li>{% bootstrap_form ingr_form %}</li>
+      <hr />
+      {% endfor %}
+    </ol>
+    
     {% buttons %}
     <button type="submit" class="btn btn-primary">
       Submit
