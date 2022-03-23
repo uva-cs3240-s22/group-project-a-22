@@ -10,7 +10,7 @@
     {% csrf_token %}
     {% bootstrap_form recipe_form %}
     <h4>Instructions</h4>
-    <p>You do not need to fill all of the slots.</p>
+    <p>Use as many slots as needed.</p>
     <ol>
       {% for instr_form in instruction_forms %}
       <li>
@@ -20,7 +20,7 @@
     </ol>
     
     <h4>Ingredients</h4>
-    <p>You do not need to fill all of the slots.</p>
+    <p>Use as many slots as needed.</p>
     <ol>
       {% for ingr_form in ingredient_forms %}
       <li>{% bootstrap_form ingr_form %}</li>

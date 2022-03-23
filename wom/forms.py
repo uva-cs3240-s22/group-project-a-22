@@ -14,12 +14,17 @@ class RecipeForm(forms.ModelForm):
 
 
 class InstructionForm(forms.ModelForm):
+    text = forms.CharField(required=False)
     class Meta:
         model = Instruction
         fields = ['text']
 
 
 class IngredientForm(forms.ModelForm):
+    name = forms.CharField(required=False)
+    quantity = forms.CharField(required=False)
+    units = forms.CharField(required=False)
+
     class Meta:
         model = Ingredient
         fields = ['name', 'quantity', 'units']

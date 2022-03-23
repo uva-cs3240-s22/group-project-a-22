@@ -20,9 +20,10 @@ def createrecipe(request):
     if request.method == "POST":
         recipeform = RecipeForm(request.POST, instance=Recipe())
         instructionforms = [InstructionForm(request.POST,
-                                            prefix=str(x), instance=Instruction()) for x in range(0, 3)]
+                                            prefix=str(x), instance=Instruction()) for x in range(0, 20)]
         ingredientforms = [IngredientForm(request.POST,
-                                          prefix=str(x), instance=Ingredient()) for x in range(0, 3)]
+                                          prefix=str(x), instance=Ingredient()) for x in range(0, 10)]
+        # if recipeform.is_valid():
         if recipeform.is_valid() and all([instrform.is_valid() for instrform in instructionforms]) and all([ingredientform.is_valid() for ingredientform in ingredientforms]):
             new_recipe = recipeform.save()
             for instrform in instructionforms:
@@ -36,10 +37,9 @@ def createrecipe(request):
             return redirect(reverse('wom:recipelist'))
     else:
         recipeform = RecipeForm(instance=Recipe())
-        instructionforms = [InstructionForm(request.POST,
-                                            prefix=str(x), instance=Instruction()) for x in range(0, 3)]
-        ingredientforms = [IngredientForm(request.POST,
-                                          prefix=str(x), instance=Ingredient()) for x in range(0, 3)]
+        instructionforms = [InstructionForm(prefix=str(x), instance=Instruction()) for x in range(0, 20)]
+        ingredientforms = [IngredientForm(prefix=str(x), instance=Ingredient()) for x in range(0, 10)]
+       
     return render(request, 'wom/createrecipe.html', {
         'recipe_form': recipeform,
         'instruction_forms': instructionforms,
