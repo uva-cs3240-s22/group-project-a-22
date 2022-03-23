@@ -17,6 +17,7 @@
         {% for recipe in object_list %}
         <li>
             <p>Name: {{ recipe.title }} </p>
+            <p>Creator: {{recipe.creator}}</p>
             <p>Description: {{recipe.description}} </p>
             <p>Cooking time: {{recipe.cooking_time}} minutes </p>
             <p>Preparation time: {{recipe.preparation_time}} minutes </p>

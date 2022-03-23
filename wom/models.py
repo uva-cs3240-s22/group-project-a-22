@@ -28,6 +28,7 @@ class Recipe(models.Model):
     course = models.CharField(
         max_length=10, choices=Courses.choices, default=Courses.OTHER)
     pub_date = models.DateTimeField('Date Published', default=timezone.now)
+    creator = models.CharField(max_length=100, default="Anonymous")
 
     def __str__(self):
         return self.title
