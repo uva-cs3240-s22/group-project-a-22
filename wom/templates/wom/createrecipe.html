@@ -1,12 +1,34 @@
 {% extends "wom/base.html" %}
 
 {% load bootstrap5 %}
+{% load socialaccount %}
+{% load account %}
 {% block title %}Create Recipe{% endblock %}
 
 {% block content %}
-<form  method="post">
+{% if user.is_authenticated %}
+  <h2 class="text-center">Create New Recipe</h2>
+  <form  method="post" style="margin-left: 5%; margin-right: 5%; margin-bottom: 5%">
     {% csrf_token %}
-    {% bootstrap_form form %}
+    {% bootstrap_form recipe_form %}
+    <h4>Instructions</h4>
+    <p>Use as many slots as needed.</p>
+    <ol>
+      {% for instr_form in instruction_forms %}
+      <li>
+        {% bootstrap_form instr_form show_label=False %}
+      </li>
+      {% endfor %}
+    </ol>
+    
+    <h4>Ingredients</h4>
+    <p>Use as many slots as needed.</p>
+    <ol>
+      {% for ingr_form in ingredient_forms %}
+      <li>{% bootstrap_form ingr_form %}</li>
+      <hr />
+      {% endfor %}
+    </ol>
     
     {% buttons %}
     <button type="submit" class="btn btn-primary">
@@ -15,4 +37,7 @@
     {% endbuttons %}
    
 </form>
+{% else %}
+<p>Please log in to create a new recipe.</p>
+{% endif %}
 {% endblock %}

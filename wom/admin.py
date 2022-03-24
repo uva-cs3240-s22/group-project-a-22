@@ -6,8 +6,8 @@ from wom.models import Ingredient, IngredientQuantity, Recipe, Instruction
 # Register your models here.
 
 
-class IngredientQuantityInline(admin.TabularInline):
-    model = IngredientQuantity
+class IngredientInline(admin.TabularInline):
+    model = Ingredient
     extra = 3
 
 
@@ -30,11 +30,10 @@ class RecipeAdmin(admin.ModelAdmin):
         ('Date Information', {'fields': [
          'pub_date'], 'classes': ['collapse']}),
     ]
-    inlines = [IngredientQuantityInline, InstructionInline]
+    inlines = [IngredientInline, InstructionInline]
     list_display = ['title', 'pub_date', 'meal_type']
     list_filter = ['pub_date']
     search_fields = ['title']
 
 
 admin.site.register(Recipe, RecipeAdmin)
-admin.site.register(Ingredient)
