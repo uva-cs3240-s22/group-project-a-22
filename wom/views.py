@@ -28,7 +28,7 @@ class createrecipe(generic.CreateView):
 
 
 class recipelist(generic.ListView):
-    template_name = 'wom/recipelist.html'
+    template_name = "wom/search_results.html"
 
     def get_queryset(self):
         """
@@ -51,7 +51,7 @@ def search(request):
             print(post)
     else:
         post = Recipe.objects.all()
-    return render(request, template, {'post': post})
+    return render(request, template, {'object_list': post})
 
 
 class RecipeView(generic.DetailView):

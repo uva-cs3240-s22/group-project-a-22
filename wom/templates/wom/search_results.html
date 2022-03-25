@@ -9,12 +9,12 @@
 
 {% block content %}
 
-{% if post %}
+{% if object_list %}
 <div class="row">
 
-{% for recipe in post %}
+{% for recipe in object_list %}
 <div class="col-3">
-<div class="card" style="width: 18rem;">
+<div class="card h-100" style="width: 18rem;">
     <img src="../../static/wom/images/macandcheese-500x500.jpeg" class="card-img-top" alt="recipe image">
     <div class="card-body">
       <h5 class="card-title">
@@ -22,7 +22,7 @@
               {{recipe.title}}
           </a>
       </h5>
-      <p class="card-text" height="200" width="200">{{recipe.description}}</p>
+      <p class="card-text text-truncate" height="200" width="200">{{recipe.description}}</p>
       
     </div>
   </div>
