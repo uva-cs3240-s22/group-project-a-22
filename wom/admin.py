@@ -1,7 +1,7 @@
 from csv import list_dialects
 from django.contrib import admin
 
-from wom.models import Ingredient, IngredientQuantity, Recipe, Instruction
+from wom.models import Ingredient, Recipe, Instruction
 
 # Register your models here.
 
@@ -19,6 +19,7 @@ class InstructionInline(admin.TabularInline):
 class RecipeAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': [
+            'creator',
             'title',
             'description',
             'preparation_time',

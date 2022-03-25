@@ -15,16 +15,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='recipe',
             name='parent',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='wom.recipe'),
-        ),
-        migrations.AlterField(
-            model_name='ingredientquantity',
-            name='units',
-            field=models.CharField(blank=True, max_length=5),
+            field=models.ForeignKey(
+                null=True, on_delete=django.db.models.deletion.SET_NULL, to='wom.recipe'),
         ),
         migrations.AlterField(
             model_name='recipe',
             name='pub_date',
-            field=models.DateTimeField(default=django.utils.timezone.now, verbose_name='Date Published'),
+            field=models.DateTimeField(
+                default=django.utils.timezone.now, verbose_name='Date Published'),
         ),
     ]
