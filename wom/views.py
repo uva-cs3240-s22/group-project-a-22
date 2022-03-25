@@ -118,3 +118,22 @@ class recipelist(generic.ListView):
         Return the published recipes
         """
         return Recipe.objects.all()
+
+
+def favorite_recipe(request, id):
+    post = get_object_or_404(Recipe, id)
+    if post.favorite.filter(id=request.user.id).exists():
+        post.favorite.remove(request.user)
+    else :
+        post.favorite.add(request.user)
+    return redirect('', pk=pk)
+
+
+class favoritelist(generic.ListView):
+    template_name = 'wom/favoritelist.html'
+
+    def get_queryset(self):
+        """
+        Returns the favorited recipes of the user who is logged in
+        """
+        return Recipe.objects.filter(user=request.user)

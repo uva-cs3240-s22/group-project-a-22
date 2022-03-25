@@ -7,5 +7,5 @@ urlpatterns = [
     path('', views.dashboard, name='dashboard'),
     path('createrecipe', views.createrecipe, name='createrecipe'),
     path('recipelist', views.recipelist.as_view(), name='recipelist'),
-
+    path('favoritelist', views.recipelist.as_view(), name='favoritelist'),
 ]

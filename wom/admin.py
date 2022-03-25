@@ -14,7 +14,6 @@ class InstructionInline(admin.TabularInline):
     model = Instruction
     extra = 3
 
-
 class RecipeAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': [
@@ -23,7 +22,8 @@ class RecipeAdmin(admin.ModelAdmin):
             'preparation_time',
             'cooking_time',
             'meal_type',
-            'course'
+            'course',
+            'favorites'
         ]}),
         ('Date Information', {'fields': [
          'pub_date'], 'classes': ['collapse']}),

@@ -1,0 +1,32 @@
+{% extends "wom/base.html" %}
+{% block title %}All Recipes{% endblock %}
+
+
+{% load bootstrap5 %}
+{% load static %}
+
+
+{% block content %}
+
+
+{% if object_list %}
+<div>
+
+    <h3 class="text-center">Favorited Recipes</h3>
+    <ol>
+        {% for recipe in object_list %}
+        {% if  %}
+        <li>
+            <a href="{% url 'wom:detail' recipe.id %}" >
+                Name: {{ recipe.title }}
+            </a>
+
+        </li>
+
+        {% endfor %}
+    </ol>
+    {% else %}
+    <p>You haven't favorited any recipes.</p>
+</div>
+{% endif %}
+{% endblock %}

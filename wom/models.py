@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -30,6 +31,8 @@ class Recipe(models.Model):
     pub_date = models.DateTimeField('Date Published', default=timezone.now)
     creator = models.CharField(max_length=100, default="Anonymous")
 
+    favorite = models.ManyToManyField(User, related_name='favorite', default=None, blank=True)
+
     def __str__(self):
         return self.title
 
@@ -46,4 +49,8 @@ class Ingredient(models.Model):
 
 class Instruction(models.Model):
     text = models.CharField(max_length=500)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+
+class FavoriteRecipe(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites')
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
