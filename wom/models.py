@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -20,10 +22,10 @@ class Recipe(models.Model):
         SNACK = 'snack'
         OTHER = 'other'
 
-    title = models.CharField(max_length=150)
-    description = models.CharField(max_length=1000)
-    preparation_time = models.DurationField()
-    cooking_time = models.DurationField()
+    title = models.CharField(max_length=150, default='')
+    description = models.CharField(max_length=1000, default='')
+    preparation_time = models.DurationField(default=timedelta(minutes=0))
+    cooking_time = models.DurationField(default=timedelta(minutes=0))
     meal_type = models.CharField(
         max_length=10, choices=MealTypes.choices, default=MealTypes.OTHER)
     course = models.CharField(

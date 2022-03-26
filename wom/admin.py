@@ -36,7 +36,7 @@ class RecipeAdmin(admin.ModelAdmin):
         ('Date Information', {'fields': [
          'pub_date'], 'classes': ['collapse']}),
     ]
-    inlines = [IngredientQuantityInline, InstructionInline]
+    inlines = [IngredientQuantityInline, InstructionInline, FavoriteInline]
     list_display = ['title', 'pub_date', 'meal_type']
     list_filter = ['pub_date']
     search_fields = ['title']

@@ -5,7 +5,7 @@ from django.template import loader
 from django.views import generic
 from django.db.models import Q
 
-from .models import Recipe
+from .models import Recipe, FavoriteRecipe
 import operator
 from functools import reduce
 
@@ -65,9 +65,12 @@ def favorite_recipe(request, id):
     """
     recipe = get_object_or_404(Recipe, id)
     if recipe.favorites.filter(id=request.user.id).exists():
-        recipe.favorites.remove(request.user)
+        recipe.favorites.filter(id=request.user.id).delete()
     else :
-        recipe.favorites.add(request.user)
+        newfavorite = FavoriteRecipe()
+        newfavorite.user = request.user
+        newfavorite.recipe = recipe
+        newfavorite.save()
     return redirect('', pk=pk)
 
 
@@ -80,19 +83,3 @@ class favoritelist(generic.ListView):
         """
         user = self.request.user
         return user.favorites.all()
-
-def search(request):
-    template = "wom/search_results.html"
-
-    if request.method == 'GET':
-        search = request.GET.get('q')
-        if (search.isspace()) or (search == ""):
-            post = Recipe.objects.all()
-        else:
-            search_keywords = search.split()
-            q = reduce(operator.and_, (Q(title__contains = kw) for kw in search_keywords))
-            post = Recipe.objects.filter(q)
-            print(post)
-    else:
-        post = Recipe.objects.all()
-    return render(request, template, {'post': post})
