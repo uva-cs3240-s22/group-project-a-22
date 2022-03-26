@@ -1,5 +1,5 @@
 {% extends "wom/base.html" %}
-{% block title %}All Recipes{% endblock %}
+{% block title %}Favorited Recipes{% endblock %}
 
 
 {% load bootstrap5 %}
@@ -15,12 +15,10 @@
     <h3 class="text-center">Favorited Recipes</h3>
     <ol>
         {% for recipe in object_list %}
-        {% if  %}
         <li>
-            <a href="{% url 'wom:detail' recipe.id %}" >
-                Name: {{ recipe.title }}
-            </a>
-
+            <a href="{% url 'wom:recipelist' %}">Name: {{ recipe.title }} </a>
+            </p>
+            <hr />
         </li>
 
         {% endfor %}

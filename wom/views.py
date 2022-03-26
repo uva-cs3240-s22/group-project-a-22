@@ -121,11 +121,14 @@ class recipelist(generic.ListView):
 
 
 def favorite_recipe(request, id):
-    post = get_object_or_404(Recipe, id)
-    if post.favorite.filter(id=request.user.id).exists():
-        post.favorite.remove(request.user)
+    """
+    Currently unused, but this code will run when the favorite button is pressed once we have a favorite button
+    """
+    recipe = get_object_or_404(Recipe, id)
+    if recipe.favorites.filter(id=request.user.id).exists():
+        recipe.favorites.remove(request.user)
     else :
-        post.favorite.add(request.user)
+        recipe.favorites.add(request.user)
     return redirect('', pk=pk)
 
 
@@ -136,5 +139,5 @@ class favoritelist(generic.ListView):
         """
         Returns the favorited recipes of the user who is logged in
         """
-        user = request.user
+        user = self.request.user
         return user.favorites.all()
