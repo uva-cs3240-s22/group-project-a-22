@@ -1,6 +1,7 @@
 from django.contrib import admin
+from django.contrib.auth.models import User
 
-from wom.models import Ingredient, Recipe, Instruction
+from wom.models import Ingredient, Recipe, Instruction, FavoriteRecipe
 
 # Register your models here.
 
@@ -14,6 +15,14 @@ class InstructionInline(admin.TabularInline):
     model = Instruction
     extra = 3
 
+
+class FavoriteInline(admin.StackedInline):
+    model = FavoriteRecipe
+    verbose_name = 'Favorited By User'
+    verbose_name_plural = 'Favorites'
+    extra = 3
+
+
 class RecipeAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': [
@@ -22,13 +31,12 @@ class RecipeAdmin(admin.ModelAdmin):
             'preparation_time',
             'cooking_time',
             'meal_type',
-            'course',
-            'favorites'
+            'course'
         ]}),
         ('Date Information', {'fields': [
          'pub_date'], 'classes': ['collapse']}),
     ]
-    inlines = [IngredientInline, InstructionInline]
+    inlines = [IngredientInline, InstructionInline, FavoriteInline]
     list_display = ['title', 'pub_date', 'meal_type']
     list_filter = ['pub_date']
     search_fields = ['title']

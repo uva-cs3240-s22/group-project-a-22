@@ -136,4 +136,5 @@ class favoritelist(generic.ListView):
         """
         Returns the favorited recipes of the user who is logged in
         """
-        return Recipe.objects.filter(user=request.user)
+        user = request.user
+        return user.favorites.all()
