@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 
+
 # Create your models here.
 
 
@@ -22,8 +23,8 @@ class Recipe(models.Model):
 
     title = models.CharField(max_length=150)
     description = models.CharField(max_length=1000)
-    cooking_time = models.DurationField()
     preparation_time = models.DurationField()
+    cooking_time = models.DurationField()
     meal_type = models.CharField(
         max_length=10, choices=MealTypes.choices, default=MealTypes.OTHER)
     course = models.CharField(
@@ -31,7 +32,7 @@ class Recipe(models.Model):
     pub_date = models.DateTimeField('Date Published', default=timezone.now)
     creator = models.CharField(max_length=100, default="Anonymous")
 
-    favorite = models.ManyToManyField(User, related_name='favorite', default=None, blank=True)
+    pub_date = models.DateTimeField('Date Published', default=timezone.now())
 
     def __str__(self):
         return self.title
@@ -42,6 +43,9 @@ class Ingredient(models.Model):
     name = models.CharField(max_length=50)
     quantity = models.FloatField(default=0)
     units = models.CharField(max_length=5)
+    ingredient = models.ForeignKey('Ingredient', on_delete=models.CASCADE)
+    quantity = models.FloatField()
+    units = models.CharField(max_length=5, blank=True)
 
     def __str__(self):
         return self.name + " (" + str(self.quantity) + " " + self.units + ")"
@@ -51,7 +55,11 @@ class Instruction(models.Model):
     text = models.CharField(max_length=500)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.text
+
 
 class FavoriteRecipe(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites')
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='favorites')
+
