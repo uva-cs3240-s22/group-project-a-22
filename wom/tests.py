@@ -42,22 +42,22 @@ class SearchTests(TestCase):
 
 
 class FavoriteTests(TestCase):
-    def test_add_favorite(self):
+    def test_backend_add_favorite(self):
         """
-        add a recipe to favorites
+        add a recipe to favorites through the backend
         """
         testuser = User.objects.create_user(username='testuser', password='>JDI[kj>DAlJA*9a-')
         testrecipe = Recipe.objects.create(title='testrecipe')
         testfavorite = FavoriteRecipe.objects.create(user=testuser, recipe=testrecipe)
         self.assertQuerysetEqual(testuser.favorites.all(), [testfavorite])
 
-    def test_remove_favorite(self):
+    def test_backend_remove_favorite(self):
         """
-        remove a recipe from favorites
+        remove a recipe from favorites through the backend
         """
         testuser = User.objects.create_user(username='testuser', password='>JDI[kj>DAlJA*9a-')
         testrecipe = Recipe.objects.create(title='testrecipe')
-        testfavorite = FavoriteRecipe.objects.create(user=testuser, recipe=testrecipe)
+        FavoriteRecipe.objects.create(user=testuser, recipe=testrecipe)
         testuser.favorites.filter(recipe=testrecipe).delete()
         self.assertQuerysetEqual(testuser.favorites.all(), [])
 

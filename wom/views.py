@@ -5,6 +5,9 @@ from django.template import loader
 from django.views import generic
 from django.db.models import Q
 
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
+
 from .models import Recipe, FavoriteRecipe
 import operator
 from functools import reduce
@@ -59,19 +62,17 @@ class RecipeView(generic.DetailView):
     template_name = 'wom/detail.html'
 
 
-def favorite_recipe(request, id):
+def favorite_recipe(request, pk):
     """
     Currently unused, but this code will run when the favorite button is pressed once we have a favorite button
     """
-    recipe = get_object_or_404(Recipe, id)
-    if recipe.favorites.filter(id=request.user.id).exists():
-        recipe.favorites.filter(id=request.user.id).delete()
-    else :
-        newfavorite = FavoriteRecipe()
-        newfavorite.user = request.user
-        newfavorite.recipe = recipe
+    recipe = get_object_or_404(Recipe, pk=pk)
+    if recipe.favorites.filter(user=request.user).exists():
+        recipe.favorites.filter(user=request.user).delete()
+    else:
+        newfavorite = FavoriteRecipe.objects.create(user=request.user, recipe=recipe)
         newfavorite.save()
-    return redirect('', pk=pk)
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 class favoritelist(generic.ListView):
