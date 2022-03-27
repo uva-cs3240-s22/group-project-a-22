@@ -1,7 +1,7 @@
 from csv import list_dialects
 from django.contrib import admin
 
-from wom.models import Ingredient, IngredientQuantity, Recipe, FavoriteRecipe, Instruction
+from wom.models import Ingredient, Recipe, FavoriteRecipe, Instruction
 
 # Register your models here.
 
@@ -12,10 +12,12 @@ class FavoriteInline(admin.StackedInline):
     verbose_name_plural = 'Favorites'
     extra = 3
 
-
-class IngredientQuantityInline(admin.TabularInline):
-    model = IngredientQuantity
+class IngredientInline(admin.TabularInline):
+    model = Ingredient
     extra = 3
+# class IngredientQuantityInline(admin.TabularInline):
+#     model = IngredientQuantity
+#     extra = 3
 
 
 class InstructionInline(admin.TabularInline):
@@ -36,7 +38,8 @@ class RecipeAdmin(admin.ModelAdmin):
         ('Date Information', {'fields': [
          'pub_date'], 'classes': ['collapse']}),
     ]
-    inlines = [IngredientQuantityInline, InstructionInline, FavoriteInline]
+    inlines = [IngredientInline, InstructionInline]
+    # inlines = [IngredientQuantityInline, InstructionInline, FavoriteInline]
     list_display = ['title', 'pub_date', 'meal_type']
     list_filter = ['pub_date']
     search_fields = ['title']
