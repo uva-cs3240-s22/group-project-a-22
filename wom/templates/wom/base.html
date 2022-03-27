@@ -28,9 +28,11 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'wom:recipelist' %}">Recipes</a>
           </li>
+          {% if user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'wom:favoritelist' %}">Favorites</a>
           </li>
+          {% endif %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'wom:createrecipe' %}">Create Recipe</a>
           </li>

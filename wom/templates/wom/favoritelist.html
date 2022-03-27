@@ -1,14 +1,15 @@
 {% extends "wom/base.html" %}
 {% block title %}Favorited Recipes{% endblock %}
 
-
+{% load socialaccount %}
+{% load account %}
 {% load bootstrap5 %}
 {% load static %}
 
 
 {% block content %}
 
-
+{% if user.is_authenticated %}
 {% if object_list %}
 <div>
 
@@ -26,5 +27,8 @@
     {% else %}
     <p>You haven't favorited any recipes.</p>
 </div>
+{% endif %}
+{% else %}
+<p>Please log in to view favorited recipes.</p>
 {% endif %}
 {% endblock %}
