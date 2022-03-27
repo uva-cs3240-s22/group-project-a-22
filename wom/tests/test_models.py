@@ -1,11 +1,15 @@
 from time import time
 from django.forms import DurationField
 from django.test import TestCase
-from wom.models import Recipe, Instruction, Ingredient
+from wom.models import Recipe, Instruction, Ingredient, FavoriteRecipe
 from django.urls import reverse
 from datetime import timedelta
 from django.utils import timezone
 from http import HTTPStatus
+
+from django.contrib.auth.models import User
+
+from wom.views import search
 # Create your tests here.
 
 ################################################
@@ -74,3 +78,6 @@ class IngredientModelTests(TestCase):
         units = "lb"
         ingredient = create_ingredient(name, quantity, units)
         self.assertEquals(ingredient.__str__(), "romaine lettuce (1 lb)")
+
+
+

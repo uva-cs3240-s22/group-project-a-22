@@ -1,0 +1,37 @@
+{% extends "wom/base.html" %}
+{% load static %}
+{% block css %}
+{% block extrahead %}
+<link rel="stylesheet" type="text/css" href="{% static 'wom/search_results.css' %}" />
+{% endblock  %}
+{% endblock css %}
+{% block title %}Recipe Title{{recipe.title}}{% endblock %}
+
+{% block content %}
+
+{% if post %}
+<div class="row">
+
+{% for recipe in post %}
+<div class="col-3">
+<div class="card" style="width: 18rem;">
+    <img src="../../static/wom/images/macandcheese-500x500.jpeg" class="card-img-top" alt="recipe image">
+    <div class="card-body">
+      <h5 class="card-title">
+          <a href="{% url 'wom:detail' recipe.id %}" >
+              {{recipe.title}}
+          </a>
+      </h5>
+      <p class="card-text" height="200" width="200">{{recipe.description}}</p>
+      
+    </div>
+  </div>
+</div>
+  {% endfor %}
+
+</div>
+    {% else %}
+    <p>No recipes available</p>
+
+{% endif%}
+{% endblock %}
