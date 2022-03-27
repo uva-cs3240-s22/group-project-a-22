@@ -97,10 +97,8 @@ def search(request):
     template = "wom/search_results.html"
 
     if request.method == 'GET':
-        search = request.GET.get('q') or None
-        if (search == "" or search == None):
-            post = Recipe.objects.all()
-        elif search.isspace():
+        search = request.GET.get('q')
+        if (search.isspace() or search == ""):
             post = Recipe.objects.all()
         else:
             search_keywords = search.split()
