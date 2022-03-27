@@ -61,7 +61,7 @@
             <h2 class="text-center">Ingredients</h2>
             <div class="card" style="width: 21.5em;margin:0 auto;">
             <ul class="list-group list-group-flush">
-                {% for i in recipe.ingredientquantity_set.all %}
+                {% for i in recipe.ingredient_set.all %}
                 <li class="list-group-item">
                     <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
                     {{i}}

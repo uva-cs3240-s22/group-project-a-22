@@ -102,7 +102,7 @@ def search(request):
             post = Recipe.objects.all()
         else:
             search_keywords = search.split()
-            q = reduce(operator.and_, (Q(title__contains = kw) for kw in search_keywords))
+            q = reduce(operator.and_, (Q(title__icontains = kw) for kw in search_keywords))
             post = Recipe.objects.filter(q)
             print(post)
     else:
