@@ -24,8 +24,8 @@ class Recipe(models.Model):
 
     title = models.CharField(max_length=150)
     description = models.CharField(max_length=1000)
-    preparation_time = models.DurationField(default=timedelta(minutes=0))
-    cooking_time = models.DurationField(default=timedelta(minutes=0))
+    preparation_time = models.DurationField()
+    cooking_time = models.DurationField()
     meal_type = models.CharField(
         max_length=10, choices=MealTypes.choices, default=MealTypes.OTHER)
     course = models.CharField(
@@ -61,7 +61,7 @@ class Recipe(models.Model):
 #         return self.text
 
 class Ingredient(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, null=True)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     quantity = models.FloatField(default=0)
     units = models.CharField(max_length=5)

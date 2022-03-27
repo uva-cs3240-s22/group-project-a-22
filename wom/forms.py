@@ -1,3 +1,4 @@
+from mimetypes import init
 from django import forms
 from .models import Recipe, Instruction, Ingredient
 
@@ -15,7 +16,7 @@ class RecipeForm(forms.ModelForm):
 
 
 class InstructionForm(forms.ModelForm):
-    text = forms.CharField(required=False)
+    text = forms.CharField(label="", required=False)
     class Meta:
         model = Instruction
         fields = ['text']
@@ -25,6 +26,7 @@ class InstructionForm1(forms.ModelForm):
     class Meta:
         model = Instruction
         fields = ['text']
+
 
 class IngredientForm(forms.ModelForm):
     name = forms.CharField(required=False)
