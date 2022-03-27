@@ -16,8 +16,8 @@
 
 {% block content %}
 {% if recipe %}
-<div class="container">
-    <div class="row top">
+<div class="container-fluid">
+    <div class="row top w-100">
         <div class="col-sm-11 text-center">
             <h1>{{recipe.title}}</h1>
             <img src="../../static/wom/images/macandcheese-500x500.jpeg" width="500" height="400">
@@ -55,19 +55,22 @@
             </button>
         </div>
     </div>
-    <div class="row text-center">
+    <div class="row">
         <div class="col-md-5 d-flex justify-content-right flex-column ">
-            <h2>Ingredients</h2>
+            <h2 class="text-center">Ingredients</h2>
             <div class="card" style="width: 21.5em;margin:0 auto;">
             <ul class="list-group list-group-flush">
                 {% for i in recipe.ingredientquantity_set.all %}
-                <li class="list-group-item"> {{i}}</li>
+                <li class="list-group-item">
+                    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+                    {{i}}
+                </li>
                 {% endfor %}
             </ul>
         </div>
         </div>
         <div class="col-md-7 d-flex justify-content-center flex-column">
-            <h2>Steps</h2>
+            <h2 class="text-center">Steps</h2>
             <div class="card" style="width: 21.5em;margin:0 auto;">
                 <ul class="list-group list-group-flush">
                     {% for i in recipe.instruction_set.all %}
