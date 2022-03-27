@@ -58,10 +58,10 @@ class RecipeListViewTests(TestCase):
         self.assertContains(response, "No recipes are available.")
         self.assertQuerysetEqual(response.context['object_list'], [])
 
-class CreateRecipeViewTests(TestCase):
-    def test_create_page_loads(self):
-        response = self.client.get(reverse('wom:recipelist'))
-        self.assertEqual(response.status_code, 200)
+# class CreateRecipeViewTests(TestCase):
+#     def test_create_page_loads(self):
+#         response = self.client.get(reverse('wom:recipelist'))
+#         self.assertEqual(response.status_code, 200)
 
     # def test_form_success(self):
     #     recipe = create_recipe("pepperoni pizza", "baked bread with cheese, tomato sauce, and pepperonis on top")
