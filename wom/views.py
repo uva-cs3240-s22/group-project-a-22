@@ -4,6 +4,9 @@ from django.shortcuts import render, redirect
 from django.views import generic
 from django.db.models import Q
 from django.urls import reverse
+# from wom.forms import RecipeForm, InstructionInlineFormset
+# from wom.forms import RecipeForm, InstructionInlineFormset, IngredientInlineFormset, IngredientQuantityInlineFormset
+from wom.forms import RecipeForm, InstructionForm, IngredientForm, IngredientForm1, InstructionForm1
 
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
