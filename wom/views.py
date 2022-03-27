@@ -1,7 +1,6 @@
 # https://stackoverflow.com/questions/4824759/django-query-using-contains-each-value-in-a-list
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.template import loader
 from django.views import generic
 from django.db.models import Q
 from django.urls import reverse
