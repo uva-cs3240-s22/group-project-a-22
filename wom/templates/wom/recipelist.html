@@ -25,6 +25,11 @@
             <p>Course: {{recipe.course}} </p>
             <p>Date Published: {{recipe.pub_date}}</p>
             <a href="{% url 'wom:createrecipe' recipe.id %}">Fork this recipe</a>
+            <a href="{% url 'wom:detail' recipe.id %}">
+                <button class="btn btn-outline-primary">
+                    View Recipe Details
+                </button>
+            </a>
             <!-- <p>Instructions: {{recipe.instruction_set}}</p> -->
             <!-- Instructions:
                 {% for instruction in recipe.instruction.all %}

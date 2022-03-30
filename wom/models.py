@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -40,7 +42,7 @@ class Recipe(models.Model):
 class Ingredient(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
-    quantity = models.FloatField(default=0)
+    quantity = models.FloatField()
     units = models.CharField(max_length=5)
 
     def __str__(self):
@@ -53,3 +55,10 @@ class Instruction(models.Model):
 
     def __str__(self):
         return self.text
+
+
+class FavoriteRecipe(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='favorites')
+    recipe = models.ForeignKey(
+        Recipe, on_delete=models.CASCADE, related_name='user_favorites')
