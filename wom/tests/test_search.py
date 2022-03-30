@@ -1,3 +1,5 @@
+#https://docs.djangoproject.com/en/4.0/topics/testing/tools/
+#https://docs.djangoproject.com/en/dev/ref/models/querysets/#in
 from django.test import Client, TestCase
 from ..models import Recipe
 from datetime import timedelta
