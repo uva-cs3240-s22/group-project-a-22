@@ -84,7 +84,7 @@ def createrecipe(request):
 
 
 class recipelist(generic.ListView):
-    template_name = 'wom/recipelist.html'
+    template_name = "wom/search_results.html"
 
     def get_queryset(self):
         """
@@ -102,12 +102,12 @@ def search(request):
             post = Recipe.objects.all()
         else:
             search_keywords = search.split()
-            q = reduce(operator.and_, (Q(title__contains = kw) for kw in search_keywords))
+            q = reduce(operator.and_, (Q(title__icontains = kw) for kw in search_keywords))
             post = Recipe.objects.filter(q)
             print(post)
     else:
         post = Recipe.objects.all()
-    return render(request, template, {'post': post})
+    return render(request, template, {'object_list': post})
 
 
 class RecipeView(generic.DetailView):
