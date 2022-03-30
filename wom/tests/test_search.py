@@ -37,7 +37,6 @@ class SearchTests(TestCase):
         search function returns all recipes when a user clicks search after 
         inputting an empty string
         """
-
         response = self.client.get('/wom/search/?q=')
         self.assertEqual(response.status_code, 200)
         self.assertQuerysetEqual(
