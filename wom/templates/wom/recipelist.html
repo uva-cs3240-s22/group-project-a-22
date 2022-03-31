@@ -8,47 +8,45 @@
 
 {% block content %}
 
-
 {% if object_list %}
 <div>
+  <h3 class="text-center">Recipes</h3>
+  <ol>
+    {% for recipe in object_list %}
+      <li>
+          <p>Title: {{ recipe.title }} </p>
+          <p>Creator: {{recipe.creator.username}}</p>
+          <p>Description: {{recipe.description}} </p>
+          <p>Cooking time: {{recipe.cooking_time}} minutes </p>
+          <p>Preparation time: {{recipe.preparation_time}} minutes </p>
+          <p>Meal type: {{recipe.meal_type}} </p>
+          <p>Course: {{recipe.course}} </p>
+          <p>Date Published: {{recipe.pub_date}}</p>
+          <a href="{% url 'wom:createrecipe' recipe.id %}">Fork this recipe</a>
+          <a href="{% url 'wom:detail' recipe.id %}">
+              <button class="btn btn-outline-primary">
+                  View Recipe Details
+              </button>
+          </a>
+          <!-- <p>Instructions: {{recipe.instruction_set}}</p> -->
+          <!-- Instructions:
+              {% for instruction in recipe.instruction.all %}
+                  {{instruction.name}}
+              {% endfor %}
+          </p>
+          <p>Ingredients: 
+          {% for ingredient in recipe.ingredient_formset.all %}
+              {{ingredient.name}}
+          {% endfor %} -->
 
-    <h3 class="text-center">Recipes</h3>
-    <ol>
-        {% for recipe in object_list %}
-        <li>
-            <p>Title: {{ recipe.title }} </p>
-            <p>Creator: {{recipe.creator.username}}</p>
-            <p>Description: {{recipe.description}} </p>
-            <p>Cooking time: {{recipe.cooking_time}} minutes </p>
-            <p>Preparation time: {{recipe.preparation_time}} minutes </p>
-            <p>Meal type: {{recipe.meal_type}} </p>
-            <p>Course: {{recipe.course}} </p>
-            <p>Date Published: {{recipe.pub_date}}</p>
-            <a href="{% url 'wom:createrecipe' recipe.id %}">Fork this recipe</a>
-            <a href="{% url 'wom:detail' recipe.id %}">
-                <button class="btn btn-outline-primary">
-                    View Recipe Details
-                </button>
-            </a>
-            <!-- <p>Instructions: {{recipe.instruction_set}}</p> -->
-            <!-- Instructions:
-                {% for instruction in recipe.instruction.all %}
-                    {{instruction.name}}
-                {% endfor %}
-            </p>
-            <p>Ingredients: 
-            {% for ingredient in recipe.ingredient_formset.all %}
-                {{ingredient.name}}
-            {% endfor %} -->
-
-            {% comment %} </p> {% endcomment %}
-            <hr />
-        </li>
-
-        {% endfor %}
-    </ol>
-    {% else %}
-    <p>No recipes are available.</p>
+          {% comment %} </p> {% endcomment %}
+          <hr />
+      </li>
+    {% endfor %}  
+  </ol>
 </div>
+{% else %}
+  <p>No recipes are available.</p>
 {% endif %}
+
 {% endblock %}
