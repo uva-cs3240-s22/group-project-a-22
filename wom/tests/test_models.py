@@ -1,73 +1,80 @@
-from datetime import timedelta
-
+from time import time
+from django.forms import DurationField
 from django.test import TestCase
-from wom.models import *
-from django.db import models
+from wom.models import Recipe, Instruction, Ingredient, FavoriteRecipe
+from django.urls import reverse
+from datetime import timedelta
+from django.utils import timezone
+from http import HTTPStatus
 
+from django.contrib.auth.models import User
 
+from wom.views import search
 # Create your tests here.
 
+################################################
+# Testing recipe, instruction, and ingredient models
+################################################
 
-# class DummyTestCase(TestCase):
-#     def test_dummy(self):
-#         self.assertEqual(1, 1)
-#
+def create_recipe(title, description):
+    """
+    Create a recipe with the given parameters.
+    """
+    cooking_time = timedelta( days=50, seconds=27, microseconds=10,
+        milliseconds=29000, minutes=5, hours=8, weeks=2)
+    preparation_time = timedelta( days=20, seconds=23, microseconds=13,
+        milliseconds=29000, minutes=27, hours=3, weeks=2)
+    return Recipe(title=title, description=description, cooking_time=cooking_time, preparation_time=preparation_time)
 
-class RecipeTestCase(TestCase):
-    def setUp(self):
-        testRecipe = Recipe(title="test", description="test", cooking_time=timedelta(),
-                            preparation_time=timedelta(), meal_type="other", course="other")
-        testRecipe.save()
-        # print(testRecipe)
+def create_instruction(text):
+    """
+    Create an instruction with the given text.
+    """
+    return Instruction(text=text)
 
-    def test_recipeCreated(self):
-        self.assertEqual(True, Recipe.objects.get(title="test") in Recipe.objects.all())
+def create_ingredient(name, quantity, units):
+    """
+    Create an ingredient with the given name, quantity, and units.
+    """
+    return Ingredient(name=name, quantity=quantity, units=units)
 
-    def test_fields(self):
-        testRecipe = Recipe.objects.get(title="test")
-        self.assertEqual(testRecipe.title, "test")
-        self.assertEqual(testRecipe.description, "test")
-        self.assertEqual(testRecipe.cooking_time, timedelta())
-        self.assertEqual(testRecipe.preparation_time, timedelta())
-        self.assertEqual(testRecipe.meal_type, "other")
-        self.assertEqual(testRecipe.course, "other")
+class RecipeModelTests(TestCase):
+    def test_dummy(self):
+        self.assertEqual(1, 1)
 
-    def test_str(self):
-        testRecipe = Recipe.objects.get(title="test")
-        self.assertEqual(str(testRecipe), "test")
+    def test_recipe_was_created(self):
+        """
+        A recipe called 'chicken piccata'
+        is created with the appropriate title.
+        """
+        title = "chicken piccata"
+        description = "chicken in a lemon, butter, caper sauce"
+        cooking_time = "5:00"
+        preparation_time = "5:00"
+        recipe = create_recipe(title, description)
+        self.assertEquals(recipe.__str__(), "chicken piccata")
 
+class InstructionModelTests(TestCase):
 
-class IngredientTestCase(TestCase):
+    def test_instruction_was_created(self):
+        """
+        An instruction step called 'wash lettuce'
+        is created.
+        """
+        text = "wash lettuce"
+        instruction = create_instruction(text)
+        self.assertEquals(instruction.__str__(), "wash lettuce")
 
-    def setUp(self):
-        testRecipe = Recipe(title="test", description="test", cooking_time=timedelta(),
-                            preparation_time=timedelta(), meal_type="other", course="other")
-        testRecipe.save()
-        testIngredient = Ingredient(recipe=testRecipe, name="testIngredient", quantity=1.0, units="cup")
-        testIngredient.save()
+class IngredientModelTests(TestCase):
 
-    def test_ingredientCreated(self):
-        testIngredient = Ingredient.objects.get(name="testIngredient")
-        self.assertEqual(testIngredient.name, "testIngredient")
-        self.assertEqual(testIngredient.quantity, 1.0)
-        self.assertEqual(testIngredient.units, "cup")
-
-    def test_recipeKey(self):
-        testRecipe = Recipe.objects.get(title="test")
-        testIngredient = Ingredient.objects.get(name="testIngredient")
-        self.assertEqual(testIngredient.recipe, testRecipe)
-
-
-class InstructionTestCase(TestCase):
-    def setUp(self):
-        testRecipe = Recipe(title="test", description="test", cooking_time=timedelta(),
-                            preparation_time=timedelta(), meal_type="other", course="other")
-        testRecipe.save()
-        testInstruction = Instruction(text="testing instruction creation", recipe=testRecipe())
-        testInstruction.save()
-
-    def test_instructionCreation(self):
-        testRecipe = Recipe.objects.get(title="test")
-        testInstruction = Instruction.objects.get(text="testing instruction creation")
-        self.assertEqual(testInstruction.text, "testing instruction creation")
-        self.assertEqual(testInstruction.recipe, testRecipe)
+    def test_ingredient_was_created(self):
+        """
+        An ingredient called "romaine lettuce"
+        with quantity and units "1" and "lb" is
+        created.
+        """
+        name = "romaine lettuce"
+        quantity = "1"
+        units = "lb"
+        ingredient = create_ingredient(name, quantity, units)
+        self.assertEquals(ingredient.__str__(), "romaine lettuce (1 lb)")

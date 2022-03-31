@@ -1,9 +1,10 @@
+from mimetypes import init
 from django import forms
 from .models import Recipe, Instruction, Ingredient
 
 
 class RecipeForm(forms.ModelForm):
-    creator = forms.CharField(required=False, help_text= 'Please specify your public creator name. If left blank, it will default to \'Anonymous\'')
+    creator = forms.CharField(required=False, help_text= 'Please specify your public creator name if you do not want it to be \'Anonymous\'')
     class Meta:
         model = Recipe
         fields = ['title', 'description', 'cooking_time',
@@ -15,7 +16,13 @@ class RecipeForm(forms.ModelForm):
 
 
 class InstructionForm(forms.ModelForm):
-    text = forms.CharField(required=False)
+    text = forms.CharField(label="", required=False)
+    class Meta:
+        model = Instruction
+        fields = ['text']
+
+class InstructionForm1(forms.ModelForm):
+    text = forms.CharField(label="")
     class Meta:
         model = Instruction
         fields = ['text']
@@ -25,6 +32,12 @@ class IngredientForm(forms.ModelForm):
     name = forms.CharField(required=False)
     quantity = forms.CharField(required=False)
     units = forms.CharField(required=False)
+
+    class Meta:
+        model = Ingredient
+        fields = ['name', 'quantity', 'units']
+
+class IngredientForm1(forms.ModelForm):
 
     class Meta:
         model = Ingredient

@@ -1,0 +1,96 @@
+<!--
+    https://getbootstrap.com/docs/5.1/components/list-group/#numbered
+    https://getbootstrap.com/docs/5.1/components/card/
+
+-->
+
+
+{% extends "wom/base.html" %}
+{% load socialaccount %}
+{% load account %}
+{% load static %}
+{% block css %}
+{% block extrahead %}
+<link rel="stylesheet" type="text/css" href="{% static 'wom/detail.css' %}" />
+{% endblock  %}
+{% endblock css %}
+{% block title %}Recipe Title{{recipe.title}}{% endblock %}
+
+{% block content %}
+{% if recipe %}
+<div class="container-fluid">
+    <div class="row top w-100">
+        <div class="col-sm-11 text-center">
+            <h1>{{recipe.title}}</h1>
+            <img src="../../static/wom/images/macandcheese-500x500.jpeg" width="500" height="400">
+            <p>{{recipe.description}}</p>
+        </div>
+        <div class="col-sm-1">
+            {% if user.is_authenticated %}
+            <a href="{% url 'wom:fav' recipe.pk %}" >
+                <button type="button" class="btn btn-primary side-btn">
+                    Save
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+                    </svg>
+                </button>
+            </a>
+            {% endif %}
+            <button type="button" class="btn btn-primary  side-btn">
+                Share
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z" />
+                </svg>
+
+            </button>
+            <button type="button" class="btn btn-primary side-btn">
+                Print
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer"
+                    viewBox="0 0 16 16">
+                    <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"></path>
+                    <path
+                        d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z">
+                    </path>
+                </svg>
+
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5 d-flex justify-content-right flex-column ">
+            <h2 class="text-center">Ingredients</h2>
+            <div class="card" style="width: 21.5em;margin:0 auto;">
+            <ul class="list-group list-group-flush">
+                {% for i in recipe.ingredient_set.all %}
+                <li class="list-group-item">
+                    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+                    {{i}}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        </div>
+        <div class="col-md-7 d-flex justify-content-center flex-column">
+            <h2 class="text-center">Steps</h2>
+            <div class="card" style="width: 21.5em;margin:0 auto;">
+                <ul class="list-group list-group-flush">
+                    {% for i in recipe.instruction_set.all %}
+                    <li class="list-group-item"> {{i}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+
+        </div>
+    </div>
+
+    {% else %}
+    <p>No recipes available</p>
+
+</div>
+    {% endif%}
+    {% endblock %}
