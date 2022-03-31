@@ -36,26 +36,32 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='recipe',
             name='course',
-            field=models.CharField(choices=[('appetizer', 'Appetizer'), ('entree', 'Entree'), ('side', 'Side'), ('snack', 'Snack'), ('other', 'Other')], default='other', max_length=10),
+            field=models.CharField(choices=[('appetizer', 'Appetizer'), ('entree', 'Entree'), (
+                'side', 'Side'), ('snack', 'Snack'), ('other', 'Other')], default='other', max_length=10),
         ),
         migrations.AlterField(
             model_name='recipe',
             name='meal_type',
-            field=models.CharField(choices=[('breakfast', 'Breakfast'), ('lunch', 'Lunch'), ('dinner', 'Dinner'), ('dessert', 'Dessert'), ('other', 'Other')], default='other', max_length=10),
+            field=models.CharField(choices=[('breakfast', 'Breakfast'), ('lunch', 'Lunch'), (
+                'dinner', 'Dinner'), ('dessert', 'Dessert'), ('other', 'Other')], default='other', max_length=10),
         ),
         migrations.AlterField(
             model_name='recipe',
             name='pub_date',
-            field=models.DateTimeField(default=datetime.datetime(2022, 3, 26, 19, 22, 21, 879619, tzinfo=utc), verbose_name='Date Published'),
+            field=models.DateTimeField(default=datetime.datetime(
+                2022, 3, 26, 19, 22, 21, 879619, tzinfo=utc), verbose_name='Date Published'),
         ),
         migrations.CreateModel(
             name='IngredientQuantity',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('quantity', models.FloatField()),
                 ('units', models.CharField(blank=True, max_length=5)),
-                ('ingredient', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='wom.ingredient')),
-                ('recipe', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='wom.recipe')),
+                ('ingredient', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='wom.ingredient')),
+                ('recipe', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='wom.recipe')),
             ],
         ),
     ]

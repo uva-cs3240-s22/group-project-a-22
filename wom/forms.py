@@ -4,9 +4,6 @@ from .models import Recipe, Instruction, Ingredient
 
 
 class RecipeForm(forms.ModelForm):
-    creator = forms.CharField(
-        required=False, help_text='Please specify your public creator name if you do not want it to be \'Anonymous\'')
-
     class Meta:
         model = Recipe
         fields = ['title', 'creator', 'description', 'cooking_time',
