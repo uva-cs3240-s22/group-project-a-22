@@ -15,33 +15,19 @@ class RecipeForm(forms.ModelForm):
 
 
 class InstructionForm(forms.ModelForm):
-    text = forms.CharField(required=False)
-
     class Meta:
         model = Instruction
         fields = ['text']
 
 
-class InstructionForm1(forms.ModelForm):
-    text = forms.CharField(label="")
-
-    class Meta:
-        model = Instruction
-        fields = ['text']
+InstructionFormset = forms.formset_factory(
+    InstructionForm, extra=3, can_delete=False)
 
 
 class IngredientForm(forms.ModelForm):
-    name = forms.CharField(required=False)
-    quantity = forms.CharField(required=False)
-    units = forms.CharField(required=False)
-
     class Meta:
         model = Ingredient
         fields = ['name', 'quantity', 'units']
 
 
-class IngredientForm1(forms.ModelForm):
-
-    class Meta:
-        model = Ingredient
-        fields = ['name', 'quantity', 'units']
+IngredientFormset = forms.formset_factory(IngredientForm, extra=3)

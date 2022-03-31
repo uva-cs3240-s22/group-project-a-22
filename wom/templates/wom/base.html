@@ -8,8 +8,13 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'wom/base_styles.css' %}"/>
-{% block extrahead %}{% endblock %}
+<head>
+  <link rel="stylesheet" type="text/css" href="{% static 'wom/base_styles.css' %}"/>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  {% block extrahead %}{% endblock %}
+</head>
+
+<body>
 {% block base_content %}
 <div class="page-container">
 
@@ -83,3 +88,4 @@
 
 </div>
 {% endblock %}
+</body>
