@@ -54,7 +54,7 @@ class RecipeListViewTests(TestCase):
         If no recipes exist, an appropriate message is displayed.
         """
 
-        response = self.client.get(reverse('wom:recipelist'))
+        response = self.client.get(reverse('wom:search'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "No recipes found.")
         self.assertQuerysetEqual(response.context['object_list'], [])
@@ -66,7 +66,7 @@ class RecipeListViewTests(TestCase):
         title = "caesar salad"
         description = "romaine lettuce with caesar dressing"
         recipe = create_recipe(title, description)
-        response = self.client.get(reverse('wom:recipelist'))
+        response = self.client.get(reverse('wom:search'))
         self.assertQuerysetEqual(
             response.context['object_list'],
             [recipe],

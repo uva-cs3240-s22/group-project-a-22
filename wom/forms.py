@@ -15,6 +15,8 @@ class RecipeForm(forms.ModelForm):
 
 
 class InstructionForm(forms.ModelForm):
+    text = forms.CharField(required=False)
+
     class Meta:
         model = Instruction
         fields = ['text']

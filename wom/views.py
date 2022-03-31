@@ -1,19 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
-from django.db.models import Q
 from wom.forms import RecipeForm, InstructionForm, IngredientForm, IngredientForm1, InstructionForm1
-
 from django.http import HttpResponseRedirect
-
 from .models import Recipe, FavoriteRecipe, Instruction, Ingredient
+
+from django.db.models import Q
 import operator
 from functools import reduce
-
-
-def dashboard(request):
-    return render(request, 'wom/dashboard.html')
-
 
 # def createrecipe(request, recipe_id=''):
 #     try:
@@ -25,6 +19,7 @@ def dashboard(request):
 #         recipe.pub_date = timezone.now()
 #     except:
 #         recipe = Recipe()
+
 
 def createrecipe(request):
     if request.method == "POST":
@@ -60,7 +55,7 @@ def createrecipe(request):
                 if(new_ingredient.quantity == ""):
                     new_ingredient.quantity = 0
                 new_ingredient.save()
-            return redirect(reverse('wom:recipelist'))
+            return redirect(reverse('wom:search'))
     else:
         recipeform = RecipeForm(instance=Recipe())
         instructionform1 = InstructionForm(instance=Instruction())
@@ -79,16 +74,6 @@ def createrecipe(request):
     })
 
 
-class recipelist(generic.ListView):
-    template_name = "wom/search_results.html"
-
-    def get_queryset(self):
-        """
-        Return the published recipes
-        """
-        return Recipe.objects.all()
-
-
 def search(request):
     template = "wom/search_results.html"
 
@@ -101,7 +86,6 @@ def search(request):
             q = reduce(operator.and_, (Q(title__icontains=kw)
                        for kw in search_keywords))
             post = Recipe.objects.filter(q)
-            print(post)
     else:
         post = Recipe.objects.all()
     return render(request, template, {'object_list': post})
@@ -112,11 +96,8 @@ class RecipeView(generic.DetailView):
     template_name = 'wom/detail.html'
 
 
-def favorite_recipe(request, pk):
-    """
-    Currently unused, but this code will run when the favorite button is pressed once we have a favorite button
-    """
-    recipe = get_object_or_404(Recipe, pk=pk)
+def favorite_recipe(request, recipe_id):
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
     if recipe.favorites.filter(user=request.user).exists():
         recipe.favorites.filter(user=request.user).delete()
     else:
