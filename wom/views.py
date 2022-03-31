@@ -11,7 +11,7 @@ from wom.forms import RecipeForm, InstructionForm, IngredientForm, IngredientFor
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 
-from .models import Recipe, FavoriteRecipe, Instruction, Ingredient
+from .models import Recipe, FavoriteRecipe, RateRecipe, Instruction, Ingredient
 import operator
 from functools import reduce
 from wom.forms import RecipeForm, InstructionForm, IngredientForm, IngredientForm1, InstructionForm1
@@ -117,7 +117,11 @@ class RecipeView(generic.DetailView):
 
 def favorite_recipe(request, pk):
     """
-    Currently unused, but this code will run when the favorite button is pressed once we have a favorite button
+    Runs when the favorite button is pressed on the Details page.
+    Takes recipe ID (pk) and request.
+
+    Creates a new favorite object relating the user who made the request to the recipe
+    with the passed pk. If such an object already exists, deletes that object instead.
     """
     recipe = get_object_or_404(Recipe, pk=pk)
     if recipe.favorites.filter(user=request.user).exists():
@@ -137,3 +141,27 @@ class favoritelist(generic.ListView):
         """
         user = self.request.user
         return user.favorites.all()
+
+
+def rate_recipe(request, pk, rating):
+    """
+    Runs when the favorite button is pressed on the Details page.
+    Takes recipe ID (pk) and request.
+
+    Creates a new favorite object relating the user who made the request to the recipe
+    with the passed pk. If such an object already exists, deletes that object instead.
+    """
+    recipe = get_object_or_404(Recipe, pk=pk)
+
+    """ Deletes rating if it exists """
+    if rating == 6:
+        if recipe.rating.filter(user=request.user).exists():
+            recipe.rating.filter(user=request.user).delete()
+
+    elif recipe.rating.filter(user=request.user).exists():
+        recipe.rating.filter(user=request.user).score = rating
+
+    else:
+        newrating = RateRecipe.objects.create(user=request.user, recipe=recipe, score=rating)
+        newrating.save()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])

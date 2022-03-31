@@ -1,7 +1,7 @@
 from csv import list_dialects
 from django.contrib import admin
 
-from wom.models import Ingredient, Recipe, FavoriteRecipe, Instruction
+from wom.models import Ingredient, Recipe, FavoriteRecipe, Instruction, RateRecipe
 
 # Register your models here.
 
@@ -11,6 +11,14 @@ class FavoriteInline(admin.StackedInline):
     verbose_name = 'Favorited By User'
     verbose_name_plural = 'Favorites'
     extra = 3
+
+
+class RateInline(admin.StackedInline):
+    model = RateRecipe
+    verbose_name = 'Rated By User'
+    verbose_name_plural = 'Rating'
+    extra = 3
+
 
 class IngredientInline(admin.TabularInline):
     model = Ingredient
@@ -38,7 +46,7 @@ class RecipeAdmin(admin.ModelAdmin):
         ('Date Information', {'fields': [
          'pub_date'], 'classes': ['collapse']}),
     ]
-    inlines = [IngredientInline, InstructionInline]
+    inlines = [IngredientInline, InstructionInline, RateInline]
     # inlines = [IngredientQuantityInline, InstructionInline, FavoriteInline]
     list_display = ['title', 'pub_date', 'meal_type']
     list_filter = ['pub_date']
