@@ -14,6 +14,13 @@ class RecipeForm(forms.ModelForm):
         }
 
 
+class RequiredFormset(forms.BaseFormSet):
+    def __init__(self, *args, **kwargs):
+        super(RequiredFormset, self).__init__(*args, **kwargs)
+        for form in self.forms:
+            form.empty_permitted = False
+
+
 class InstructionForm(forms.ModelForm):
     class Meta:
         model = Instruction
@@ -21,7 +28,7 @@ class InstructionForm(forms.ModelForm):
 
 
 InstructionFormset = forms.formset_factory(
-    InstructionForm, extra=3, can_delete=False)
+    InstructionForm, formset=RequiredFormset, extra=3)
 
 
 class IngredientForm(forms.ModelForm):
@@ -30,4 +37,5 @@ class IngredientForm(forms.ModelForm):
         fields = ['name', 'quantity', 'units']
 
 
-IngredientFormset = forms.formset_factory(IngredientForm, extra=3)
+IngredientFormset = forms.formset_factory(
+    IngredientForm, formset=RequiredFormset, extra=3)

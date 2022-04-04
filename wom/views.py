@@ -29,17 +29,15 @@ def createrecipe(request):
         ingredient_formset = IngredientFormset(
             request.POST, prefix="ingredient")
         if recipeform.is_valid() and instruction_formset.is_valid() and ingredient_formset.is_valid():
-            # new_recipe = recipeform.save()
-            # for instrform in instructionforms:
-            #     new_instruction = instrform.save(commit=False)
-            #     new_instruction.recipe = new_recipe
-            #     new_instruction.save()
-            # for ingrform in ingredientforms:
-            #     new_ingredient = ingrform.save(commit=False)
-            #     new_ingredient.recipe = new_recipe
-            #     if(new_ingredient.quantity == ""):
-            #         new_ingredient.quantity = 0
-            #     new_ingredient.save()
+            new_recipe = recipeform.save()
+            for instrform in instruction_formset:
+                new_instruction = instrform.save(commit=False)
+                new_instruction.recipe = new_recipe
+                new_instruction.save()
+            for ingrform in ingredient_formset:
+                new_ingredient = ingrform.save(commit=False)
+                new_ingredient.recipe = new_recipe
+                new_ingredient.save()
             return redirect(reverse('wom:search'))
     else:
         recipeform = RecipeForm(instance=Recipe(), prefix="recipe")
