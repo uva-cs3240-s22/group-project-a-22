@@ -74,21 +74,165 @@ class RecipeListViewTests(TestCase):
 
 
 class CreateRecipeViewTests(TestCase):
-    def test_create_page_loads(self):
-        response = self.client.get(reverse('wom:createrecipe'))
-        self.assertEqual(response.status_code, 200)
+    def test_create_page_no_login(self):
+        response = self.client.get(reverse('wom:createrecipe'))\
 
-    # def test_form_success(self):
-    #     recipe = create_recipe(
-    #         "pepperoni pizza", "baked bread with cheese, tomato sauce, and pepperonis on top")
-    #     crust = create_ingredient(recipe, "bread", "3", "lbs")
-    #     step1 = create_instruction(recipe,
-    #                                "prepare pizza dough and put cheese and pepperoni on")
-    #     step2 = create_instruction(recipe, "bake for 20 minutes and eat")
-    #     request = HttpRequest()
-    #     request.POST = {
-    #         "recipe": recipe,
-    #     }
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertContains(response, "Please log in to create a new recipe.")
+
+    def test_create_page_get(self):
+        user = User.objects.get_or_create(username='testuser')[0]
+        self.client.force_login(user)
+        response = self.client.get(reverse('wom:createrecipe'))
+
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertContains(response, "Create New Recipe")
+
+    def test_create_page_post_failure(self):
+        user = User.objects.get_or_create(username='testuser')[0]
+        self.client.force_login(user)
+
+        response = self.client.post(reverse('wom:createrecipe'))
+
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertContains(response, "Create New Recipe")
+
+    def test_create_page_post_success(self):
+        user = User.objects.get_or_create(username='testuser')[0]
+        self.client.force_login(user)
+
+        form_data = {
+            'recipe-title': 'Test Title',
+            'recipe-creator': user.pk,
+            'recipe-description': 'Test description',
+            'recipe-cooking_time': 5,
+            'recipe-preparation_time': 5,
+            'recipe-meal_type': 'other',
+            'recipe-course': 'other',
+            'instruction-TOTAL_FORMS': 1,
+            'instruction-INITIAL_FORMS': 0,
+            'instruction-0-text': 'Test Instruction',
+            'ingredient-TOTAL_FORMS': 1,
+            'ingredient-INITIAL_FORMS': 0,
+            'ingredient-0-name': 'Test Ingredient',
+            'ingredient-0-quantity': 3,
+            'ingredient-0-units': 'oz',
+        }
+        response = self.client.post(
+            reverse('wom:createrecipe'), data=form_data)
+
+        recipe = Recipe.objects.get(pk=1)
+
+        self.assertEqual(recipe.title, 'Test Title')
+        self.assertEqual(recipe.instruction_set.first().text,
+                         'Test Instruction')
+        self.assertEqual(recipe.ingredient_set.first().name, 'Test Ingredient')
+        self.assertRedirects(response, reverse(
+            'wom:search'), status_code=302, target_status_code=200, fetch_redirect_response=True)
+
+    def test_create_page_post_no_instructions(self):
+        user = User.objects.get_or_create(username='testuser')[0]
+        self.client.force_login(user)
+
+        form_data = {
+            'recipe-title': 'Test Title',
+            'recipe-creator': user.pk,
+            'recipe-description': 'Test description',
+            'recipe-cooking_time': 5,
+            'recipe-preparation_time': 5,
+            'recipe-meal_type': 'other',
+            'recipe-course': 'other',
+            'ingredient-TOTAL_FORMS': 1,
+            'ingredient-INITIAL_FORMS': 0,
+            'ingredient-0-name': 'Test Ingredient',
+            'ingredient-0-quantity': 3,
+            'ingredient-0-units': 'oz',
+        }
+        response = self.client.post(
+            reverse('wom:createrecipe'), data=form_data)
+
+        recipes = Recipe.objects.all()
+
+        self.assertEqual(list(recipes), [])
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertContains(response, "Create New Recipe")
+
+    def test_create_page_post_no_ingredients(self):
+        user = User.objects.get_or_create(username='testuser')[0]
+        self.client.force_login(user)
+
+        form_data = {
+            'recipe-title': 'Test Title',
+            'recipe-creator': user.pk,
+            'recipe-description': 'Test description',
+            'recipe-cooking_time': 5,
+            'recipe-preparation_time': 5,
+            'recipe-meal_type': 'other',
+            'recipe-course': 'other',
+            'instruction-TOTAL_FORMS': 1,
+            'instruction-INITIAL_FORMS': 0,
+            'instruction-0-text': 'Test Instruction',
+        }
+        response = self.client.post(
+            reverse('wom:createrecipe'), data=form_data)
+
+        recipes = Recipe.objects.all()
+
+        self.assertEqual(list(recipes), [])
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertContains(response, "Create New Recipe")
+
+    def test_create_page_post_multiple_instructions_and_ingredients(self):
+        user = User.objects.get_or_create(username='testuser')[0]
+        self.client.force_login(user)
+
+        form_data = {
+            'recipe-title': 'Test Title',
+            'recipe-creator': user.pk,
+            'recipe-description': 'Test description',
+            'recipe-cooking_time': 5,
+            'recipe-preparation_time': 5,
+            'recipe-meal_type': 'other',
+            'recipe-course': 'other',
+            'instruction-TOTAL_FORMS': 3,
+            'instruction-INITIAL_FORMS': 0,
+            'instruction-0-text': 'Test Instruction',
+            'instruction-1-text': 'Test Instruction 2',
+            'instruction-2-text': 'Test Instruction 3',
+            'ingredient-TOTAL_FORMS': 3,
+            'ingredient-INITIAL_FORMS': 0,
+            'ingredient-0-name': 'Test Ingredient',
+            'ingredient-0-quantity': 3,
+            'ingredient-0-units': 'oz',
+            'ingredient-1-name': 'Test Ingredient 2',
+            'ingredient-1-quantity': 2,
+            'ingredient-1-units': 'lbs',
+            'ingredient-2-name': 'Test Ingredient 3',
+            'ingredient-2-quantity': 1,
+            'ingredient-2-units': 'item',
+        }
+        response = self.client.post(
+            reverse('wom:createrecipe'), data=form_data)
+
+        recipe = Recipe.objects.get(pk=1)
+        instructions = list(recipe.instruction_set.all())
+        ingredients = list(recipe.ingredient_set.all())
+
+        self.assertEqual(recipe.title, 'Test Title')
+        self.assertEqual(
+            instructions[0].text, 'Test Instruction')
+        self.assertEqual(
+            instructions[1].text, 'Test Instruction 2')
+        self.assertEqual(
+            instructions[2].text, 'Test Instruction 3')
+        self.assertEqual(
+            ingredients[0].name, 'Test Ingredient')
+        self.assertEqual(
+            ingredients[1].name, 'Test Ingredient 2')
+        self.assertEqual(
+            ingredients[2].name, 'Test Ingredient 3')
+        self.assertRedirects(response, reverse(
+            'wom:search'), status_code=302, target_status_code=200, fetch_redirect_response=True)
 
 
 class SearchViewTests(TestCase):
