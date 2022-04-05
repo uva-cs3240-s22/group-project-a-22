@@ -169,18 +169,14 @@ class CreateRecipeForkTests(TestCase):
         self.assertContains(response, "liter")
 
     def test_fork_post(self):
-        old_recipe = Recipe.objects.get(pk=1)
-        old_instructions = list(old_recipe.instruction_set.all())
-        old_ingredients = list(old_recipe.ingredient_set.all())
-
         form_data = {
-            'recipe-title': old_recipe.title,
+            'recipe-title': 'Example Recipe 1',
             'recipe-creator': self.user.pk,
             'recipe-description': 'Test description',
-            'recipe-cooking_time': old_recipe.cooking_time,
-            'recipe-preparation_time': old_recipe.preparation_time,
+            'recipe-cooking_time': '00:30:00',
+            'recipe-preparation_time': '00:15:00',
             'recipe-meal_type': 'lunch',
-            'recipe-course': old_recipe.course,
+            'recipe-course': 'entree',
             'instruction-TOTAL_FORMS': 3,
             'instruction-INITIAL_FORMS': 0,
             'instruction-0-text': 'Instruction',
@@ -201,6 +197,11 @@ class CreateRecipeForkTests(TestCase):
 
         response = self.client.post(
             reverse('wom:createrecipe', kwargs={'recipe_id': 1}), data=form_data)
+
+        old_recipe = Recipe.objects.get(pk=1)
+        old_instructions = list(old_recipe.instruction_set.all())
+        old_ingredients = list(old_recipe.ingredient_set.all())
+
         new_recipe = Recipe.objects.get(pk=2)
         new_instructions = list(new_recipe.instruction_set.all())
         new_ingredients = list(new_recipe.ingredient_set.all())
@@ -209,6 +210,9 @@ class CreateRecipeForkTests(TestCase):
             'wom:search'), status_code=302, target_status_code=200, fetch_redirect_response=True)
         self.assertEqual(new_recipe.title, old_recipe.title)
         self.assertEqual(new_recipe.parent_id, old_recipe.pk)
+        self.assertEqual(new_recipe.meal_type, 'lunch')
+        self.assertEqual(old_recipe.meal_type, 'breakfast')
+
         self.assertEqual(
             new_instructions[0].text, 'Instruction')
         self.assertEqual(
@@ -216,10 +220,21 @@ class CreateRecipeForkTests(TestCase):
         self.assertEqual(
             new_instructions[2].text, 'Test Instruction 3')
         self.assertEqual(
+            old_instructions[0].text, 'Instruction 1')
+        self.assertEqual(
+            old_instructions[1].text, 'Instruction 2')
+        self.assertEqual(
+            old_instructions[2].text, 'Instruction 3')
+
+        self.assertEqual(
             new_ingredients[0].name, 'Test Ingredient')
         self.assertEqual(
             new_ingredients[1].name, 'Test Ingredient 2')
         self.assertEqual(
             new_ingredients[2].name, 'Test Ingredient 3')
-        self.assertNotEqual(new_instructions, old_instructions)
-        self.assertNotEqual(new_ingredients, old_ingredients)
+        self.assertEqual(
+            old_ingredients[0].name, 'Ingredient 1')
+        self.assertEqual(
+            old_ingredients[1].name, 'Ingredient 2')
+        self.assertEqual(
+            old_ingredients[2].name, 'Ingredient 3')

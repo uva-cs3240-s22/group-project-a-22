@@ -24,6 +24,9 @@
             <h1>{{recipe.title}}</h1>
             <img src="../../static/wom/images/macandcheese-500x500.jpeg" width="500" height="400">
             <p>{{recipe.description}}</p>
+            {% if recipe.parent %}
+              <p>Forked from <a href="{% url 'wom:detail' recipe.parent_id %}">{{ recipe.parent.title }}</a></p>
+            {% endif %}
         </div>
         <div class="col-sm-1">
             {% if user.is_authenticated %}
