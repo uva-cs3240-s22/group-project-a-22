@@ -35,7 +35,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='recipe',
             name='pub_date',
-            field=models.DateTimeField(default=datetime.datetime(2022, 3, 27, 9, 31, 11, 878064, tzinfo=utc), verbose_name='Date Published'),
+            field=models.DateTimeField(default=datetime.datetime(
+                2022, 3, 27, 9, 31, 11, 878064, tzinfo=utc), verbose_name='Date Published'),
         ),
         migrations.AlterField(
             model_name='recipe',

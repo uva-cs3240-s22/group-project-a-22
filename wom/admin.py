@@ -12,12 +12,10 @@ class FavoriteInline(admin.StackedInline):
     verbose_name_plural = 'Favorites'
     extra = 3
 
+
 class IngredientInline(admin.TabularInline):
     model = Ingredient
     extra = 3
-# class IngredientQuantityInline(admin.TabularInline):
-#     model = IngredientQuantity
-#     extra = 3
 
 
 class InstructionInline(admin.TabularInline):
@@ -28,13 +26,15 @@ class InstructionInline(admin.TabularInline):
 class RecipeAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': [
+            'creator',
             'title',
             'description',
             'preparation_time',
             'cooking_time',
             'meal_type',
-            'course'
+            'course',
         ]}),
+        ('Fork Information', {'fields': ['parent'], 'classes': ['collapse']}),
         ('Date Information', {'fields': [
          'pub_date'], 'classes': ['collapse']}),
     ]
