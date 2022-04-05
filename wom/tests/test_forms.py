@@ -1,7 +1,12 @@
+from datetime import timedelta
+from http import HTTPStatus
 from django.test import TestCase
+from django.urls import reverse
 
 from wom.forms import IngredientFormset, InstructionFormset, RecipeForm
 from django.contrib.auth.models import User
+
+from wom.models import Ingredient, Instruction, Recipe
 
 
 class CreateRecipeFormTests(TestCase):
@@ -103,3 +108,118 @@ class CreateRecipeFormTests(TestCase):
         form = IngredientFormset(prefix="ingredient", data=form_data)
 
         self.assertFalse(form.is_valid())
+
+
+class CreateRecipeForkTests(TestCase):
+    def setUp(self):
+        title = 'Example Recipe 1'
+        description = 'This is an example recipe.'
+        cooking_time = timedelta(minutes=30)
+        preparation_time = timedelta(minutes=15)
+        meal_type = 'breakfast'
+        course = 'snack'
+        recipe = Recipe(title=title, description=description, cooking_time=cooking_time,
+                        preparation_time=preparation_time, meal_type=meal_type, course=course)
+        recipe.save()
+
+        instruction1 = Instruction(recipe=recipe, text='Instruction 1')
+        instruction2 = Instruction(recipe=recipe, text='Instruction 2')
+        instruction3 = Instruction(recipe=recipe, text='Instruction 3')
+        instruction1.save()
+        instruction2.save()
+        instruction3.save()
+
+        ingredient1 = Ingredient(
+            recipe=recipe, name='Ingredient 1', quantity=5, units='oz')
+        ingredient2 = Ingredient(
+            recipe=recipe, name='Ingredient 2', quantity=10, units='lbs')
+        ingredient3 = Ingredient(
+            recipe=recipe, name='Ingredient 3', quantity=1, units='liter')
+        ingredient1.save()
+        ingredient2.save()
+        ingredient3.save()
+
+        self.user = User.objects.get_or_create(username='testuser')[0]
+        self.client.force_login(self.user)
+
+    def test_fork_get(self):
+        response = self.client.get(
+            reverse('wom:createrecipe', kwargs={'recipe_id': 1}))
+
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertContains(response, "Example Recipe 1")
+        self.assertContains(response, "This is an example recipe.")
+        self.assertContains(response, "00:30:00")
+        self.assertContains(response, "00:15:00")
+        self.assertContains(response, "breakfast")
+        self.assertContains(response, "snack")
+
+        self.assertContains(response, "Instruction 1")
+        self.assertContains(response, "Instruction 2")
+        self.assertContains(response, "Instruction 3")
+
+        self.assertContains(response, "Ingredient 1")
+        self.assertContains(response, "5.0")
+        self.assertContains(response, "oz")
+        self.assertContains(response, "Ingredient 2")
+        self.assertContains(response, "10.0")
+        self.assertContains(response, "lbs")
+        self.assertContains(response, "Ingredient 3")
+        self.assertContains(response, "1.0")
+        self.assertContains(response, "liter")
+
+    def test_fork_post(self):
+        old_recipe = Recipe.objects.get(pk=1)
+        old_instructions = list(old_recipe.instruction_set.all())
+        old_ingredients = list(old_recipe.ingredient_set.all())
+
+        form_data = {
+            'recipe-title': old_recipe.title,
+            'recipe-creator': self.user.pk,
+            'recipe-description': 'Test description',
+            'recipe-cooking_time': old_recipe.cooking_time,
+            'recipe-preparation_time': old_recipe.preparation_time,
+            'recipe-meal_type': 'lunch',
+            'recipe-course': old_recipe.course,
+            'instruction-TOTAL_FORMS': 3,
+            'instruction-INITIAL_FORMS': 0,
+            'instruction-0-text': 'Instruction',
+            'instruction-1-text': 'Test Instruction 2',
+            'instruction-2-text': 'Test Instruction 3',
+            'ingredient-TOTAL_FORMS': 3,
+            'ingredient-INITIAL_FORMS': 0,
+            'ingredient-0-name': 'Test Ingredient',
+            'ingredient-0-quantity': 3,
+            'ingredient-0-units': 'oz',
+            'ingredient-1-name': 'Test Ingredient 2',
+            'ingredient-1-quantity': 2,
+            'ingredient-1-units': 'lbs',
+            'ingredient-2-name': 'Test Ingredient 3',
+            'ingredient-2-quantity': 1,
+            'ingredient-2-units': 'item',
+        }
+
+        response = self.client.post(
+            reverse('wom:createrecipe', kwargs={'recipe_id': 1}), data=form_data)
+        new_recipe = Recipe.objects.get(pk=2)
+        new_instructions = list(new_recipe.instruction_set.all())
+        new_ingredients = list(new_recipe.ingredient_set.all())
+
+        self.assertRedirects(response, reverse(
+            'wom:search'), status_code=302, target_status_code=200, fetch_redirect_response=True)
+        self.assertEqual(new_recipe.title, old_recipe.title)
+        self.assertEqual(new_recipe.parent_id, old_recipe.pk)
+        self.assertEqual(
+            new_instructions[0].text, 'Instruction')
+        self.assertEqual(
+            new_instructions[1].text, 'Test Instruction 2')
+        self.assertEqual(
+            new_instructions[2].text, 'Test Instruction 3')
+        self.assertEqual(
+            new_ingredients[0].name, 'Test Ingredient')
+        self.assertEqual(
+            new_ingredients[1].name, 'Test Ingredient 2')
+        self.assertEqual(
+            new_ingredients[2].name, 'Test Ingredient 3')
+        self.assertNotEqual(new_instructions, old_instructions)
+        self.assertNotEqual(new_ingredients, old_ingredients)
