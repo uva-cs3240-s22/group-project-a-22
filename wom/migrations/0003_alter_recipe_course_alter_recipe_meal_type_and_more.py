@@ -15,16 +15,13 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='recipe',
             name='course',
-            field=models.CharField(choices=[('other', 'Other'), ('appetizer', 'Appetizer'), ('entree', 'Entree'), ('side', 'Side'), ('snack', 'Snack')], default='other', max_length=10),
+            field=models.CharField(choices=[('other', 'Other'), ('appetizer', 'Appetizer'), (
+                'entree', 'Entree'), ('side', 'Side'), ('snack', 'Snack')], default='other', max_length=10),
         ),
         migrations.AlterField(
             model_name='recipe',
             name='meal_type',
-            field=models.CharField(choices=[('other', 'Other'), ('breakfast', 'Breakfast'), ('lunch', 'Lunch'), ('dinner', 'Dinner'), ('dessert', 'Dessert')], default='other', max_length=10),
-        ),
-        migrations.AlterField(
-            model_name='recipe',
-            name='pub_date',
-            field=models.DateTimeField(default=datetime.datetime(2022, 3, 19, 4, 39, 24, 872536, tzinfo=utc), verbose_name='Date Published'),
+            field=models.CharField(choices=[('other', 'Other'), ('breakfast', 'Breakfast'), (
+                'lunch', 'Lunch'), ('dinner', 'Dinner'), ('dessert', 'Dessert')], default='other', max_length=10),
         ),
     ]
