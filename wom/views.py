@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
+# from matplotlib.contour import ContourSet
 from wom.forms import IngredientFormset, InstructionFormset, RecipeForm
 from .models import Recipe, FavoriteRecipe
 
@@ -87,7 +88,34 @@ def search(request):
         post = Recipe.objects.all()
     return render(request, template, {'object_list': post})
 
+def filter(request):
+    template = "wom/search_results.html"
+    q = Recipe.objects.all()
+    filtered = False
+    meal_type = request.GET.get('meal_type')
+    course = request.GET.get('course')
+    prep_time = request.GET.get('prep_time')
+    cook_time = request.GET.get('cook_time')
 
+    if meal_type != '' and meal_type is not None: 
+        q = q.filter(meal_type__iexact=meal_type)
+        filtered = True
+    if course != '' and course is not None: 
+        q = q.filter(course__iexact=course)
+        filtered = True
+    if prep_time != '' and prep_time is not None: 
+        q = q.filter(prep_time__iexact=prep_time)
+        filtered = True
+    if cook_time != '' and cook_time is not None: 
+        q = q.filter(cooking_time__iexact=cook_time) 
+        filtered = True
+       
+    if filtered == False:
+        q = Recipe.objects.none() 
+
+    return render(request, template, {'object_list': q})
+    
+    
 class RecipeView(generic.DetailView):
     model = Recipe
     template_name = 'wom/detail.html'

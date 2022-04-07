@@ -75,3 +75,35 @@ class SearchTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(set(response.context['object_list'].order_by('title')), set(
             Recipe.objects.filter(title__in=['Demo recipe', 'Demo recipe no2']).order_by('title')))
+
+class FilterTests(TestCase): 
+    def test_filter_by_course(self):
+        response = self.client.get('/wom/search/get?course=appetizer')
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerysetEqual(
+            response.context['object_list'].order_by('title'), Recipe.objects.all().filter(course="appetizer").order_by('title'))
+        self.assertEqual(True, False)
+    def test_filter_by_cook_time(self):
+        response = self.client.get('/wom/search/get?cook_time=1:00:00')
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerysetEqual(
+            response.context['object_list'].order_by('title'), Recipe.objects.all().filter(cooking_time="1:00:00").order_by('title'))
+        self.assertEqual(True, False)
+    def test_filter_by_prep_time(self):
+        response = self.client.get('/wom/search/get?prep_time=1:00:00')
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerysetEqual(
+            response.context['object_list'].order_by('title'), Recipe.objects.all().filter(preparation_time="1:00:00").order_by('title'))
+        self.assertEqual(True, False)
+    def test_filter_by_meal_type(self):
+        response = self.client.get('/wom/search/get?meal_type=dinner')
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerysetEqual(
+        response.context['object_list'].order_by('title'), Recipe.objects.all().filter(meal_type="dinner").order_by('title'))
+        self.assertEqual(True, False)
+    def test_filter_many(self):
+        response = self.client.get('/wom/search/get?meal_type=dinner?prep_time=1:00:00?cook_time=1:00:00?course=appetizer')
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerysetEqual(
+        response.context['object_list'].order_by('title'), Recipe.objects.all().filter(meal_type="dinner").order_by('title'))
+        self.assertEqual(True, False)
