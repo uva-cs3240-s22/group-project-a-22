@@ -8,7 +8,7 @@ from django.utils.timezone import utc
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('wom', '0024_alter_recipe_pub_date'),
+        ('wom', '0023_alter_ingredient_recipe_alter_recipe_cooking_time_and_more'),
     ]
 
     operations = [
@@ -16,10 +16,5 @@ class Migration(migrations.Migration):
             model_name='ingredient',
             name='quantity',
             field=models.FloatField(),
-        ),
-        migrations.AlterField(
-            model_name='recipe',
-            name='pub_date',
-            field=models.DateTimeField(default=datetime.datetime(2022, 3, 27, 10, 49, 30, 271256, tzinfo=utc), verbose_name='Date Published'),
         ),
     ]

@@ -45,12 +45,6 @@ class Migration(migrations.Migration):
             field=models.CharField(choices=[('breakfast', 'Breakfast'), ('lunch', 'Lunch'), (
                 'dinner', 'Dinner'), ('dessert', 'Dessert'), ('other', 'Other')], default='other', max_length=10),
         ),
-        migrations.AlterField(
-            model_name='recipe',
-            name='pub_date',
-            field=models.DateTimeField(default=datetime.datetime(
-                2022, 3, 26, 19, 22, 21, 879619, tzinfo=utc), verbose_name='Date Published'),
-        ),
         migrations.CreateModel(
             name='IngredientQuantity',
             fields=[
