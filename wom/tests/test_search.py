@@ -1,7 +1,7 @@
-#https://docs.djangoproject.com/en/4.0/topics/testing/tools/
-#https://docs.djangoproject.com/en/dev/ref/models/querysets/#in
+# https://docs.djangoproject.com/en/4.0/topics/testing/tools/
+# https://docs.djangoproject.com/en/dev/ref/models/querysets/#in
 from django.test import Client, TestCase
-from ..models import Recipe
+from wom.models import Recipe
 from datetime import timedelta
 
 
@@ -17,8 +17,7 @@ def create_recipe(title, description):
 
 
 class SearchTests(TestCase):
-    @classmethod
-    def setUpTestData(cls):
+    def setUp(self):
         create_recipe(
             title="Demo recipe",
             description="this is a demo",
@@ -62,7 +61,8 @@ class SearchTests(TestCase):
 
         response = self.client.get('/wom/search/?q=demo+rec+2')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context['object_list'].first(), Recipe.objects.get(title='Demo recipe no2'))
+        self.assertEqual(response.context['object_list'].first(
+        ), Recipe.objects.get(title='Demo recipe no2'))
 
     def test_multiple_keywords_with_multiple_results(self):
         """
@@ -73,4 +73,5 @@ class SearchTests(TestCase):
 
         response = self.client.get('/wom/search/?q=demo+rec')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(set(response.context['object_list'].order_by('title')), set(Recipe.objects.filter(title__in=['Demo recipe', 'Demo recipe no2']).order_by('title')))
+        self.assertEqual(set(response.context['object_list'].order_by('title')), set(
+            Recipe.objects.filter(title__in=['Demo recipe', 'Demo recipe no2']).order_by('title')))
