@@ -63,3 +63,8 @@ class FavoriteRecipe(models.Model):
     recipe = models.ForeignKey(
         Recipe, on_delete=models.CASCADE, related_name='favorites')
     fav_date = models.DateTimeField('Date Favorited', default=timezone.now())
+
+class RateRecipe(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='rating')
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='rating')
+    score = models.FloatField()
