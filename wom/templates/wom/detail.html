@@ -18,6 +18,7 @@
 
 {% block content %}
 {% if recipe %}
+<input type="hidden" value="" id="copyToClipboard">
 <div class="container-fluid">
     <div class="row top w-100">
         <div class="col-sm-11 text-center">
@@ -49,8 +50,30 @@
               </button>
           </a>
             {% endif %}
-            <button type="button" class="btn btn-primary  side-btn">
-                Share
+            <script type="text/javascript">
+                function copy() {
+                    document.getElementById("copyToClipboard").value = window.location.href
+                    var copyText = document.getElementById("copyToClipboard");
+
+                    /* Select the text field */
+                    copyText.select();
+
+                    /* Copy the text inside the text field */
+                    navigator.clipboard.writeText(copyText.value).then(() => {
+                        alert("successfully copied");
+                    })
+                        .catch(() => {
+                            alert("something went wrong");
+                        });;
+                }
+
+                function changeToolTip() {
+                    var newValue = "Copied!"
+                    $("#copyToClipboard").attr('data-original-title', newValue).tooltip('show');
+                }
+            </script>
+            <button type="button" class="btn btn-primary  side-btn" title="Copy to Clipboard" onclick="copy()">
+                Copy to Clipboard
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share"
                     viewBox="0 0 16 16">
                     <path
@@ -88,11 +111,11 @@
         <div class="col-md-7 d-flex justify-content-center flex-column">
             <h2 class="text-center">Steps</h2>
             <div class="card" style="width: 21.5em;margin:0 auto;">
-                <ul class="list-group list-group-flush">
+                <ol class="list-group list-group-flush">
                     {% for i in recipe.instruction_set.all %}
-                    <li class="list-group-item"> {{i}}</li>
+                    <li class="list-group-item instruction-item"> {{i}}</li>
                     {% endfor %}
-                </ul>
+                </ol>
             </div>
             
 

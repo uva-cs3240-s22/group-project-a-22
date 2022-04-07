@@ -5,3 +5,10 @@
 .top {
     margin-bottom: 8vh;
 }
+ol {
+    list-style: decimal inside;
+}
+
+.instruction-item {
+    display: list-item;
+}
