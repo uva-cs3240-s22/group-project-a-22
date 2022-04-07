@@ -28,9 +28,11 @@ class Recipe(models.Model):
         max_length=10, choices=MealTypes.choices, default=MealTypes.OTHER)
     course = models.CharField(
         max_length=10, choices=Courses.choices, default=Courses.OTHER)
-    pub_date = models.DateTimeField('Date Published', default=timezone.now())
     anonymous_creator_bool = models.BooleanField(default=False)
-    creator = models.CharField(max_length=100, default="Anonymous")
+    pub_date = models.DateTimeField('Date Published', default=timezone.now)
+    parent = models.ForeignKey(
+        'self', on_delete=models.SET_NULL, null=True, related_name='children')
+    creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.title
@@ -54,6 +56,7 @@ class Instruction(models.Model):
 
 
 class FavoriteRecipe(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites')
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='favorites')
-
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='favorites')
+    recipe = models.ForeignKey(
+        Recipe, on_delete=models.CASCADE, related_name='favorites')
