@@ -9,7 +9,7 @@ from django.utils.timezone import utc
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('wom', '0014_alter_recipe_pub_date'),
+        ('wom', '0011_alter_recipe_cooking_time_alter_recipe_description_and_more'),
     ]
 
     operations = [
@@ -21,7 +21,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='ingredient',
             name='recipe',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='wom.recipe'),
+            field=models.ForeignKey(
+                null=True, on_delete=django.db.models.deletion.CASCADE, to='wom.recipe'),
         ),
         migrations.AddField(
             model_name='ingredient',
@@ -36,17 +37,14 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='recipe',
             name='course',
-            field=models.CharField(choices=[('other', 'Other'), ('appetizer', 'Appetizer'), ('entree', 'Entree'), ('side', 'Side'), ('snack', 'Snack')], default='other', max_length=10),
+            field=models.CharField(choices=[('other', 'Other'), ('appetizer', 'Appetizer'), (
+                'entree', 'Entree'), ('side', 'Side'), ('snack', 'Snack')], default='other', max_length=10),
         ),
         migrations.AlterField(
             model_name='recipe',
             name='meal_type',
-            field=models.CharField(choices=[('other', 'Other'), ('breakfast', 'Breakfast'), ('lunch', 'Lunch'), ('dinner', 'Dinner'), ('dessert', 'Dessert')], default='other', max_length=10),
-        ),
-        migrations.AlterField(
-            model_name='recipe',
-            name='pub_date',
-            field=models.DateTimeField(default=datetime.datetime(2022, 3, 27, 9, 16, 40, 527399, tzinfo=utc), verbose_name='Date Published'),
+            field=models.CharField(choices=[('other', 'Other'), ('breakfast', 'Breakfast'), (
+                'lunch', 'Lunch'), ('dinner', 'Dinner'), ('dessert', 'Dessert')], default='other', max_length=10),
         ),
         migrations.DeleteModel(
             name='IngredientQuantity',

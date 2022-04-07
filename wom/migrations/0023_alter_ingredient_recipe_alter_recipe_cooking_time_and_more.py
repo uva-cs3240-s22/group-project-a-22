@@ -9,14 +9,15 @@ from django.utils.timezone import utc
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('wom', '0022_alter_recipe_pub_date'),
+        ('wom', '0016_recipe_creator_alter_ingredient_name_and_more'),
     ]
 
     operations = [
         migrations.AlterField(
             model_name='ingredient',
             name='recipe',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='wom.recipe'),
+            field=models.ForeignKey(
+                default=1, on_delete=django.db.models.deletion.CASCADE, to='wom.recipe'),
             preserve_default=False,
         ),
         migrations.AlterField(
@@ -28,10 +29,5 @@ class Migration(migrations.Migration):
             model_name='recipe',
             name='preparation_time',
             field=models.DurationField(),
-        ),
-        migrations.AlterField(
-            model_name='recipe',
-            name='pub_date',
-            field=models.DateTimeField(default=datetime.datetime(2022, 3, 27, 9, 48, 1, 868902, tzinfo=utc), verbose_name='Date Published'),
         ),
     ]
