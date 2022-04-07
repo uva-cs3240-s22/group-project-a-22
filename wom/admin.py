@@ -33,7 +33,9 @@ class RecipeAdmin(admin.ModelAdmin):
             'preparation_time',
             'cooking_time',
             'meal_type',
-            'course'
+            'course',
+            'creator',
+            'anonymous_creator_bool'
         ]}),
         ('Date Information', {'fields': [
          'pub_date'], 'classes': ['collapse']}),

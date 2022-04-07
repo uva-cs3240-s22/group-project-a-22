@@ -16,6 +16,7 @@ import operator
 from functools import reduce
 from wom.forms import RecipeForm, InstructionForm, IngredientForm, IngredientForm1, InstructionForm1
 
+
 def dashboard(request):
     return render(request, 'wom/dashboard.html')
 
@@ -49,7 +50,13 @@ def createrecipe(request):
         if recipeform.is_valid() and instructionform1.is_valid() and ingredientform1.is_valid():
         # if recipeform.is_valid() and instructionforms[0].data['text'] != "" and ingredientforms[0].data['name'] != "" and ingredientforms[0].data['quantity'] != 0 and ingredientforms[0].data['units'] != "":
         # if recipeform.is_valid() and all([instrform.is_valid() for instrform in instructionforms]) and all([ingredientform.is_valid() for ingredientform in ingredientforms]):
-            new_recipe = recipeform.save()
+
+            new_recipe = recipeform.save(commit=False)
+            if (new_recipe.anonymous_creator_bool == False):
+                new_recipe.creator = request.user
+            else:
+                new_recipe.creator = "Anonymous"
+            new_recipe.save()
             new_instruction = instructionform1.save(commit=False)
             new_instruction.recipe = new_recipe
             new_instruction.save()
