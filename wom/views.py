@@ -44,6 +44,11 @@ def createrecipe(request, recipe_id=''):
             request.POST, prefix="ingredient", queryset=ingredient_query_set)
         if recipeform.is_valid() and instruction_formset.is_valid() and ingredient_formset.is_valid():
             new_recipe = recipeform.save(commit=False)
+            if(new_recipe.anonymous_creator_bool == True):
+                new_recipe.creator = None
+            else:
+                new_recipe.creator = request.user
+            
             new_recipe.pk = None
             new_recipe.save()
             for instrform in instruction_formset:
