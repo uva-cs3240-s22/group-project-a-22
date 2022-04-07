@@ -1,4 +1,4 @@
-{% extends "wom/base.html" %}
+{% extends "wom/recipes.html" %}
 {% load static %}
 {% block css %}
 {% block extrahead %}
@@ -6,32 +6,10 @@
 {% endblock  %}
 {% endblock css %}
 {% block title %}Recipe Title{{recipe.title}}{% endblock %}
-
-{% block content %}
-
-{% if object_list %}
-  <div class="row">
-
-  {% for recipe in object_list %}
-  <div class="col-3">
-  <div class="card h-100" style="width: 18rem;">
-      <img src="../../static/wom/images/macandcheese-500x500.jpeg" class="card-img-top" alt="recipe image">
-      <div class="card-body">
-        <h5 class="card-title">
-            <a href="{% url 'wom:detail' recipe.id %}" >
-                {{recipe.title}}
-            </a>
-        </h5>
-        <p class="card-text text-truncate" height="200" width="200">{{recipe.description}}</p>
-        
-      </div>
+{% block sidebar %}
+<div class="col-3">
+    <div class="container-fluid sidebar">
+        <h1>sidebar</h1>
     </div>
-  </div>
-  {% endfor %}
-
-  </div>
-{% else %}
-  <p>No recipes found.</p>
-{% endif%}
-
+</div>
 {% endblock %}
