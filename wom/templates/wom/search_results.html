@@ -36,19 +36,18 @@
                         <label class="control-label" for="prep_time">Preparation Time:</label>
                         <select id="prep_time" name="prep_time">
                             <option value="" selected disabled hidden></option>
-                            <option value="30:00"> > 30 minutes</option>
-                            <option value="1:00:00">> 1 hour</option>
-                            <option value="1:30:00">> 1 hour and 30 minutes</option>
+                            <option value="00:30:00"> &lt; 30 minutes</option>
+                            <option value="1:00:00"> &lt; 1 hour</option>
+                            <option value="1:00:01"> &gt; 1 hour </option>
                         </select>
-
                     </li>
                     <li>
                         <label class="control-label" for="cook_time">Cooking Time:</label>
-                        <select id="cook_time" for="cook_time">
+                        <select id="cook_time" name="cook_time">
                             <option value="" selected disabled hidden></option>
-                            <option value="30:00"> > 30 minutes</option>
-                            <option value="1:00:00">> 1 hour</option>
-                            <option value="1:30:00"> &lt; 2 hours</option>
+                            <option value="00:30:00"> &lt; 30 minutes</option>
+                            <option value="1:00:00"> &lt; 1 hour</option>
+                            <option value="1:00:01"> &gt; 1 hour</option>
                         </select>
                     </li>
 

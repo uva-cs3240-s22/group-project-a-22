@@ -1,3 +1,5 @@
+# https://www.youtube.com/watch?v=vU0VeFN-abU
+from datetime import datetime, timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
@@ -88,8 +90,10 @@ def search(request):
         post = Recipe.objects.all()
     return render(request, template, {'object_list': post})
 
+
 def filter(request):
     template = "wom/search_results.html"
+    
     q = Recipe.objects.all()
     filtered = False
     meal_type = request.GET.get('meal_type')
@@ -97,17 +101,31 @@ def filter(request):
     prep_time = request.GET.get('prep_time')
     cook_time = request.GET.get('cook_time')
 
-    if meal_type != '' and meal_type is not None: 
+    if meal_type != '' and meal_type is not None:
         q = q.filter(meal_type__iexact=meal_type)
         filtered = True
-    if course != '' and course is not None: 
+    if course != '' and course is not None:
         q = q.filter(course__iexact=course)
         filtered = True
-    if prep_time != '' and prep_time is not None: 
-        q = q.filter(prep_time__iexact=prep_time)
+    if prep_time != '' and prep_time is not None:
+        if prep_time == '1:00:01': 
+            t = timedelta(hours=1)
+            q = q.filter(preparation_time__gte=t)
+        else:
+            times = prep_time.split(':')
+            times = list(map(int, times))
+            t = timedelta(hours=times[0], minutes=times[1], seconds=times[2])
+            q = q.filter(preparation_time__lte=t)
         filtered = True
-    if cook_time != '' and cook_time is not None: 
-        q = q.filter(cooking_time__iexact=cook_time) 
+    if cook_time != '' and cook_time is not None:
+        if cook_time == '1:00:01':
+            t = timedelta( hours=1)
+            q = q.filter(cooking_time__gte=t)
+        else: 
+            times = cook_time.split(':')
+            times = list(map(int, times))
+            t = timedelta( hours=times[0], minutes=times[1], seconds=times[2] )
+            q = q.filter(cooking_time__lte=t)
         filtered = True
        
     if filtered == False:
