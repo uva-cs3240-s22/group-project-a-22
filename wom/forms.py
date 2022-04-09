@@ -1,6 +1,6 @@
 from mimetypes import init
 from django import forms
-from .models import Recipe, Instruction, Ingredient
+from .models import Recipe, Instruction, Ingredient, Tag
 
 
 class RecipeForm(forms.ModelForm):
@@ -28,3 +28,5 @@ InstructionFormset = forms.modelformset_factory(model=Instruction, formset=Requi
 
 IngredientFormset = forms.modelformset_factory(model=Ingredient, formset=RequiredFormset,
                                                fields=('name', 'quantity', 'units'))
+
+TagFormset = forms.modelformset_factory(model=Tag, formset=RequiredFormset, fields=('name',))

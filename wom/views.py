@@ -1,25 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
-from wom.forms import IngredientFormset, InstructionFormset, RecipeForm
+from wom.forms import IngredientFormset, InstructionFormset, RecipeForm, TagFormset
+# from wom.forms import IngredientFormset, InstructionFormset, RecipeForm
+
 from .models import Recipe, FavoriteRecipe
 
 from django.db.models import Q
 import operator
 from functools import reduce
 from django.utils import timezone
-
-# def createrecipe(request, recipe_id=''):
-#     try:
-#         recipe = Recipe.objects.get(pk=recipe_id)
-#         # parent_pk = recipe.pk
-#         recipe.pk = None
-#         recipe.creator = request.user
-#         recipe.parent_id = recipe_id
-#         recipe.pub_date = timezone.now()
-#     except:
-#         recipe = Recipe()
-
+from datetime import timedelta
 
 def createrecipe(request, recipe_id=''):
     if not request.user.is_authenticated:
@@ -33,6 +24,7 @@ def createrecipe(request, recipe_id=''):
 
     instruction_query_set = recipe.instruction_set.all()
     ingredient_query_set = recipe.ingredient_set.all()
+    tag_query_set = recipe.tag_set.all()
     recipe.creator = request.user
     recipe.pub_date = timezone.now()
     if request.method == "POST":
@@ -42,7 +34,9 @@ def createrecipe(request, recipe_id=''):
             request.POST, prefix="instruction", queryset=instruction_query_set)
         ingredient_formset = IngredientFormset(
             request.POST, prefix="ingredient", queryset=ingredient_query_set)
-        if recipeform.is_valid() and instruction_formset.is_valid() and ingredient_formset.is_valid():
+        tag_formset = TagFormset(
+            request.POST, prefix="tag", queryset=tag_query_set)
+        if recipeform.is_valid() and instruction_formset.is_valid() and ingredient_formset.is_valid() and tag_formset.is_valid():
             new_recipe = recipeform.save(commit=False)
             if(new_recipe.anonymous_creator_bool == True):
                 new_recipe.creator = None
@@ -61,6 +55,11 @@ def createrecipe(request, recipe_id=''):
                 new_ingredient.pk = None
                 new_ingredient.recipe = new_recipe
                 new_ingredient.save()
+            for tag in tag_formset:
+                new_tag = tag.save(commit=False)
+                new_tag.pk = None
+                new_tag.recipe = new_recipe
+                new_tag.save()
             return redirect(reverse('wom:search'))
     else:
         recipeform = RecipeForm(instance=recipe, prefix="recipe")
@@ -68,11 +67,13 @@ def createrecipe(request, recipe_id=''):
             prefix="instruction", queryset=instruction_query_set)
         ingredient_formset = IngredientFormset(
             prefix="ingredient", queryset=ingredient_query_set)
+        tag_formset = TagFormset(prefix="tag", queryset=tag_query_set)
 
     return render(request, 'wom/createrecipe.html', {
         'recipe_form': recipeform,
         'instruction_forms': instruction_formset,
         'ingredient_forms': ingredient_formset,
+        'tag_forms': tag_formset,
     })
 
 
@@ -118,3 +119,45 @@ class favoritelist(generic.ListView):
         """
         user = self.request.user
         return user.favorites.all()
+
+def filter(request):
+    template = "wom/search_results.html"
+    
+    q = Recipe.objects.all()
+    filtered = False
+    meal_type = request.GET.get('meal_type')
+    course = request.GET.get('course')
+    prep_time = request.GET.get('prep_time')
+    cook_time = request.GET.get('cook_time')
+
+    if meal_type != '' and meal_type is not None:
+        q = q.filter(meal_type__iexact=meal_type)
+        filtered = True
+    if course != '' and course is not None:
+        q = q.filter(course__iexact=course)
+        filtered = True
+    if prep_time != '' and prep_time is not None:
+        if prep_time == '1:00:01': 
+            t = timedelta(hours=1)
+            q = q.filter(preparation_time__gte=t)
+        else:
+            times = prep_time.split(':')
+            times = list(map(int, times))
+            t = timedelta(hours=times[0], minutes=times[1], seconds=times[2])
+            q = q.filter(preparation_time__lte=t)
+        filtered = True
+    if cook_time != '' and cook_time is not None:
+        if cook_time == '1:00:01':
+            t = timedelta( hours=1)
+            q = q.filter(cooking_time__gte=t)
+        else: 
+            times = cook_time.split(':')
+            times = list(map(int, times))
+            t = timedelta( hours=times[0], minutes=times[1], seconds=times[2] )
+            q = q.filter(cooking_time__lte=t)
+        filtered = True
+       
+    if filtered == False:
+        q = Recipe.objects.none() 
+
+    return render(request, template, {'object_list': q})
