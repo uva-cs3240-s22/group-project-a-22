@@ -164,7 +164,10 @@ def rate_recipe(request, pk, rating):
         Case 2: change an existent rating to a new score,
         then update average rating accordingly
         
-        Does not change number of ratings (obviously)
+        Does not change number of ratings (obviously).
+        
+        This basically just runs the calculation for removing a rating with the user's 
+        old score, then the calculation for adding a rating with the user's new score.
         """
         existent_rating = recipe.rating.get(user=request.user)
 
@@ -174,7 +177,6 @@ def rate_recipe(request, pk, rating):
             recipe.avgRating = \
                 ((recipe.avgRating * recipe.numRatings) - existing_rating.score) / (numValues - 1)
 
-            
         recipe.avgRating = \
             ((recipe.avgRating * (recipe.numRatings-1)) + rating) / (recipe.numRatings)
 
