@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 
 
 ################################################
-# Testing recipelist, createrecipe, search, and favorite views
+# Testing recipelist, createrecipe, search, favorite, and rating views
 ################################################
 
 def create_recipe(title, description):
@@ -301,3 +301,5 @@ class FavoriteViewTests(TestCase):
         FavoriteRecipe.objects.create(user=testuser, recipe=testrecipe)
         testuser.favorites.filter(recipe=testrecipe).delete()
         self.assertQuerysetEqual(testuser.favorites.all(), [])
+
+class RatingViewTests(TestCase):
