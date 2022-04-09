@@ -40,6 +40,8 @@ class RecipeAdmin(admin.ModelAdmin):
             'cooking_time',
             'meal_type',
             'course',
+            'avgRating',
+            'numRatings'
         ]}),
         ('Fork Information', {'fields': ['parent'], 'classes': ['collapse']}),
         ('Date Information', {'fields': [

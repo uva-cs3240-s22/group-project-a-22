@@ -6,7 +6,6 @@ from . import views
 app_name = 'wom'
 urlpatterns = [
     path('', views.dashboard, name='dashboard'),
-    path('recipelist', views.recipelist.as_view(), name='recipelist'),
     path('rate/<int:pk>/<int:rating>', views.rate_recipe, name='rate'),
     path('', lambda request: redirect('search/')),
     path('search/', views.search, name='search'),
