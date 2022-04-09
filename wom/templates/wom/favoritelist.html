@@ -17,7 +17,7 @@
     <ol>
         {% for favorite in object_list %}
         <li>
-            <a href="{% url 'wom:recipelist' %}"> {{ favorite.recipe.title }} </a>
+            <a href="{% url 'wom:detail' favorite.recipe.pk %}"> {{ favorite.recipe.title }} </a>
             <p> (Favorited on {{ favorite.fav_date }})</p>
             </p>
             <hr />

@@ -153,7 +153,7 @@ def rate_recipe(request, pk, rating):
                 recipe.avgRating = 0
             else:
                 recipe.avgRating = \
-                    ((recipe.avgRating * recipe.numRatings) - old_rating.score) / (numValues-1)
+                    ((recipe.avgRating * recipe.numRatings) - old_rating.score) / (recipe.numRatings - 1)
 
             recipe.numRatings -= 1
             old_rating.delete()
@@ -175,13 +175,14 @@ def rate_recipe(request, pk, rating):
             recipe.avgRating = 0
         else:
             recipe.avgRating = \
-                ((recipe.avgRating * recipe.numRatings) - existing_rating.score) / (numValues - 1)
+                ((recipe.avgRating * recipe.numRatings) - existent_rating.score) / (recipe.numRatings - 1)
 
         recipe.avgRating = \
             ((recipe.avgRating * (recipe.numRatings-1)) + rating) / (recipe.numRatings)
 
         existent_rating.score = rating
         recipe.save()
+        existent_rating.save()
 
     else:
         """ 

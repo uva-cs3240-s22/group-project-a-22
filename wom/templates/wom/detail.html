@@ -18,11 +18,11 @@
 
 {% block content %}
 {% if recipe %}
-<a>{{ recipe.avgRating }}</a>
 <div class="container-fluid">
     <div class="row top w-100">
         <div class="col-sm-11 text-center">
             <h1>{{recipe.title}}</h1>
+            <h6>Rated {{ recipe.avgRating | stringformat:".1f" }} out of 5.0 Stars</h6>
             <img src="../../static/wom/images/macandcheese-500x500.jpeg" width="500" height="400">
             <p>{{recipe.description}}</p>
             {% if recipe.parent %}
