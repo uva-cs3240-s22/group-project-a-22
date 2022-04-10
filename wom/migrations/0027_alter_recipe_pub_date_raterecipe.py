@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('wom', '0026_alter_recipe_pub_date'),
+        ('wom', '0025_alter_ingredient_quantity_alter_recipe_pub_date'),
     ]
 
     operations = [
