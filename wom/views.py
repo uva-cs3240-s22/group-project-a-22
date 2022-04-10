@@ -43,7 +43,6 @@ def createrecipe(request, recipe_id=''):
             # else:
             #     new_recipe.creator = request.user
             new_recipe.creator = request.user
-            
             new_recipe.pk = None
             new_recipe.save()
             for instrform in instruction_formset:

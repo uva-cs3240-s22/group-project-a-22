@@ -22,7 +22,7 @@
     <div class="row top w-100">
         <div class="col-sm-11 text-center">
             <h1>{{recipe.title}}</h1>
-            <img src="../../static/wom/images/macandcheese-500x500.jpeg" width="500" height="400">
+            <img src="{{recipe.image.url}}" width="500" height="400">
             {% if recipe.anonymous_creator_bool %}
             <p style="font-size:large;"><b>Creator: </b>Anonymous </p>
             {% else %}
