@@ -77,29 +77,30 @@ def createrecipe(request, recipe_id=''):
 def search(request):
     template = "wom/search_results.html"
 
+    post = filter(request)['object_list']
     if request.method == 'GET':
         search = request.GET.get('q')
         if (not search or search.isspace() or search == ""):
-            post = Recipe.objects.all()
+            post = post
         else:
             search_keywords = search.split()
             q = reduce(operator.and_, (Q(title__icontains=kw)
                        for kw in search_keywords))
-            post = Recipe.objects.filter(q)
+            post = post.filter(q)
     else:
         post = Recipe.objects.all()
-    return render(request, template, {'object_list': post})
+    return render(request, template, {'object_list': post.order_by('title')})
 
 
 def filter(request):
-    template = "wom/search_results.html"
-    
     q = Recipe.objects.all()
+    message = ""
     filtered = False
     meal_type = request.GET.get('meal_type')
     course = request.GET.get('course')
     prep_time = request.GET.get('prep_time')
     cook_time = request.GET.get('cook_time')
+    sort_by = request.GET.get('sort_by')
 
     if meal_type != '' and meal_type is not None:
         q = q.filter(meal_type__iexact=meal_type)
@@ -126,14 +127,25 @@ def filter(request):
             times = list(map(int, times))
             t = timedelta( hours=times[0], minutes=times[1], seconds=times[2] )
             q = q.filter(cooking_time__lte=t)
+        filtered = True   
+    if sort_by != '' and sort_by is not None:
+        if sort_by == 'AZ':
+            q = Recipe.objects.all().order_by('title') #want to
+        elif sort_by == 'Recent':
+            q = Recipe.objects.all().order_by('-pub_date')
+        elif sort_by == 'Oldest':
+            q = Recipe.objects.all().order_by('pub_date')
         filtered = True
-       
     if filtered == False:
-        q = Recipe.objects.none() 
+        print('not filtered')
+        q = Recipe.objects.all() 
 
-    return render(request, template, {'object_list': q})
     
+    return {'object_list': q, 'message': message}
     
+
+
+
 class RecipeView(generic.DetailView):
     model = Recipe
     template_name = 'wom/detail.html'

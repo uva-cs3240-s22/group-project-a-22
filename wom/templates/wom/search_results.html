@@ -9,9 +9,25 @@
 {% block sidebar %}
 <div class="col-3">
     <div class="container-fluid sidebar">
-        <form action="{% url 'wom:filter' %}">
+        <form action="{% url 'wom:search' %}">
             <div class="form-group">
                 <ul>
+                    <li>
+                        <div class="input-group">
+                        <div class="form-outline">
+                            <input type="search" id="form1" name="q" value="{{ request.GET.q }}"class="form-control" placeholder="Search"/>
+                          </div>
+                        </div>
+                    </li>
+                    <li>
+                        <label class="control-label" for="sort_by">Sort By:</label>
+                        <select id="sort_by" name="sort_by">
+                            <option value="" selected></option> 
+                            <option value="AZ">A-Z</option>
+                            <option value="Recent">Recent first</option>
+                            <option value="Oldest">Oldest first</option>
+                        </select>
+                    </li>
                     <li>
                         <label class="control-label" for="meal_type">Meal Type:</label>
                         <select id="meal_type" name="meal_type">
