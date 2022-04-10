@@ -12,31 +12,61 @@
 {% block css %}
 {% block extrahead %}
 <link rel="stylesheet" type="text/css" href="{% static 'wom/detail.css' %}" />
-{% endblock  %}
+{% endblock %}
 {% endblock css %}
 {% block title %}Recipe Title{{recipe.title}}{% endblock %}
 
 {% block content %}
 {% if recipe %}
-<div class="container-fluid">
+<div class="container-fluid" style="margin-bottom: 50px;">
     <div class="row top w-100">
         <div class="col-sm-11 text-center">
             <h1>{{recipe.title}}</h1>
             <img src="../../static/wom/images/macandcheese-500x500.jpeg" width="500" height="400">
-            <p>{{recipe.description}}</p>
+            {% if recipe.anonymous_creator_bool %}
+            <p style="font-size:large;"><b>Creator: </b>Anonymous </p>
+            {% else %}
+            <p style="font-size:large;"><b>Creator: </b>{{ recipe.creator}} </p>
+            {% endif %}
+            <p style="font-size:large;"><em>{{recipe.description}}</em></p>
+            {% if recipe.parent %}
+            <p>Forked from <a href="{% url 'wom:detail' recipe.parent_id %}">{{ recipe.parent.title }}</a></p>
+            {% endif %}
+            <p style="font-size:large;"><b>Tags: </b>
+            {% for i in recipe.tag_set.all %}
+            {{i}}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+            </p>
+            <p style="font-size:large;"><b>Preparation time: </b> {{recipe.preparation_time}} </p>
+            <p style="font-size:large;"><b>Cooking time: </b> {{recipe.cooking_time}} </p>
+            <p style="font-size:large;"><b>Meal type: </b> {{recipe.meal_type}} </p>
+            <p style="font-size:large;"><b>Course: </b> {{recipe.course}} </p>
         </div>
         <div class="col-sm-1">
             {% if user.is_authenticated %}
-            <a href="{% url 'wom:fav' recipe.pk %}" >
+            <a href="{% url 'wom:fav' recipe.pk %}">
                 <button type="button" class="btn btn-primary side-btn">
                     Save
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star"
-                        viewBox="0 0 16 16">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-star" viewBox="0 0 16 16">
                         <path
                             d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
                     </svg>
                 </button>
             </a>
+            <hr />
+            <a href="{% url 'wom:createrecipe' recipe.pk %}">
+                <button type="button" class="btn btn-primary side-btn">
+                    Fork
+                    {% comment %} https://icon-sets.iconify.design/uil/code-branch/ {% endcomment %}
+                    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em"
+                        preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                        <path fill="currentColor"
+                            d="M17 6.06a3 3 0 0 0-1.15 5.77A2 2 0 0 1 14 13.06h-4a3.91 3.91 0 0 0-2 .56V7.88a3 3 0 1 0-2 0v8.36a3 3 0 1 0 2.16.05A2 2 0 0 1 10 15.06h4a4 4 0 0 0 3.91-3.16A3 3 0 0 0 17 6.06Zm-10-2a1 1 0 1 1-1 1a1 1 0 0 1 1-1Zm0 16a1 1 0 1 1 1-1a1 1 0 0 1-1 1Zm10-10a1 1 0 1 1 1-1a1 1 0 0 1-1 1Z" />
+                    </svg>
+                </button>
+            </a>
+            <hr />
             {% endif %}
             <button type="button" class="btn btn-primary  side-btn">
                 Share
@@ -47,6 +77,7 @@
                 </svg>
 
             </button>
+            <hr />
             <button type="button" class="btn btn-primary side-btn">
                 Print
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer"
@@ -64,26 +95,26 @@
         <div class="col-md-5 d-flex justify-content-right flex-column ">
             <h2 class="text-center">Ingredients</h2>
             <div class="card" style="width: 21.5em;margin:0 auto;">
-            <ul class="list-group list-group-flush">
-                {% for i in recipe.ingredient_set.all %}
-                <li class="list-group-item">
-                    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-                    {{i}}
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
+                <ul class="list-group list-group-flush">
+                    {% for i in recipe.ingredient_set.all %}
+                    <li class="list-group-item">
+                        <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+                        {{i}}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
         <div class="col-md-7 d-flex justify-content-center flex-column">
             <h2 class="text-center">Steps</h2>
             <div class="card" style="width: 21.5em;margin:0 auto;">
-                <ul class="list-group list-group-flush">
+                <ol>
                     {% for i in recipe.instruction_set.all %}
-                    <li class="list-group-item"> {{i}}</li>
+                    <li>{{i}}</li>
                     {% endfor %}
-                </ul>
+                </ol>
             </div>
-            
+
 
         </div>
     </div>
@@ -92,5 +123,5 @@
     <p>No recipes available</p>
 
 </div>
-    {% endif%}
-    {% endblock %}
+{% endif%}
+{% endblock %}

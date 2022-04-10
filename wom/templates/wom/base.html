@@ -8,8 +8,13 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'wom/base_styles.css' %}"/>
-{% block extrahead %}{% endblock %}
+<head>
+  <link rel="stylesheet" type="text/css" href="{% static 'wom/base_styles.css' %}"/>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  {% block extrahead %}{% endblock %}
+</head>
+
+<body>
 {% block base_content %}
 <div class="page-container">
 
@@ -23,10 +28,7 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'wom:dashboard' %}">Dashboard</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'wom:recipelist' %}">Recipes</a>
+            <a class="nav-link" href="{% url 'wom:search' %}">Recipes</a>
           </li>
           {% if user.is_authenticated %}
           <li class="nav-item">
@@ -36,14 +38,16 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'wom:createrecipe' %}">Create Recipe</a>
           </li>
+          {% if user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link" href="">My Account</a>
+            <a class="nav-link" href="{% url 'wom:account' %}">My Account</a>
           </li>
+          {% endif %}
           <li class="nav-item">
             <form action="{% url 'wom:search' %}" method="get">
               <div class="input-group">
                 <div class="form-outline">
-                  <input type="search" id="form1" name="q" class="form-control" placeholder="Search"/>
+                  <input type="search" id="form1" name="q" class="form-control" placeholder="Search by recipe title"/>
                 </div>
                 <button type="submit" class="btn btn-primary">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -86,3 +90,4 @@
 
 </div>
 {% endblock %}
+</body>

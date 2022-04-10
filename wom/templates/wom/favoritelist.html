@@ -6,21 +6,59 @@
 {% load bootstrap5 %}
 {% load static %}
 
-
 {% block content %}
 
 {% if user.is_authenticated %}
 {% if object_list %}
 <div>
 
-    <h3 class="text-center">Favorited Recipes</h3>
+    <h2 class="text-center">Favorited Recipes</h2>
     <ol>
         {% for favorite in object_list %}
-        <li>
-            <a href="{% url 'wom:recipelist' %}"> {{ favorite.recipe.title }} </a>
-            </p>
-            <hr />
-        </li>
+        <div class="col-3">
+            <div class="card h-100" style="width: 18rem;">
+                <img src="../../static/wom/images/macandcheese-500x500.jpeg" class="card-img-top" alt="recipe image">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        {{favorite.recipe.title}}
+                    </h5>
+                    <!-- <p class="card-text text-truncate" height="200" width="200">{{favorite.recipe.description}}</p> -->
+
+                    <div class="card-text">
+                        <em>
+                            {{favorite.recipe.description}} <br />
+                        </em>
+                        <!-- <b> Creator: </b> {{ favorite.recipe.creator|default_if_none:"Anonymous" }} <br /> -->
+                        {% if recipe.anonymous_creator_bool %}
+                        <p style="font-size:large;"><b>Creator: </b>Anonymous </p>
+                        {% else %}
+                        <p style="font-size:large;"><b>Creator: </b>{{ recipe.creator}} </p>
+                        {% endif %}
+                        <b> Tags: </b>
+                        {% for i in favorite.recipe.tag_set.all %}
+                        {{i}}{% if not forloop.last %}, {% endif %}
+                        </li>
+                        {% endfor %}
+                        <br />
+                        <b> Prep time: </b> {{favorite.recipe.preparation_time}} <br />
+                        <b> Cooking time: </b>{{favorite.recipe.cooking_time}} <br />
+                        <b> Meal type: </b> {{favorite.recipe.meal_type}} <br />
+                        <b> Course: </b> {{favorite.recipe.course}} <br />
+
+
+                        <hr />
+                        <a href="{% url 'wom:detail' favorite.recipe.id %}">
+                            <button type="button" class="btn btn-outline-primary">
+                                View Details
+                            </button>
+                        </a>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
 
         {% endfor %}
     </ol>
