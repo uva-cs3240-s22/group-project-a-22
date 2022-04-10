@@ -5,6 +5,8 @@ from . import views
 
 app_name = 'wom'
 urlpatterns = [
+    path('', views.dashboard, name='dashboard'),
+    path('rate/<int:pk>/<int:rating>', views.rate_recipe, name='rate'),
     path('', lambda request: redirect('search/')),
     path('search/filter/', views.filter, name='filter'),
     path('search/', views.search, name='search'),

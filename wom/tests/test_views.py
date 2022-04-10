@@ -13,7 +13,7 @@ from django.template.loader import render_to_string
 
 
 ################################################
-# Testing recipelist, createrecipe, search, and favorite views
+# Testing recipelist, createrecipe, search, favorite, and rating views
 ################################################
 
 def create_recipe(title, description):
@@ -311,6 +311,7 @@ class FavoriteViewTests(TestCase):
         testuser.favorites.filter(recipe=testrecipe).delete()
         self.assertQuerysetEqual(testuser.favorites.all(), [])
 
+
 class AccountViewTests(TestCase):
     def test_no_recipes_displayed_in_account(self):
         """
@@ -571,3 +572,80 @@ class UpdateRecipeViewTests(TestCase):
         recipe = Recipe.objects.get(pk=1)
 
         self.assertEqual(recipe.title, "Update")
+
+
+class RatingViewTests(TestCase):
+    def setUp(self):
+        cooking_time = timedelta(
+            days=50, seconds=27, microseconds=10, milliseconds=29000, minutes=5, hours=8, weeks=2)
+        preparation_time = timedelta(
+            days=20, seconds=23, microseconds=13, milliseconds=29000, minutes=27, hours=3, weeks=2)
+        Recipe.objects.create(
+            title='testrecipe', description='description', cooking_time=cooking_time,
+            preparation_time=preparation_time)
+
+    """
+    Tests all major cases when rating a recipe
+    Note that these are all combined into one test since many of the cases rely on previous cases having worked properly
+    """
+    def test_rating(self):
+        """
+        First Case: Test rating a recipe with no ratings.
+        """
+
+        user = User.objects.get_or_create(username='testuser')[0]
+        self.client.force_login(user)
+
+        recipe = Recipe.objects.get(pk=1)
+        self.assertEqual(recipe.avgRating, 0)
+        self.assertEqual(recipe.numRatings, 0)
+
+        self.client.post(reverse('wom:rate', args=[1, 5]), HTTP_REFERER='http://www.google.com')
+
+        recipe = Recipe.objects.get(pk=1)
+        self.assertEqual(recipe.avgRating, 5)
+        self.assertEqual(recipe.numRatings, 1)
+
+        """
+        Second Case: Test rating a recipe that already has a rating from a different user.
+        """
+
+        user = User.objects.get_or_create(username='testuser2')[0]
+        self.client.force_login(user)
+
+        recipe = Recipe.objects.get(pk=1)
+        self.assertEqual(recipe.avgRating, 5)
+        self.assertEqual(recipe.numRatings, 1)
+
+        self.client.post(reverse('wom:rate', args=[1, 2]), HTTP_REFERER='http://www.google.com')
+
+        recipe = Recipe.objects.get(pk=1)
+        self.assertEqual(recipe.avgRating, 3.5)
+        self.assertEqual(recipe.numRatings, 2)
+
+        """
+        Third Case: Test changing the score given by a user who has already rated the recipe.
+        """
+
+        self.client.post(reverse('wom:rate', args=[1, 1]), HTTP_REFERER='http://www.google.com')
+
+        recipe = Recipe.objects.get(pk=1)
+        self.assertEqual(recipe.avgRating, 3)
+        self.assertEqual(recipe.numRatings, 2)
+
+        """Fourth Case: Test removing one user's rating from a recipe with multiple ratings"""
+
+        self.client.post(reverse('wom:rate', args=[1, 6]), HTTP_REFERER='http://www.google.com')
+
+        recipe = Recipe.objects.get(pk=1)
+        self.assertEqual(recipe.avgRating, 5)
+        self.assertEqual(recipe.numRatings, 1)
+
+        """Fifth/Final: Test removing a recipe's only rating"""
+        user = User.objects.get_or_create(username='testuser')[0]
+        self.client.force_login(user)
+
+        self.client.post(reverse('wom:rate', args=[1, 6]), HTTP_REFERER='http://www.google.com')
+        recipe = Recipe.objects.get(pk=1)
+        self.assertEqual(recipe.avgRating, 0)
+        self.assertEqual(recipe.numRatings, 0)
