@@ -21,7 +21,8 @@
             <div class="d-flex align-items-right">
                 <ul class="nav nav-pills card-header-pills">
                     <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'wom:delete-recipe' recipe.id %}" style="background-color:rgb(207, 9, 9)">
+                        <a class="nav-link active" href="{% url 'wom:delete-recipe' recipe.id %}"
+                            style="background-color:rgb(207, 9, 9)">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-trash" viewBox="0 0 16 16">
                                 <path
@@ -76,9 +77,9 @@
                 </em>
                 <!-- <b> Creator: </b> {{ recipe.creator|default_if_none:"Anonymous" }} <br /> -->
                 {% if recipe.anonymous_creator_bool %}
-                <p style="font-size:large;"><b>Creator: </b>Anonymous </p>
+                <b>Creator: </b>Anonymous <br />
                 {% else %}
-                <p style="font-size:large;"><b>Creator: </b>{{ recipe.creator}} </p>
+                <b>Creator: </b>{{ recipe.creator}} <br />
                 {% endif %}
                 <b> Tags: </b>
                 {% for i in recipe.tag_set.all %}
@@ -90,6 +91,7 @@
                 <b> Cooking time: </b>{{recipe.cooking_time}} <br />
                 <b> Meal type: </b> {{recipe.meal_type}} <br />
                 <b> Course: </b> {{recipe.course}} <br />
+                <b>Date published: </b> {{recipe.pub_date}}
 
 
                 <hr />

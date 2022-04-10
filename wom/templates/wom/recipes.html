@@ -28,10 +28,10 @@
           </em>
           <!-- <b> Creator: </b> {{ recipe.creator|default_if_none:"Anonymous" }} <br /> -->
           {% if recipe.anonymous_creator_bool %}
-            <p style="font-size:large;"><b>Creator: </b>Anonymous </p>
-            {% else %}
-            <p style="font-size:large;"><b>Creator: </b>{{ recipe.creator}} </p>
-            {% endif %}
+          <b>Creator: </b>Anonymous <br />
+          {% else %}
+          <b>Creator: </b>{{ recipe.creator}} <br />
+          {% endif %}
           <b> Tags: </b>
           {% for i in recipe.tag_set.all %}
           {{i}}{% if not forloop.last %}, {% endif %}
@@ -42,6 +42,8 @@
           <b> Cooking time: </b>{{recipe.cooking_time}} <br />
           <b> Meal type: </b> {{recipe.meal_type}} <br />
           <b> Course: </b> {{recipe.course}} <br />
+          <b>Date published: </b> {{recipe.pub_date}}
+
 
 
           <hr />
@@ -58,7 +60,7 @@
     </div>
   </div>
   {% endfor %}
-  
+
 </div>
 {% else %}
 <p>No recipes available</p>

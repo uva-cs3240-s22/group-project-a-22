@@ -56,7 +56,7 @@ class RecipeListViewTests(TestCase):
 
         response = self.client.get(reverse('wom:search'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "No recipes found.")
+        self.assertContains(response, "No recipes available")
         self.assertQuerysetEqual(response.context['object_list'], [])
 
     def test_created_recipe_is_shown(self):
@@ -109,6 +109,7 @@ class CreateRecipeViewTests(TestCase):
             'recipe-preparation_time': 5,
             'recipe-meal_type': 'other',
             'recipe-course': 'other',
+            'recipe-anonymous_creator_bool': True,
             'instruction-TOTAL_FORMS': 1,
             'instruction-INITIAL_FORMS': 0,
             'instruction-0-text': 'Test Instruction',
@@ -117,6 +118,9 @@ class CreateRecipeViewTests(TestCase):
             'ingredient-0-name': 'Test Ingredient',
             'ingredient-0-quantity': 3,
             'ingredient-0-units': 'oz',
+            'tag-TOTAL_FORMS': 1,
+            'tag-INITIAL_FORMS': 0,
+            'tag-0-name': 'Test Tag',
         }
         response = self.client.post(
             reverse('wom:createrecipe'), data=form_data)
@@ -210,6 +214,9 @@ class CreateRecipeViewTests(TestCase):
             'ingredient-2-name': 'Test Ingredient 3',
             'ingredient-2-quantity': 1,
             'ingredient-2-units': 'item',
+            'tag-TOTAL_FORMS': 1,
+            'tag-INITIAL_FORMS': 0,
+            'tag-0-name': 'Test Tag',
         }
         response = self.client.post(
             reverse('wom:createrecipe'), data=form_data)

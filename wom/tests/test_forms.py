@@ -177,6 +177,7 @@ class CreateRecipeForkTests(TestCase):
             'recipe-preparation_time': '00:15:00',
             'recipe-meal_type': 'lunch',
             'recipe-course': 'entree',
+            'recipe-anonymous_creator_bool':True,
             'instruction-TOTAL_FORMS': 3,
             'instruction-INITIAL_FORMS': 0,
             'instruction-0-text': 'Instruction',
@@ -193,6 +194,9 @@ class CreateRecipeForkTests(TestCase):
             'ingredient-2-name': 'Test Ingredient 3',
             'ingredient-2-quantity': 1,
             'ingredient-2-units': 'item',
+            'tag-TOTAL_FORMS': 1,
+            'tag-INITIAL_FORMS': 0,
+            'tag-0-name': 'Test Tag',
         }
 
         response = self.client.post(
