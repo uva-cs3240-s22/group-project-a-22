@@ -59,3 +59,7 @@ dj-database-url
 # Google Login APIs
 django-rest-auth
 django-allauth
+
+# AWS s3 Storage
+boto3
+django-storages
