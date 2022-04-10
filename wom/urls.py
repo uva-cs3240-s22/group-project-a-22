@@ -13,5 +13,7 @@ urlpatterns = [
             views.createrecipe, name='createrecipe'),
     path('favoritelist', views.favoritelist.as_view(), name='favoritelist'),
     path('fav/<int:recipe_id>', views.favorite_recipe, name='fav'),
+    path('account', views.account, name='account'),
+
 
 ]

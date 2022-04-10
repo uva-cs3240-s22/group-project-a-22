@@ -38,10 +38,11 @@ def createrecipe(request, recipe_id=''):
             request.POST, prefix="tag", queryset=tag_query_set)
         if recipeform.is_valid() and instruction_formset.is_valid() and ingredient_formset.is_valid() and tag_formset.is_valid():
             new_recipe = recipeform.save(commit=False)
-            if(new_recipe.anonymous_creator_bool == True):
-                new_recipe.creator = None
-            else:
-                new_recipe.creator = request.user
+            # if(new_recipe.anonymous_creator_bool == True):
+            #     new_recipe.creator = None
+            # else:
+            #     new_recipe.creator = request.user
+            new_recipe.creator = request.user
             
             new_recipe.pk = None
             new_recipe.save()
@@ -161,3 +162,7 @@ def filter(request):
         q = Recipe.objects.none() 
 
     return render(request, template, {'object_list': q})
+
+def account(request):
+    template = "wom/account.html"
+    return render(request, template, {'object_list': Recipe.objects.all})

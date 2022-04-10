@@ -38,14 +38,16 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'wom:createrecipe' %}">Create Recipe</a>
           </li>
+          {% if user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link" href="">My Account</a>
+            <a class="nav-link" href="{% url 'wom:account' %}">My Account</a>
           </li>
+          {% endif %}
           <li class="nav-item">
             <form action="{% url 'wom:search' %}" method="get">
               <div class="input-group">
                 <div class="form-outline">
-                  <input type="search" id="form1" name="q" class="form-control" placeholder="Search"/>
+                  <input type="search" id="form1" name="q" class="form-control" placeholder="Search by recipe title"/>
                 </div>
                 <button type="submit" class="btn btn-primary">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
