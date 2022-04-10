@@ -8,7 +8,7 @@ from django.utils.timezone import utc
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('wom', '0027_alter_recipe_pub_date'),
+        ('wom', '0027_merge_20220330_1923'),
     ]
 
     operations = [
@@ -16,10 +16,5 @@ class Migration(migrations.Migration):
             model_name='recipe',
             name='anonymous_creator_bool',
             field=models.BooleanField(default=False),
-        ),
-        migrations.AlterField(
-            model_name='recipe',
-            name='pub_date',
-            field=models.DateTimeField(default=datetime.datetime(2022, 4, 3, 21, 58, 58, 619337, tzinfo=utc), verbose_name='Date Published'),
         ),
     ]
