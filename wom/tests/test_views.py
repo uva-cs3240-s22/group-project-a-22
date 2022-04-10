@@ -8,6 +8,8 @@ from datetime import timedelta
 from django.utils import timezone
 from http import HTTPStatus
 from django.contrib.auth.models import User
+from django.template import RequestContext
+from django.template.loader import render_to_string
 
 
 ################################################
@@ -308,3 +310,264 @@ class FavoriteViewTests(TestCase):
         FavoriteRecipe.objects.create(user=testuser, recipe=testrecipe)
         testuser.favorites.filter(recipe=testrecipe).delete()
         self.assertQuerysetEqual(testuser.favorites.all(), [])
+
+class AccountViewTests(TestCase):
+    def test_no_recipes_displayed_in_account(self):
+        """
+        If no recipes exist, an appropriate message is displayed
+        for under 'My Account'.
+        """
+        user = User.objects.get_or_create(username='testuser')[0]
+        self.client.force_login(user)
+        response = self.client.get(reverse('wom:account'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "No recipes available")
+    
+    def test_display_created_recipes(self):
+        """
+        'My Account' does not show recipes not created by 
+        the logged in user
+        """
+        user = User.objects.get_or_create(username='testuser')[0]
+        user1 = User.objects.get_or_create(username='testuser1')[0]
+
+        self.client.force_login(user)
+        form_data = {
+            'recipe-title': 'Created by user',
+            'recipe-creator': user.pk,
+            'recipe-description': 'Test description',
+            'recipe-cooking_time': 5,
+            'recipe-preparation_time': 5,
+            'recipe-meal_type': 'other',
+            'recipe-course': 'other',
+            'instruction-TOTAL_FORMS': 3,
+            'instruction-INITIAL_FORMS': 0,
+            'instruction-0-text': 'Test Instruction',
+            'instruction-1-text': 'Test Instruction 2',
+            'instruction-2-text': 'Test Instruction 3',
+            'ingredient-TOTAL_FORMS': 3,
+            'ingredient-INITIAL_FORMS': 0,
+            'ingredient-0-name': 'Test Ingredient',
+            'ingredient-0-quantity': 3,
+            'ingredient-0-units': 'oz',
+            'ingredient-1-name': 'Test Ingredient 2',
+            'ingredient-1-quantity': 2,
+            'ingredient-1-units': 'lbs',
+            'ingredient-2-name': 'Test Ingredient 3',
+            'ingredient-2-quantity': 1,
+            'ingredient-2-units': 'item',
+            'tag-TOTAL_FORMS': 1,
+            'tag-INITIAL_FORMS': 0,
+            'tag-0-name': 'Test Tag',
+        }
+        form_data1 = {
+            'recipe-title': 'Not created by user',
+            'recipe-creator': user1.pk,
+            'recipe-description': 'Test description',
+            'recipe-cooking_time': 5,
+            'recipe-preparation_time': 5,
+            'recipe-meal_type': 'other',
+            'recipe-course': 'other',
+            'instruction-TOTAL_FORMS': 3,
+            'instruction-INITIAL_FORMS': 0,
+            'instruction-0-text': 'Test Instruction',
+            'instruction-1-text': 'Test Instruction 2',
+            'instruction-2-text': 'Test Instruction 3',
+            'ingredient-TOTAL_FORMS': 3,
+            'ingredient-INITIAL_FORMS': 0,
+            'ingredient-0-name': 'Test Ingredient',
+            'ingredient-0-quantity': 3,
+            'ingredient-0-units': 'oz',
+            'ingredient-1-name': 'Test Ingredient 2',
+            'ingredient-1-quantity': 2,
+            'ingredient-1-units': 'lbs',
+            'ingredient-2-name': 'Test Ingredient 3',
+            'ingredient-2-quantity': 1,
+            'ingredient-2-units': 'item',
+            'tag-TOTAL_FORMS': 1,
+            'tag-INITIAL_FORMS': 0,
+            'tag-0-name': 'Test Tag',
+        }
+        response = self.client.post(
+            reverse('wom:createrecipe'), data=form_data)
+        self.client.force_login(user1)
+        response1 = self.client.post(
+            reverse('wom:createrecipe'), data=form_data1)
+        self.client.force_login(user)
+
+        recipes = Recipe.objects.all()
+
+        response3 = self.client.get(reverse('wom:account'))
+        self.assertEqual(response3.status_code, 200)
+        self.assertContains(response3, "Created by user")
+        self.assertNotContains(response3, "Not created by user")
+
+class DeleteRecipeViewTests(TestCase):
+    def test_recipe_is_deleted(self):    
+        """
+        When the user clicks delete, their the recipe is deleted
+        """
+        user = User.objects.get_or_create(username='testuser')[0]
+        self.client.force_login(user)
+        form_data = {
+            'recipe-title': 'Test',
+            'recipe-creator': user.pk,
+            'recipe-description': 'Test description',
+            'recipe-cooking_time': 5,
+            'recipe-preparation_time': 5,
+            'recipe-meal_type': 'other',
+            'recipe-course': 'other',
+            'instruction-TOTAL_FORMS': 3,
+            'instruction-INITIAL_FORMS': 0,
+            'instruction-0-text': 'Test Instruction',
+            'instruction-1-text': 'Test Instruction 2',
+            'instruction-2-text': 'Test Instruction 3',
+            'ingredient-TOTAL_FORMS': 3,
+            'ingredient-INITIAL_FORMS': 0,
+            'ingredient-0-name': 'Test Ingredient',
+            'ingredient-0-quantity': 3,
+            'ingredient-0-units': 'oz',
+            'ingredient-1-name': 'Test Ingredient 2',
+            'ingredient-1-quantity': 2,
+            'ingredient-1-units': 'lbs',
+            'ingredient-2-name': 'Test Ingredient 3',
+            'ingredient-2-quantity': 1,
+            'ingredient-2-units': 'item',
+            'tag-TOTAL_FORMS': 1,
+            'tag-INITIAL_FORMS': 0,
+            'tag-0-name': 'Test Tag',
+        }
+        
+        response = self.client.post(
+            reverse('wom:createrecipe'), data=form_data)
+
+        recipe = Recipe.objects.get(pk=1)
+        response3 = self.client.get(reverse('wom:account'))
+
+        self.assertContains(response3, "Test")
+
+        response1 = self.client.get(reverse('wom:delete-recipe', args=(recipe.id,)))
+
+        response3 = self.client.get(reverse('wom:account'))
+        self.assertNotContains(response3, "Test")
+
+class UpdateRecipeViewTests(TestCase):
+    def test_update_template_loads(self):    
+        """
+        When the user clicks the edit button, the update template loads
+        """
+        user = User.objects.get_or_create(username='testuser')[0]
+        self.client.force_login(user)
+        form_data = {
+            'recipe-title': 'Test',
+            'recipe-creator': user.pk,
+            'recipe-description': 'Test description',
+            'recipe-cooking_time': 5,
+            'recipe-preparation_time': 5,
+            'recipe-meal_type': 'other',
+            'recipe-course': 'other',
+            'instruction-TOTAL_FORMS': 3,
+            'instruction-INITIAL_FORMS': 0,
+            'instruction-0-text': 'Test Instruction',
+            'instruction-1-text': 'Test Instruction 2',
+            'instruction-2-text': 'Test Instruction 3',
+            'ingredient-TOTAL_FORMS': 3,
+            'ingredient-INITIAL_FORMS': 0,
+            'ingredient-0-name': 'Test Ingredient',
+            'ingredient-0-quantity': 3,
+            'ingredient-0-units': 'oz',
+            'ingredient-1-name': 'Test Ingredient 2',
+            'ingredient-1-quantity': 2,
+            'ingredient-1-units': 'lbs',
+            'ingredient-2-name': 'Test Ingredient 3',
+            'ingredient-2-quantity': 1,
+            'ingredient-2-units': 'item',
+            'tag-TOTAL_FORMS': 1,
+            'tag-INITIAL_FORMS': 0,
+            'tag-0-name': 'Test Tag',
+        }
+        
+        response = self.client.post(
+            reverse('wom:createrecipe'), data=form_data)
+
+        recipe = Recipe.objects.get(pk=1)
+        response3 = self.client.get(reverse('wom:account'))
+
+        response1 = self.client.get(reverse('wom:update-recipe', args=(recipe.id,)))
+        self.assertEqual(response1.status_code, 200)
+
+    def test_recipes_updates(self):    
+        """
+        Recipes are successfully updated
+        """
+        user = User.objects.get_or_create(username='testuser')[0]
+        self.client.force_login(user)
+        form_data = {
+            'recipe-title': 'Test',
+            'recipe-creator': user.pk,
+            'recipe-description': 'Test description',
+            'recipe-cooking_time': 5,
+            'recipe-preparation_time': 5,
+            'recipe-meal_type': 'other',
+            'recipe-course': 'other',
+            'instruction-TOTAL_FORMS': 3,
+            'instruction-INITIAL_FORMS': 0,
+            'instruction-0-text': 'Test Instruction',
+            'instruction-1-text': 'Test Instruction 2',
+            'instruction-2-text': 'Test Instruction 3',
+            'ingredient-TOTAL_FORMS': 3,
+            'ingredient-INITIAL_FORMS': 0,
+            'ingredient-0-name': 'Test Ingredient',
+            'ingredient-0-quantity': 3,
+            'ingredient-0-units': 'oz',
+            'ingredient-1-name': 'Test Ingredient 2',
+            'ingredient-1-quantity': 2,
+            'ingredient-1-units': 'lbs',
+            'ingredient-2-name': 'Test Ingredient 3',
+            'ingredient-2-quantity': 1,
+            'ingredient-2-units': 'item',
+            'tag-TOTAL_FORMS': 1,
+            'tag-INITIAL_FORMS': 0,
+            'tag-0-name': 'Test Tag',
+        }
+        
+        response = self.client.post(
+            reverse('wom:createrecipe'), data=form_data)
+        
+        form_data1 = {
+            'recipe-title': 'Update',
+            'recipe-creator': user.pk,
+            'recipe-description': 'Test description',
+            'recipe-cooking_time': 5,
+            'recipe-preparation_time': 5,
+            'recipe-meal_type': 'other',
+            'recipe-course': 'other',
+            'instruction-TOTAL_FORMS': 3,
+            'instruction-INITIAL_FORMS': 0,
+            'instruction-0-text': 'Test Instruction',
+            'instruction-1-text': 'Test Instruction 2',
+            'instruction-2-text': 'Test Instruction 3',
+            'ingredient-TOTAL_FORMS': 3,
+            'ingredient-INITIAL_FORMS': 0,
+            'ingredient-0-name': 'Test Ingredient',
+            'ingredient-0-quantity': 3,
+            'ingredient-0-units': 'oz',
+            'ingredient-1-name': 'Test Ingredient 2',
+            'ingredient-1-quantity': 2,
+            'ingredient-1-units': 'lbs',
+            'ingredient-2-name': 'Test Ingredient 3',
+            'ingredient-2-quantity': 1,
+            'ingredient-2-units': 'item',
+            'tag-TOTAL_FORMS': 1,
+            'tag-INITIAL_FORMS': 0,
+            'tag-0-name': 'Test Tag',
+        }
+
+        recipe = Recipe.objects.get(pk=1)
+        self.assertEqual(recipe.title, "Test")
+
+        response = self.client.post(
+        reverse('wom:update-recipe', args=(recipe.id,)), data=form_data1)
+        recipe = Recipe.objects.get(pk=1)
+
+        self.assertEqual(recipe.title, "Update")

@@ -3,7 +3,7 @@ from http import HTTPStatus
 from django.test import TestCase
 from django.urls import reverse
 
-from wom.forms import IngredientFormset, InstructionFormset, RecipeForm
+from wom.forms import IngredientFormset, InstructionFormset, RecipeForm, TagFormset
 from django.contrib.auth.models import User
 
 from wom.models import Ingredient, Instruction, Recipe
@@ -106,6 +106,32 @@ class CreateRecipeFormTests(TestCase):
             'ingredient-0-units': '',
         }
         form = IngredientFormset(prefix="ingredient", data=form_data)
+
+        self.assertFalse(form.is_valid())
+    def test_full_tag_form(self):
+        form_data = {
+            'tag-TOTAL_FORMS': 3,
+            'tag-INITIAL_FORMS': 0,
+            'tag-0-name': 'Test Tag 1',
+            'tag-1-name': 'Test Tag 2',
+            'tag-2-name': 'Test Tag 3',
+        }
+        form = TagFormset(prefix='tag', data=form_data)
+
+        self.assertTrue(form.is_valid())
+
+    def test_empty_tag_form(self):
+        form = TagFormset(prefix='tag', data={})
+
+        self.assertFalse(form.is_valid())
+
+    def test_incomplete_tagform(self):
+        form_data = {
+            'tag-TOTAL_FORMS': 1,
+            'tag-INITIAL_FORMS': 0,
+            'tag-0-name': '',
+        }
+        form = TagFormset(prefix='tag', data=form_data)
 
         self.assertFalse(form.is_valid())
 
