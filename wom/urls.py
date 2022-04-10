@@ -14,6 +14,6 @@ urlpatterns = [
     path('favoritelist', views.favoritelist.as_view(), name='favoritelist'),
     path('fav/<int:recipe_id>', views.favorite_recipe, name='fav'),
     path('account', views.account, name='account'),
-
-
+    path('delete-recipe/<int:recipe_id>', views.delete_recipe, name='delete-recipe'),
+    path('update-recipe/<int:recipe_id>', views.update_recipe, name='update-recipe')
 ]

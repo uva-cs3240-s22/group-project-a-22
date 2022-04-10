@@ -166,3 +166,58 @@ def filter(request):
 def account(request):
     template = "wom/account.html"
     return render(request, template, {'object_list': Recipe.objects.all})
+
+def delete_recipe(request, recipe_id=''):
+    recipe = Recipe.objects.get(pk=recipe_id)
+    recipe.delete()
+    return redirect(reverse('wom:account'))
+
+def update_recipe(request, recipe_id=''):
+    recipe_to_update = Recipe.objects.get(pk=recipe_id)
+    template = 'wom/updaterecipe.html'
+
+    instruction_query_set = recipe_to_update.instruction_set.all()
+    ingredient_query_set = recipe_to_update.ingredient_set.all()
+    tag_query_set = recipe_to_update.tag_set.all()
+    recipe_to_update.pub_date = timezone.now()
+    if request.method == "POST":
+        recipeform = RecipeForm(
+            request.POST, instance=recipe_to_update, prefix="recipe")
+        instruction_formset = InstructionFormset(
+            request.POST, prefix="instruction", queryset=instruction_query_set)
+        ingredient_formset = IngredientFormset(
+            request.POST, prefix="ingredient", queryset=ingredient_query_set)
+        tag_formset = TagFormset(
+            request.POST, prefix="tag", queryset=tag_query_set)
+        if recipeform.is_valid() and instruction_formset.is_valid() and ingredient_formset.is_valid() and tag_formset.is_valid():
+            recipe_to_update = recipeform.save(commit=False)
+            recipe_to_update.creator = request.user
+            
+            recipe_to_update.save()
+            for instrform in instruction_formset:
+                new_instruction = instrform.save(commit=False)
+                new_instruction.recipe = recipe_to_update
+                new_instruction.save()
+            for ingrform in ingredient_formset:
+                new_ingredient = ingrform.save(commit=False)
+                new_ingredient.recipe = recipe_to_update
+                new_ingredient.save()
+            for tag in tag_formset:
+                new_tag = tag.save(commit=False)
+                new_tag.recipe = recipe_to_update
+                new_tag.save()
+            return redirect(reverse('wom:account'))
+    else:
+        recipeform = RecipeForm(instance=recipe_to_update, prefix="recipe")
+        instruction_formset = InstructionFormset(
+            prefix="instruction", queryset=instruction_query_set)
+        ingredient_formset = IngredientFormset(
+            prefix="ingredient", queryset=ingredient_query_set)
+        tag_formset = TagFormset(prefix="tag", queryset=tag_query_set)
+
+    return render(request, template, {
+        'recipe_form': recipeform,
+        'instruction_forms': instruction_formset,
+        'ingredient_forms': ingredient_formset,
+        'tag_forms': tag_formset,
+    })
