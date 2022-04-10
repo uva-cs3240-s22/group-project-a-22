@@ -64,7 +64,7 @@ class FavoriteRecipe(models.Model):
         User, on_delete=models.CASCADE, related_name='favorites')
     recipe = models.ForeignKey(
         Recipe, on_delete=models.CASCADE, related_name='favorites')
-    fav_date = models.DateTimeField('Date Favorited', default=timezone.now())
+    fav_date = models.DateTimeField('Date Favorited', default=timezone.now)
 
 
 class RateRecipe(models.Model):
