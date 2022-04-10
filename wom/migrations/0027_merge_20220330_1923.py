@@ -7,7 +7,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('wom', '0008_alter_recipe_creator_alter_recipe_parent'),
-        ('wom', '0026_alter_recipe_pub_date'),
+        ('wom', '0025_alter_ingredient_quantity_alter_recipe_pub_date'),
     ]
 
     operations = [

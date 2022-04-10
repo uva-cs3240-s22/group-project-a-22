@@ -8,7 +8,7 @@ from django.utils.timezone import utc
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('wom', '0024_alter_recipe_pub_date'),
+        ('wom', '0023_alter_ingredient_recipe_alter_recipe_cooking_time_and_more'),
     ]
 
     operations = [
