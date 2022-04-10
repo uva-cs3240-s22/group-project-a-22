@@ -27,3 +27,7 @@ InstructionFormset = forms.modelformset_factory(model=Instruction, formset=Requi
 
 IngredientFormset = forms.modelformset_factory(model=Ingredient, formset=RequiredFormset,
                                                fields=('name', 'quantity', 'units'))
+
+
+class SearchForm(forms.Form):
+    ingredients = forms.CharField(max_length=50)
