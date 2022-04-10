@@ -134,6 +134,15 @@ class favoritelist(generic.ListView):
         user = self.request.user
         return user.favorites.all()
 
+
+def childrenlist(request, pk):
+    template = "wom/childrenlist.html"
+
+    q = Recipe.objects.filter(parent=get_object_or_404(Recipe, pk=pk))
+
+    return render(request, template, {'object_list': q})
+
+
 def filter(request):
     template = "wom/search_results.html"
     
