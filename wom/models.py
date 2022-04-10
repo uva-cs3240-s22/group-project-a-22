@@ -5,8 +5,6 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 
 # Create your models here.
-
-
 class Recipe(models.Model):
     class MealTypes(models.TextChoices):
         OTHER = 'other'
@@ -30,14 +28,15 @@ class Recipe(models.Model):
         max_length=10, choices=MealTypes.choices, default=MealTypes.OTHER)
     course = models.CharField(
         max_length=10, choices=Courses.choices, default=Courses.OTHER)
+    anonymous_creator_bool = models.BooleanField(default=False)
     pub_date = models.DateTimeField('Date Published', default=timezone.now)
     parent = models.ForeignKey(
         'self', on_delete=models.SET_NULL, null=True, related_name='children')
     creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
+
     def __str__(self):
         return self.title
-
 
 class Ingredient(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
@@ -62,3 +61,10 @@ class FavoriteRecipe(models.Model):
         User, on_delete=models.CASCADE, related_name='favorites')
     recipe = models.ForeignKey(
         Recipe, on_delete=models.CASCADE, related_name='favorites')
+
+class Tag(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name

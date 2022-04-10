@@ -1,37 +1,63 @@
-{% extends "wom/base.html" %}
+{% extends "wom/recipes.html" %}
 {% load static %}
 {% block css %}
 {% block extrahead %}
 <link rel="stylesheet" type="text/css" href="{% static 'wom/search_results.css' %}" />
-{% endblock  %}
+{% endblock %}
 {% endblock css %}
 {% block title %}Recipe Title{{recipe.title}}{% endblock %}
+{% block sidebar %}
+<div class="col-3">
+    <div class="container-fluid sidebar">
+        <form action="{% url 'wom:filter' %}">
+            <div class="form-group">
+                <ul>
+                    <li>
+                        <label class="control-label" for="meal_type">Meal Type:</label>
+                        <select id="meal_type" name="meal_type">
+                            <option value="" selected disabled hidden></option>
+                            <option value="breakfast">Breakfast</option>
+                            <option value="lunch">Lunch</option>
+                            <option value="dinner">Dinner</option>
+                            <option value="dessert">Dessert</option>
+                            <option value="other">Other</option>
 
-{% block content %}
+                        </select>
+                    </li>
+                    <li>
+                        <label class="control-label" for="course">Course:</label>
+                        <select id="course" name="course">
+                            <option value="" selected disabled hidden></option>
+                            <option value="appetizer">Appetizer</option>
+                            <option value="entree">Entree</option>
+                            <option value="side">Side</option>
+                            <option value="snack">Snack</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </li>
+                    <li>
+                        <label class="control-label" for="prep_time">Preparation Time:</label>
+                        <select id="prep_time" name="prep_time">
+                            <option value="" selected disabled hidden></option>
+                            <option value="00:30:00"> &lt; 30 minutes</option>
+                            <option value="1:00:00"> &lt; 1 hour</option>
+                            <option value="1:00:01"> &gt; 1 hour </option>
+                        </select>
+                    </li>
+                    <li>
+                        <label class="control-label" for="cook_time">Cooking Time:</label>
+                        <select id="cook_time" name="cook_time">
+                            <option value="" selected disabled hidden></option>
+                            <option value="00:30:00"> &lt; 30 minutes</option>
+                            <option value="1:00:00"> &lt; 1 hour</option>
+                            <option value="1:00:01"> &gt; 1 hour</option>
+                        </select>
+                    </li>
 
-{% if object_list %}
-  <div class="row">
-
-  {% for recipe in object_list %}
-  <div class="col-3">
-  <div class="card h-100" style="width: 18rem;">
-      <img src="../../static/wom/images/macandcheese-500x500.jpeg" class="card-img-top" alt="recipe image">
-      <div class="card-body">
-        <h5 class="card-title">
-            <a href="{% url 'wom:detail' recipe.id %}" >
-                {{recipe.title}}
-            </a>
-        </h5>
-        <p class="card-text text-truncate" height="200" width="200">{{recipe.description}}</p>
-        
-      </div>
+                </ul>
+                <button type="submit" class="btn btn-primary">Update Results</button>
+            </div>
+        </form>
     </div>
-  </div>
-  {% endfor %}
-
-  </div>
-{% else %}
-  <p>No recipes found.</p>
-{% endif%}
-
+</div>
 {% endblock %}

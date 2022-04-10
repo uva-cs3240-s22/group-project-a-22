@@ -1,13 +1,14 @@
 from mimetypes import init
 from django import forms
-from .models import Recipe, Instruction, Ingredient
+from .models import Recipe, Instruction, Ingredient, Tag
 
 
 class RecipeForm(forms.ModelForm):
+    anonymous_creator_bool = forms.BooleanField(label="Make Creator Anonymous", required=False)
     class Meta:
         model = Recipe
-        fields = ['title', 'creator', 'description', 'cooking_time',
-                  'preparation_time', 'meal_type', 'course']
+        fields = ['title', 'description', 'cooking_time',
+                  'preparation_time', 'meal_type', 'course', 'anonymous_creator_bool']
         help_texts = {
             'cooking_time': 'Example format for a 1.5 hour cooking time: 1:30:00',
             'preparation_time': 'Example format for a 5 minute preparation time: 5:00',
@@ -27,3 +28,5 @@ InstructionFormset = forms.modelformset_factory(model=Instruction, formset=Requi
 
 IngredientFormset = forms.modelformset_factory(model=Ingredient, formset=RequiredFormset,
                                                fields=('name', 'quantity', 'units'))
+
+TagFormset = forms.modelformset_factory(model=Tag, formset=RequiredFormset, fields=('name',))
