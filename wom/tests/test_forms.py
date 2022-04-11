@@ -3,7 +3,7 @@ from http import HTTPStatus
 from django.test import TestCase
 from django.urls import reverse
 
-from wom.forms import IngredientFormset, InstructionFormset, RecipeForm
+from wom.forms import IngredientFormset, InstructionFormset, RecipeForm, TagFormset
 from django.contrib.auth.models import User
 
 from wom.models import Ingredient, Instruction, Recipe
@@ -108,6 +108,32 @@ class CreateRecipeFormTests(TestCase):
         form = IngredientFormset(prefix="ingredient", data=form_data)
 
         self.assertFalse(form.is_valid())
+    def test_full_tag_form(self):
+        form_data = {
+            'tag-TOTAL_FORMS': 3,
+            'tag-INITIAL_FORMS': 0,
+            'tag-0-name': 'Test Tag 1',
+            'tag-1-name': 'Test Tag 2',
+            'tag-2-name': 'Test Tag 3',
+        }
+        form = TagFormset(prefix='tag', data=form_data)
+
+        self.assertTrue(form.is_valid())
+
+    def test_empty_tag_form(self):
+        form = TagFormset(prefix='tag', data={})
+
+        self.assertFalse(form.is_valid())
+
+    def test_incomplete_tagform(self):
+        form_data = {
+            'tag-TOTAL_FORMS': 1,
+            'tag-INITIAL_FORMS': 0,
+            'tag-0-name': '',
+        }
+        form = TagFormset(prefix='tag', data=form_data)
+
+        self.assertFalse(form.is_valid())
 
 
 class CreateRecipeForkTests(TestCase):
@@ -177,6 +203,7 @@ class CreateRecipeForkTests(TestCase):
             'recipe-preparation_time': '00:15:00',
             'recipe-meal_type': 'lunch',
             'recipe-course': 'entree',
+            'recipe-anonymous_creator_bool':True,
             'instruction-TOTAL_FORMS': 3,
             'instruction-INITIAL_FORMS': 0,
             'instruction-0-text': 'Instruction',
@@ -193,6 +220,9 @@ class CreateRecipeForkTests(TestCase):
             'ingredient-2-name': 'Test Ingredient 3',
             'ingredient-2-quantity': 1,
             'ingredient-2-units': 'item',
+            'tag-TOTAL_FORMS': 1,
+            'tag-INITIAL_FORMS': 0,
+            'tag-0-name': 'Test Tag',
         }
 
         response = self.client.post(
