@@ -29,7 +29,7 @@ def createrecipe(request, recipe_id=''):
     recipe.pub_date = timezone.now()
     if request.method == "POST":
         recipeform = RecipeForm(
-            request.POST, instance=recipe, prefix="recipe")
+            request.POST, request.FILES, instance=recipe, prefix="recipe")
         instruction_formset = InstructionFormset(
             request.POST, prefix="instruction", queryset=instruction_query_set)
         ingredient_formset = IngredientFormset(
@@ -43,6 +43,8 @@ def createrecipe(request, recipe_id=''):
             # else:
             #     new_recipe.creator = request.user
             new_recipe.creator = request.user
+            # new_recipe.image = request.FILES.get('image')
+            #print(request.FILES)
             new_recipe.pk = None
             new_recipe.save()
             for instrform in instruction_formset:

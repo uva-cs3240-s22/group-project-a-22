@@ -48,7 +48,7 @@
 {% block content %}
 {% if user.is_authenticated %}
 <h2 class="text-center">Create New Recipe</h2>
-<form method="post" style="margin-left: 5%; margin-right: 5%; margin-bottom: 5%">
+<form method="post" enctype="multipart/form-data" style="margin-left: 5%; margin-right: 5%; margin-bottom: 5%">
   {% csrf_token %}
   {% bootstrap_form recipe_form %}
 

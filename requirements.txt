@@ -63,3 +63,5 @@ django-allauth
 # AWS s3 Storage
 boto3
 django-storages
+Pillow
+#django-s3direct
