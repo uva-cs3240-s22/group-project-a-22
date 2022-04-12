@@ -32,7 +32,7 @@
                 </svg>
             </h6>
 
-
+            {% if user.is_authenticated %}
             <div class="btn-group" role="group" aria-label="Basic example">
                 <a href="{% url 'wom:rate' recipe.pk 1 %}" >
                     <button type="button" class="btn btn-outline-primary side-btn ">
@@ -97,7 +97,7 @@
                 </a>
             </div>
             </p>
-
+            {% endif %}
 
             <img src="../../static/wom/images/macandcheese-500x500.jpeg" width="500" height="400">
             {% if recipe.anonymous_creator_bool %}
