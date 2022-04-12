@@ -101,7 +101,7 @@ def search(request):
             post = post.filter(q)
     else:
         post = Recipe.objects.all()
-    return render(request, template, {'object_list': post.order_by('title')})
+    return render(request, template, {'object_list': post})
 
 
 def filter(request):
@@ -132,9 +132,11 @@ def filter(request):
         filtered = True
     if cook_time != '' and cook_time is not None:
         if cook_time == '1:00:01':
-            t = timedelta( hours=1)
+            t = timedelta(hours=1)
             q = q.filter(cooking_time__gte=t)
+            print('greater than')
         else: 
+            print('less than')
             times = cook_time.split(':')
             times = list(map(int, times))
             t = timedelta( hours=times[0], minutes=times[1], seconds=times[2] )
@@ -142,14 +144,24 @@ def filter(request):
         filtered = True   
     if sort_by != '' and sort_by is not None:
         if sort_by == 'AZ':
-            q = Recipe.objects.all().order_by('title') #want to
+            q = q.order_by('title') #want to
         elif sort_by == 'Recent':
-            q = Recipe.objects.all().order_by('-pub_date')
+            q = q.order_by('-pub_date')
         elif sort_by == 'Oldest':
-            q = Recipe.objects.all().order_by('pub_date')
+            q = q.order_by('pub_date')
+        elif sort_by == 'Highest':
+            q = q.order_by('-avgRating')
+        elif sort_by == 'Highest_Week':
+            week_ago = datetime.now(tz=timezone.utc) - timedelta(days=7)
+            q = q.filter(pub_date__gte=week_ago).order_by('-avgRating')
+        elif sort_by == 'Highest_Month':
+            month_ago = datetime.now(tz=timezone.utc) - timedelta(days=30)
+            q = q.filter(pub_date__gte=month_ago).order_by('-avgRating')
+        elif sort_by == 'Highest_Year':
+            year_ago = datetime.now(tz=timezone.utc) - timedelta(days=365)
+            q = q.filter(pub_date__gte=year_ago).order_by('-avgRating') 
         filtered = True
     if filtered == False:
-        print('not filtered')
         q = Recipe.objects.all() 
 
     

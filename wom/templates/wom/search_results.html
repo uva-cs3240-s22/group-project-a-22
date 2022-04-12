@@ -11,6 +11,15 @@
     <div class="container-fluid sidebar">
         <form action="{% url 'wom:search' %}">
             <div class="form-group">
+                <script type="text/javascript">
+                    $(document).ready(function() {
+                        $('#sort_by').val("{{ request.GET.sort_by }}")
+                        $('#meal_type').val("{{ request.GET.meal_type }}")
+                        $('#course').val("{{ request.GET.course }}")
+                        $('#prep_time').val("{{ request.GET.prep_time }}")
+                        $('#cook_time').val("{{ request.GET.cook_time }}")
+                    })
+                </script>
                 <ul>
                     <li>
                         <div class="input-group">
@@ -26,6 +35,10 @@
                             <option value="AZ">A-Z</option>
                             <option value="Recent">Recent first</option>
                             <option value="Oldest">Oldest first</option>
+                            <option value="Highest">Highest Rated of All Time</option>
+                            <option value="Highest_Year">Highest Rated this Year</option>
+                            <option value="Highest_Month">Highest Rated this Month</option>
+                            <option value="Highest_Week">Highest Rated this Week</option>
                         </select>
                     </li>
                     <li>
