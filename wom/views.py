@@ -12,6 +12,7 @@ from functools import reduce
 from django.utils import timezone
 from datetime import timedelta
 
+
 def createrecipe(request, recipe_id=''):
     if not request.user.is_authenticated:
         return render(request, 'wom/createrecipe.html')
@@ -43,7 +44,7 @@ def createrecipe(request, recipe_id=''):
             # else:
             #     new_recipe.creator = request.user
             new_recipe.creator = request.user
-            
+
             new_recipe.pk = None
             new_recipe.save()
             for instrform in instruction_formset:
@@ -92,6 +93,7 @@ def search(request):
             post = Recipe.objects.filter(q)
     else:
         post = Recipe.objects.all()
+
     return render(request, template, {'object_list': post})
 
 
@@ -121,15 +123,18 @@ class favoritelist(generic.ListView):
         user = self.request.user
         return user.favorites.all()
 
+
 def filter(request):
     template = "wom/search_results.html"
-    
+
     q = Recipe.objects.all()
     filtered = False
     meal_type = request.GET.get('meal_type')
     course = request.GET.get('course')
     prep_time = request.GET.get('prep_time')
     cook_time = request.GET.get('cook_time')
+    ingredients = request.GET.getlist('ingredients')
+    ingredient_remove = request.GET.get('ingredient_remove')
 
     if meal_type != '' and meal_type is not None:
         q = q.filter(meal_type__iexact=meal_type)
@@ -138,7 +143,7 @@ def filter(request):
         q = q.filter(course__iexact=course)
         filtered = True
     if prep_time != '' and prep_time is not None:
-        if prep_time == '1:00:01': 
+        if prep_time == '1:00:01':
             t = timedelta(hours=1)
             q = q.filter(preparation_time__gte=t)
         else:
@@ -149,19 +154,27 @@ def filter(request):
         filtered = True
     if cook_time != '' and cook_time is not None:
         if cook_time == '1:00:01':
-            t = timedelta( hours=1)
+            t = timedelta(hours=1)
             q = q.filter(cooking_time__gte=t)
-        else: 
+        else:
             times = cook_time.split(':')
             times = list(map(int, times))
-            t = timedelta( hours=times[0], minutes=times[1], seconds=times[2] )
+            t = timedelta(hours=times[0], minutes=times[1], seconds=times[2])
             q = q.filter(cooking_time__lte=t)
         filtered = True
-       
-    if filtered == False:
-        q = Recipe.objects.none() 
+    if ingredients != [] and ingredients is not None:
+        for ingredient in ingredients:
+            if ingredient == '' or ingredient is None or ingredient.isspace():
+                ingredients.remove(ingredient)
+            else:
+                q = q.filter(ingredient__name=ingredient)
+        filtered = True
 
-    return render(request, template, {'object_list': q})
+    if filtered == False:
+        q = Recipe.objects.none()
+
+    return render(request, template, {'object_list': q, 'ingredients_search': ingredients})
+
 
 def account(request):
     template = "wom/account.html"

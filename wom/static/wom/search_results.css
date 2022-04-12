@@ -5,6 +5,17 @@
     text-overflow: ellipsis;
 } */
 
-.row{
-    margin: auto;
+.ingredient-search-item {
+  display: block;
+  background-color: lightgray;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 3px 5px;
+  text-align: center;
+  max-width: fit-content;
+  border: none;
+}
+
+.ingredient-search-item:hover {
+  background-color: gray;
 }

@@ -2,6 +2,15 @@
 {% load static %}
 {% block css %}
 {% block extrahead %}
+<script type="text/javascript" src="{% static 'wom/js/formControls.js' %}"></script>
+<script>
+  $(document).on('click', '#ingredient-remove', function (e) {
+    e.preventDefault();
+    disableField(this.value, 'filter-form')
+    return false;
+  })
+</script>
+
 <link rel="stylesheet" type="text/css" href="{% static 'wom/search_results.css' %}" />
 {% endblock %}
 {% endblock css %}
@@ -9,7 +18,7 @@
 {% block sidebar %}
 <div class="col-3">
     <div class="container-fluid sidebar">
-        <form method="post" action="{% url 'wom:filter' %}">
+        <form method="GET" action="{% url 'wom:filter' %}" id="filter-form">
             <div class="form-group">
                 <ul>
                     <li>
@@ -55,6 +64,20 @@
                     </li>
 
                 </ul>
+
+                <div class="row">
+                  {% for ingredient in ingredients_search %}
+                    <button type="button" id="ingredient-remove" value="ingredient-{{ ingredient }}" class="ingredient-search-item col">
+                      {{ ingredient }}
+                    </button>
+                    <input type="hidden" id="ingredient-{{ ingredient }}" name="ingredients" value="{{ ingredient }}" />
+                  {% endfor %}
+                </div>
+
+                <input type='text' id='ingredient-add' name='ingredients'></input>
+
+
+                <br/><br/>
                 <button type="submit" class="btn btn-primary">Update Results</button>
             </div>
         </form>
