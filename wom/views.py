@@ -105,6 +105,52 @@ class RecipeView(generic.DetailView):
     model = Recipe
     template_name = 'wom/detail.html'
 
+    def get_context_data(self, **kwargs):
+        """
+        Creates an 'is_favorite' object that gets passed to the detail template if a
+        Favorite object relating the logged-in user and the recipe being viewed exists.
+
+        In the template, if the 'is_favorite' object exists, the "Save" button is
+        replaced with an "Unsave" button.
+        """
+        context = super().get_context_data(**kwargs)
+        recipe = Recipe.objects.get(pk=self.kwargs['pk'])
+        if self.request.user.favorites.filter(recipe=recipe).exists():
+            context['is_favorite'] = {0}
+        if self.request.user.rating.filter(recipe=recipe).exists():
+            score = self.request.user.rating.get(recipe=recipe).score
+            context['first_star'] = {0}
+            if score >= 2:
+                context['second_star'] = {0}
+                if score >= 3:
+                    context['third_star'] = {0}
+                    if score >= 4:
+                        context['fourth_star'] = {0}
+                        if score >= 5:
+                            context['fifth_star'] = {0}
+
+        if recipe.avgRating > 0.25:
+            context['0_5_avg'] = {0}
+            if recipe.avgRating > 0.75:
+                context['1_0_avg'] = {0}
+                if recipe.avgRating > 1.25:
+                    context['1_5_avg'] = {0}
+                    if recipe.avgRating > 1.75:
+                        context['2_0_avg'] = {0}
+                        if recipe.avgRating > 2.25:
+                            context['2_5_avg'] = {0}
+                            if recipe.avgRating > 2.75:
+                                context['3_0_avg'] = {0}
+                                if recipe.avgRating > 3.25:
+                                    context['3_5_avg'] = {0}
+                                    if recipe.avgRating > 3.75:
+                                        context['4_0_avg'] = {0}
+                                        if recipe.avgRating > 4.25:
+                                            context['4_5_avg'] = {0}
+                                            if recipe.avgRating > 4.75:
+                                                context['5_0_avg'] = {0}
+        return context
+
 
 def favorite_recipe(request, recipe_id):
     """
