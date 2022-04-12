@@ -19,6 +19,14 @@
                         $('#prep_time').val("{{ request.GET.prep_time }}")
                         $('#cook_time').val("{{ request.GET.cook_time }}")
                     })
+
+                    function clearAll() {
+                        $('#sort_by').val("")
+                        $('#meal_type').val("")
+                        $('#course').val("")
+                        $('#prep_time').val("")
+                        $('#cook_time').val("")  
+                    }
                 </script>
                 <ul>
                     <li>
@@ -88,6 +96,7 @@
 
                 </ul>
                 <button type="submit" class="btn btn-primary">Update Results</button>
+                <button class="btn btn-primary" onclick="clearAll()">Clear all</button>
             </div>
         </form>
     </div>
