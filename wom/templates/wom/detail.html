@@ -23,10 +23,6 @@
     <div class="row top w-100">
         <div class="col-sm-11 text-center">
             <h1>{{recipe.title}}</h1>
-            <h6>
-                Average score of {{ recipe.avgRating | stringformat:".1f" }}/5.0 across {{ recipe.numRatings }} reviews.
-            </h6>
-
 
             <!-- START OF AVERAGE RATING DISPLAY IMPLEMENTATION -->
             {% if 0_5_avg %}
@@ -115,12 +111,14 @@
             </svg>
             {% endif %}
 
+            <h6>
+                Average score of {{ recipe.avgRating | stringformat:".1f" }}/5.0 across {{ recipe.numRatings }} reviews.
+            </h6>
+            <!-- END OF AVERAGE RATING DISPLAY IMPLEMENTATION -->
+
             </p>
             <img src="../../static/wom/images/macandcheese-500x500.jpeg" width="500" height="400">
             </p>
-            <!-- END OF AVERAGE RATING DISPLAY IMPLEMENTATION -->
-
-
 
             <!-- START OF USER RATING BUTTONS IMPLEMENTATION -->
             {% if user.is_authenticated %}
