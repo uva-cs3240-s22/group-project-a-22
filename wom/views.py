@@ -125,6 +125,7 @@ def filter(request):
             t = timedelta(hours=1)
             q = q.filter(preparation_time__gte=t)
         else:
+            print('prep time less than 30 min')
             times = prep_time.split(':')
             times = list(map(int, times))
             t = timedelta(hours=times[0], minutes=times[1], seconds=times[2])
@@ -132,11 +133,12 @@ def filter(request):
         filtered = True
     if cook_time != '' and cook_time is not None:
         if cook_time == '1:00:01':
+            print('cook time more than an hr')
             t = timedelta(hours=1)
             q = q.filter(cooking_time__gte=t)
             print('greater than')
         else: 
-            print('less than')
+            print('prep time less than')
             times = cook_time.split(':')
             times = list(map(int, times))
             t = timedelta( hours=times[0], minutes=times[1], seconds=times[2] )
