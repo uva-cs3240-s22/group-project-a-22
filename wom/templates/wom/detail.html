@@ -18,7 +18,8 @@
 
 {% block content %}
 {% if recipe %}
-<div class="container-fluid" style="margin-bottom: 50px;">
+<input type="hidden" value="" id="copyToClipboard">
+<div class="container-fluid">
     <div class="row top w-100">
         <div class="col-sm-11 text-center">
             <h1>{{recipe.title}}</h1>
@@ -152,19 +153,43 @@
             <hr />
 
 
-            {% endif %}
+            <a href="{% url 'wom:createrecipe' recipe.pk %}">
+                <button type="button" class="btn btn-primary side-btn">
+                    Fork
+                    {% comment %} https://icon-sets.iconify.design/uil/code-branch/ {% endcomment %}
+                    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em"
+                        preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                        <path fill="currentColor"
+                            d="M17 6.06a3 3 0 0 0-1.15 5.77A2 2 0 0 1 14 13.06h-4a3.91 3.91 0 0 0-2 .56V7.88a3 3 0 1 0-2 0v8.36a3 3 0 1 0 2.16.05A2 2 0 0 1 10 15.06h4a4 4 0 0 0 3.91-3.16A3 3 0 0 0 17 6.06Zm-10-2a1 1 0 1 1-1 1a1 1 0 0 1 1-1Zm0 16a1 1 0 1 1 1-1a1 1 0 0 1-1 1Zm10-10a1 1 0 1 1 1-1a1 1 0 0 1-1 1Z" />
+                    </svg>
+                </button>
+            </a>
+            
+            <script type="text/javascript">
+                function copy() {
+                    document.getElementById("copyToClipboard").value = window.location.href
+                    var copyText = document.getElementById("copyToClipboard");
 
+                    /* Select the text field */
+                    copyText.select();
 
+                    /* Copy the text inside the text field */
+                    navigator.clipboard.writeText(copyText.value).then(() => {
+                        alert("successfully copied");
+                    })
+                        .catch(() => {
+                            alert("something went wrong");
+                        });;
+                }
 
-            <button type="button" class="btn btn-primary  side-btn">
-                Share
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share"
-                    viewBox="0 0 16 16">
-                    <path
-                        d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z" />
-                </svg>
+                
+            </script>
+            <div id="liveAlertPlaceholder"></div>
+            <button type="button" class="btn btn-primary side-btn" id="liveAlertBtn" title="Copy to Clipboard" onclick="copy()">
+                Copy to Clipboard
 
             </button>
+            {% endif %}
             <hr />
             <button type="button" class="btn btn-primary side-btn">
                 Print
