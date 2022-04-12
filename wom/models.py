@@ -34,6 +34,8 @@ class Recipe(models.Model):
         'self', on_delete=models.SET_NULL, null=True, related_name='children')
     creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     image = models.ImageField(default='no-image.jpg')
+    avgRating = models.FloatField(default=0)
+    numRatings = models.IntegerField(default=0)
 
 
     def __str__(self):
@@ -62,6 +64,8 @@ class FavoriteRecipe(models.Model):
         User, on_delete=models.CASCADE, related_name='favorites')
     recipe = models.ForeignKey(
         Recipe, on_delete=models.CASCADE, related_name='favorites')
+    fav_date = models.DateTimeField('Date Favorited', default=timezone.now)
+
 
 class Tag(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
@@ -69,3 +73,9 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class RateRecipe(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='rating')
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='rating')
+    score = models.FloatField()

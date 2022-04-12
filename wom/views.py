@@ -6,11 +6,17 @@ from wom.forms import IngredientFormset, InstructionFormset, RecipeForm, TagForm
 
 from .models import Recipe, FavoriteRecipe
 
+from .models import Recipe, FavoriteRecipe, RateRecipe, Instruction, Ingredient
 from django.db.models import Q
+from django.http import HttpResponseRedirect
 import operator
 from functools import reduce
 from django.utils import timezone
 from datetime import timedelta
+
+def dashboard(request):
+    return render(request, 'wom/dashboard.html')
+
 
 def createrecipe(request, recipe_id=''):
     if not request.user.is_authenticated:
@@ -102,13 +108,20 @@ class RecipeView(generic.DetailView):
 
 
 def favorite_recipe(request, recipe_id):
+    """
+    Runs when the favorite button is pressed on the Details page.
+    Takes recipe ID (pk) and request.
+
+    Creates a new favorite object relating the user who made the request to the recipe
+    with the passed pk. If such an object already exists, deletes that object instead.
+    """
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     if recipe.favorites.filter(user=request.user).exists():
         recipe.favorites.filter(user=request.user).delete()
     else:
-        newfavorite = FavoriteRecipe.objects.create(
+        new_favorite = FavoriteRecipe.objects.create(
             user=request.user, recipe=recipe)
-        newfavorite.save()
+        new_favorite.save()
     return redirect(request.META['HTTP_REFERER'])
 
 
@@ -117,10 +130,19 @@ class favoritelist(generic.ListView):
 
     def get_queryset(self):
         """
-        Returns the favorited recipes of the user who is logged in
+        Returns the favorited recipes of the user who made the request
         """
         user = self.request.user
         return user.favorites.all()
+
+
+def childrenlist(request, pk):
+    template = "wom/childrenlist.html"
+
+    q = Recipe.objects.filter(parent=get_object_or_404(Recipe, pk=pk))
+
+    return render(request, template, {'object_list': q})
+
 
 def filter(request):
     template = "wom/search_results.html"
@@ -167,3 +189,131 @@ def filter(request):
 def account(request):
     template = "wom/account.html"
     return render(request, template, {'object_list': Recipe.objects.all})
+
+def delete_recipe(request, recipe_id=''):
+    recipe = Recipe.objects.get(pk=recipe_id)
+    recipe.delete()
+    return redirect(reverse('wom:account'))
+
+def update_recipe(request, recipe_id=''):
+    recipe_to_update = Recipe.objects.get(pk=recipe_id)
+    template = 'wom/updaterecipe.html'
+
+    instruction_query_set = recipe_to_update.instruction_set.all()
+    ingredient_query_set = recipe_to_update.ingredient_set.all()
+    tag_query_set = recipe_to_update.tag_set.all()
+    recipe_to_update.pub_date = timezone.now()
+    if request.method == "POST":
+        recipeform = RecipeForm(
+            request.POST, instance=recipe_to_update, prefix="recipe")
+        instruction_formset = InstructionFormset(
+            request.POST, prefix="instruction", queryset=instruction_query_set)
+        ingredient_formset = IngredientFormset(
+            request.POST, prefix="ingredient", queryset=ingredient_query_set)
+        tag_formset = TagFormset(
+            request.POST, prefix="tag", queryset=tag_query_set)
+        if recipeform.is_valid() and instruction_formset.is_valid() and ingredient_formset.is_valid() and tag_formset.is_valid():
+            recipe_to_update = recipeform.save(commit=False)
+            recipe_to_update.creator = request.user
+            
+            recipe_to_update.save()
+            for instrform in instruction_formset:
+                new_instruction = instrform.save(commit=False)
+                new_instruction.recipe = recipe_to_update
+                new_instruction.save()
+            for ingrform in ingredient_formset:
+                new_ingredient = ingrform.save(commit=False)
+                new_ingredient.recipe = recipe_to_update
+                new_ingredient.save()
+            for tag in tag_formset:
+                new_tag = tag.save(commit=False)
+                new_tag.recipe = recipe_to_update
+                new_tag.save()
+            return redirect(reverse('wom:account'))
+    else:
+        recipeform = RecipeForm(instance=recipe_to_update, prefix="recipe")
+        instruction_formset = InstructionFormset(
+            prefix="instruction", queryset=instruction_query_set)
+        ingredient_formset = IngredientFormset(
+            prefix="ingredient", queryset=ingredient_query_set)
+        tag_formset = TagFormset(prefix="tag", queryset=tag_query_set)
+
+    return render(request, template, {
+        'recipe_form': recipeform,
+        'instruction_forms': instruction_formset,
+        'ingredient_forms': ingredient_formset,
+        'tag_forms': tag_formset,
+    })
+
+
+def rate_recipe(request, pk, rating):
+    """
+    Runs when the favorite button is pressed on the Details page.
+    Takes recipe ID (pk) and request.
+
+    Creates a new rating object relating the user who made the request and the score they gave
+    to the recipe with the passed pk. If such an object already exists, deletes that object instead.
+    """
+    recipe = get_object_or_404(Recipe, pk=pk)
+
+    if rating == 6:
+        """ 
+        Case 1: delete rating if it exists (and rating == 6),
+        then update average rating and number of ratings accordingly
+
+        The rating will never be 6 under normal circumstances, so this is just a shortcut
+        for testing and potentially for implementing a "remove rating" button if we want that.
+        """
+        if recipe.rating.filter(user=request.user).exists():
+            old_rating = recipe.rating.get(user=request.user)
+
+            if recipe.numRatings == 1:
+                recipe.avgRating = 0
+            else:
+                recipe.avgRating = \
+                    ((recipe.avgRating * recipe.numRatings) - old_rating.score) / (recipe.numRatings - 1)
+
+            recipe.numRatings -= 1
+            old_rating.delete()
+            recipe.save()
+
+    elif recipe.rating.filter(user=request.user).exists():
+        """ 
+        Case 2: change an existent rating to a new score,
+        then update average rating accordingly
+        
+        Does not change number of ratings (obviously).
+        
+        This basically just runs the calculation for removing a rating with the user's 
+        old score, then the calculation for adding a rating with the user's new score.
+        """
+        existent_rating = recipe.rating.get(user=request.user)
+
+        if recipe.numRatings == 1:
+            recipe.avgRating = 0
+        else:
+            recipe.avgRating = \
+                ((recipe.avgRating * recipe.numRatings) - existent_rating.score) / (recipe.numRatings - 1)
+
+        recipe.avgRating = \
+            ((recipe.avgRating * (recipe.numRatings-1)) + rating) / (recipe.numRatings)
+
+        existent_rating.score = rating
+        recipe.save()
+        existent_rating.save()
+
+    else:
+        """ 
+        Case 3: create a new rating object relating user, score, and recipe,
+        then update average rating and number of ratings accordingly
+        """
+        new_rating = RateRecipe.objects.create(user=request.user, recipe=recipe, score=rating)
+
+        recipe.avgRating = \
+            ((recipe.avgRating * recipe.numRatings) + rating) / (recipe.numRatings+1)
+
+        recipe.numRatings += 1
+        new_rating.save()
+        recipe.save()
+
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
