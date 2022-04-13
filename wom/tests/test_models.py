@@ -48,7 +48,7 @@ class RecipeModelTests(TestCase):
 
     def test_recipe_was_created(self):
         """
-        A recipe called 'chicken piccata' 
+        A recipe called 'chicken piccata'
         is created with the appropriate title.
         """
         title = "chicken piccata"
@@ -93,7 +93,7 @@ class IngredientModelTests(TestCase):
     def test_ingredient_was_created__properties(self):
         """
         An ingredient called "romaine lettuce"
-        with quantity and units "1" and "lb" is 
+        with quantity and units "1" and "lb" is
         created.
         """
         title = "chicken piccata"
@@ -109,7 +109,7 @@ class IngredientModelTests(TestCase):
     def test_ingredient_was_created__recipe(self):
         """
         An ingredient called "romaine lettuce"
-        with quantity and units "1" and "lb" is 
+        with quantity and units "1" and "lb" is
         created.
         """
         title = "chicken piccata"

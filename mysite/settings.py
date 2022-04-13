@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'group-project-a22.herokuapp.com']
 
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
     "whitenoise",
     "wom.apps.WomConfig",
+    "storages"
 ]
 
 SITE_ID = 3
@@ -130,7 +131,7 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.0/howto/static-files/
+    # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -174,3 +175,23 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = 'wom-photo'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+# AWS_LOCATION = 'media'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+MEDIAFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_S3_FILE_OVERWRITE = False
+MEDIA_ROOT = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+# AWS_S3_REGION_NAME = 'us-east-1'
+# #AWS_S3_ENDPOINT_URL = 'https://s3.amazonaws.com'
+
+# S3DIRECT_DESTINATIONS = {
+#     'primary_destination': {
+#         'key': 'uploads/',
+#         'allowed': ['image/jpg', 'image/jpeg', 'image/png', 'video/mp4'],
+#     },
+# }
