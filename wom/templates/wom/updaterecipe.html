@@ -4,7 +4,11 @@
 {% load static %}
 {% load socialaccount %}
 {% load account %}
-{% block title %}Create Recipe{% endblock %}
+{% block title %}Modify Recipe{% endblock %}
+
+
+
+<h2 style="text-align: center;">Modify Recipe</h2>
 
 {% block extrahead %}
 <script type="text/javascript" src="{% static 'wom/js/formControls.js' %}"></script>
@@ -47,7 +51,7 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-<h2 class="text-center">Create New Recipe</h2>
+<h2 class="text-center">Edit Recipe</h2>
 <form method="post" enctype="multipart/form-data" style="margin-left: 5%; margin-right: 5%; margin-bottom: 5%">
   {% csrf_token %}
   {% bootstrap_form recipe_form %}
@@ -105,6 +109,7 @@
 
 </form>
 {% else %}
-<p>Please log in to create a new recipe.</p>
+<p>Please log in to modify recipes you have created.</p>
 {% endif %}
 {% endblock %}
+
