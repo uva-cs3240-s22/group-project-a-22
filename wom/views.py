@@ -87,7 +87,9 @@ def createrecipe(request, recipe_id=''):
 def search(request):
     template = "wom/search_results.html"
 
-    post = filter(request)['object_list']
+    filter_result = filter(request)
+    post = filter_result['object_list']
+    ingredients_search = filter_result['ingredients_search']
     if request.method == 'GET':
         search = request.GET.get('q')
         if (not search or search.isspace() or search == ""):
@@ -100,7 +102,7 @@ def search(request):
     else:
         post = Recipe.objects.all()
 
-    return render(request, template, {'object_list': post})
+    return render(request, template, {'object_list': post, "ingredients_search": ingredients_search})
 
 
 def filter(request):
@@ -112,7 +114,6 @@ def filter(request):
     prep_time = request.GET.get('prep_time')
     cook_time = request.GET.get('cook_time')
     ingredients = request.GET.getlist('ingredients')
-    ingredient_remove = request.GET.get('ingredient_remove')
     sort_by = request.GET.get('sort_by')
 
     if meal_type != '' and meal_type is not None:
@@ -126,7 +127,6 @@ def filter(request):
             t = timedelta(hours=1)
             q = q.filter(preparation_time__gte=t)
         else:
-            print('prep time less than 30 min')
             times = prep_time.split(':')
             times = list(map(int, times))
             t = timedelta(hours=times[0], minutes=times[1], seconds=times[2])
@@ -134,12 +134,9 @@ def filter(request):
         filtered = True
     if cook_time != '' and cook_time is not None:
         if cook_time == '1:00:01':
-            print('cook time more than an hr')
             t = timedelta(hours=1)
             q = q.filter(cooking_time__gte=t)
-            print('greater than')
         else:
-            print('prep time less than')
             times = cook_time.split(':')
             times = list(map(int, times))
             t = timedelta(hours=times[0], minutes=times[1], seconds=times[2])
@@ -175,7 +172,7 @@ def filter(request):
     if filtered == False:
         q = Recipe.objects.all()
 
-    return {'object_list': q, 'message': message}
+    return {'object_list': q, 'message': message, 'ingredients_search': ingredients}
 
 
 class RecipeView(generic.DetailView):
@@ -216,6 +213,8 @@ def childrenlist(request, pk):
     template = "wom/childrenlist.html"
 
     q = Recipe.objects.filter(parent=get_object_or_404(Recipe, pk=pk))
+
+    return render(request, template, {'object_list': q})
 
 
 def account(request):
