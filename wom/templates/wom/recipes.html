@@ -13,13 +13,10 @@
 <div class="row">
   {% block sidebar %}{% endblock %}
   {% for recipe in object_list %}
-  <div class="col">
-    <div class="card h-100" >
-      <div class="row">
-        <div class="col"style="width: 18rem;">
-          <img src="{{recipe.image.url}}" class="card-img-top" alt="recipe image">
-        </div>
-        <div class="col"style="width: 18rem;">
+  <div class="d-inline-flex col" style="justify-content: center;">
+    <div class="card" style="height:min-content">
+        <div class="col"style="width: 16rem;">
+          <img src="{{recipe.image.url}}" class="card-img-top" alt="recipe image" style="overflow: hidden;">
           <div class="card-body">
             <h5 class="card-title">
               {{recipe.title}}
@@ -34,30 +31,33 @@
             </h6>
             <!-- <p class="card-text text-truncate" height="200" width="200">{{recipe.description}}</p> -->
 
-            <div class="card-text">
-              <em>
-                {{recipe.description}} <br />
-              </em>
-              <!-- <b> Creator: </b> {{ recipe.creator|default_if_none:"Anonymous" }} <br /> -->
-              {% if recipe.anonymous_creator_bool %}
-              <b>Creator: </b>Anonymous <br />
-              {% else %}
-              <b>Creator: </b>{{ recipe.creator}} <br />
-              {% endif %}
-              <b> Tags: </b>
-              {% for i in recipe.tag_set.all %}
-              {{i}}{% if not forloop.last %}, {% endif %}
-              </li>
-              {% endfor %}
-              <br />
-              <b> Prep time: </b> {{recipe.preparation_time}} <br />
-              <b> Cooking time: </b>{{recipe.cooking_time}} <br />
-              <b> Meal type: </b> {{recipe.meal_type}} <br />
-              <b> Course: </b> {{recipe.course}} <br />
-              <b>Date published: </b> {{recipe.pub_date}}
+            <div class="d-flex card-text">
+              <p>
+                <em>
+                  {{recipe.description}} <br />
+                </em>
+                <!-- <b> Creator: </b> {{ recipe.creator|default_if_none:"Anonymous" }} <br /> -->
+                {% if recipe.anonymous_creator_bool %}
+                <b>Creator: </b>Anonymous <br />
+                {% else %}
+                <b>Creator: </b>{{ recipe.creator}} <br />
+                {% endif %}
+                <b> Tags: </b>
+                {% for i in recipe.tag_set.all %}
+                {{i}}{% if not forloop.last %}, {% endif %}
+                </li>
+                {% endfor %}
+                <br />
+                <b> Prep time: </b> {{recipe.preparation_time}} <br />
+                <b> Cooking time: </b>{{recipe.cooking_time}} <br />
+                <b> Meal type: </b> {{recipe.meal_type}} <br />
+                <b> Course: </b> {{recipe.course}} <br />
+                <b>Date published: </b> {{recipe.pub_date}}
+              </p>
+              
 
 
-              <hr />
+              <!-- <hr /> -->
               <a href="{% url 'wom:detail' recipe.id %}">
                 <button type="button" class="btn btn-outline-primary">
                   View Details
@@ -65,7 +65,6 @@
               </a>
             </div>
           </div>
-        </div>
 
 
 

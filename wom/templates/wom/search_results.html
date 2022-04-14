@@ -10,7 +10,7 @@
 <div class="row">
     <div class="container-fluid sidebar">
         <form action="{% url 'wom:search' %}">
-            <div class="form-group">
+            <div class="form-group" style="text-align:center;">
                 <script type="text/javascript">
                     $(document).ready(function() {
                         $('#sort_by').val("{{ request.GET.sort_by }}")
@@ -30,11 +30,11 @@
                 </script>
                 <!-- <ul> -->
                     <!-- <li> -->
-                        <div class="input-group">
+                        <!-- <div class="input-group"> -->
                         <div class="form-outline">
                             <input type="search" id="form1" name="q" value="{{ request.GET.q }}"class="form-control" placeholder="Search by recipe title"/>
                           </div>
-                        </div>
+                        <!-- </div> -->
                     <!-- </li>
                     <li> -->
                         <label class="control-label" for="sort_by">Sort By:</label>
@@ -95,8 +95,10 @@
                     <!-- </li>
 
                 </ul> -->
-                <button type="submit" class="btn btn-primary">Update Results</button>
-                <button class="btn btn-primary" onclick="clearAll()">Clear all</button>
+                <br />  
+                    <button type="submit" class="btn btn-primary">Update Results</button>
+                    <button class="btn btn-primary" onclick="clearAll()">Clear all</button>
+                
             </div>
         </form>
     </div>
