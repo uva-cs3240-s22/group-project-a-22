@@ -17,7 +17,7 @@
         {% for favorite in object_list %}
         <div class="col-3">
             <div class="card h-100" style="width: 18rem;">
-                <img src="{{favorite.recipe.image.url}}" class="card-img-top" alt="recipe image">
+                <img src="{{favorite.recipe.image.url}}" class="card-img-top" alt="recipe image" style="width: 100%; height: 15vw; object-fit: cover;">
                 <div class="card-body">
                     <h5 class="card-title">
                         {{favorite.recipe.title}}
