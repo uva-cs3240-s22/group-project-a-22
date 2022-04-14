@@ -3,18 +3,19 @@ from datetime import datetime, timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
-from wom.forms import IngredientFormset, InstructionFormset, RecipeForm, TagFormset
+from wom.forms import IngredientFormset, InstructionFormset, RecipeForm, TagFormset, RequiredFormset
 
 
 from .models import Recipe, FavoriteRecipe
 
-from .models import Recipe, FavoriteRecipe, RateRecipe, Instruction, Ingredient
+from .models import Recipe, FavoriteRecipe, RateRecipe, Instruction, Ingredient, Tag
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 import operator
 from functools import reduce
 from django.utils import timezone
 from datetime import timedelta
+from django.forms import modelformset_factory
 
 
 def createrecipe(request, recipe_id=''):
@@ -30,6 +31,7 @@ def createrecipe(request, recipe_id=''):
     instruction_query_set = recipe.instruction_set.all()
     ingredient_query_set = recipe.ingredient_set.all()
     tag_query_set = recipe.tag_set.all()
+    
     recipe.creator = request.user
     recipe.pub_date = timezone.now()
     if request.method == "POST":
@@ -43,10 +45,6 @@ def createrecipe(request, recipe_id=''):
             request.POST, prefix="tag", queryset=tag_query_set)
         if recipeform.is_valid() and instruction_formset.is_valid() and ingredient_formset.is_valid() and tag_formset.is_valid():
             new_recipe = recipeform.save(commit=False)
-            # if(new_recipe.anonymous_creator_bool == True):
-            #     new_recipe.creator = None
-            # else:
-            #     new_recipe.creator = request.user
             new_recipe.creator = request.user
             # new_recipe.image = request.FILES.get('image')
             # print(request.FILES)
@@ -244,7 +242,15 @@ def update_recipe(request, recipe_id=''):
     instruction_query_set = recipe_to_update.instruction_set.all()
     ingredient_query_set = recipe_to_update.ingredient_set.all()
     tag_query_set = recipe_to_update.tag_set.all()
+    
     recipe_to_update.pub_date = timezone.now()
+    InstructionFormset = modelformset_factory(model=Instruction, formset=RequiredFormset,
+                                                fields=('text',), extra=0)
+    IngredientFormset = modelformset_factory(model=Ingredient, formset=RequiredFormset,
+                                               fields=('name', 'quantity', 'units'), extra=0)
+
+    TagFormset = modelformset_factory(
+        model=Tag, formset=RequiredFormset, fields=('name',), extra=0)
     if request.method == "POST":
         recipeform = RecipeForm(
             request.POST, request.FILES, instance=recipe_to_update, prefix="recipe")
@@ -254,8 +260,15 @@ def update_recipe(request, recipe_id=''):
             request.POST, prefix="ingredient", queryset=ingredient_query_set)
         tag_formset = TagFormset(
             request.POST, prefix="tag", queryset=tag_query_set)
-        if recipeform.is_valid() and instruction_formset.is_valid() and ingredient_formset.is_valid() and tag_formset.is_valid():
+        
+        
+
+        if (recipeform.is_valid() and instruction_formset.is_valid() and ingredient_formset.is_valid() and tag_formset.is_valid()):
             recipe_to_update = recipeform.save(commit=False)
+            recipe_to_update.instruction_set.all().delete()
+            recipe_to_update.ingredient_set.all().delete()            
+            recipe_to_update.tag_set.all().delete()
+
             recipe_to_update.creator = request.user
 
             recipe_to_update.save()
