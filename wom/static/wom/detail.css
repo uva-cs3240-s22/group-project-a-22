@@ -5,3 +5,8 @@
 .top {
     margin-bottom: 8vh;
 }
+
+.rating-stars {
+  display: flex;
+  flex-direction: row-reverse;
+}
