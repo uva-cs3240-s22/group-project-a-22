@@ -90,6 +90,7 @@ def search(request):
     filter_result = filter(request)
     post = filter_result['object_list']
     ingredients_search = filter_result['ingredients_search']
+    tags_search = filter_result['tags_search']
     if request.method == 'GET':
         search = request.GET.get('q')
         if (not search or search.isspace() or search == ""):
@@ -102,7 +103,7 @@ def search(request):
     else:
         post = Recipe.objects.all()
 
-    return render(request, template, {'object_list': post, "ingredients_search": ingredients_search})
+    return render(request, template, {'object_list': post, "ingredients_search": ingredients_search, 'tags_search': tags_search})
 
 
 def filter(request):
@@ -114,6 +115,7 @@ def filter(request):
     prep_time = request.GET.get('prep_time')
     cook_time = request.GET.get('cook_time')
     ingredients = request.GET.getlist('ingredients')
+    tags = request.GET.getlist('tags')
     sort_by = request.GET.get('sort_by')
 
     if meal_type != '' and meal_type is not None:
@@ -168,11 +170,18 @@ def filter(request):
             else:
                 q = q.filter(ingredient__name=ingredient)
         filtered = True
+    if tags != [] and tags is not None:
+        for tag in tags:
+            if tag == '' or tag is None or tag.isspace():
+                tags.remove(tag)
+            else:
+                q = q.filter(tag__name=tag)
+        filtered = True
 
     if filtered == False:
         q = Recipe.objects.all()
 
-    return {'object_list': q, 'message': message, 'ingredients_search': ingredients}
+    return {'object_list': q, 'message': message, 'ingredients_search': ingredients, 'tags_search':tags}
 
 
 class RecipeView(generic.DetailView):
