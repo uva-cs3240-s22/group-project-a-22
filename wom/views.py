@@ -199,6 +199,7 @@ def update_recipe(request, recipe_id=''):
     template = 'wom/updaterecipe.html'
 
     instruction_query_set = recipe_to_update.instruction_set.all()
+    
     ingredient_query_set = recipe_to_update.ingredient_set.all()
     tag_query_set = recipe_to_update.tag_set.all()
     recipe_to_update.pub_date = timezone.now()
@@ -212,6 +213,7 @@ def update_recipe(request, recipe_id=''):
         tag_formset = TagFormset(
             request.POST, prefix="tag", queryset=tag_query_set)
         if recipeform.is_valid() and instruction_formset.is_valid() and ingredient_formset.is_valid() and tag_formset.is_valid():
+            
             recipe_to_update = recipeform.save(commit=False)
             recipe_to_update.creator = request.user
             
