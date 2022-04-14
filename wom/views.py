@@ -1,8 +1,10 @@
+# https://www.youtube.com/watch?v=vU0VeFN-abU
+from datetime import datetime, timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
 from wom.forms import IngredientFormset, InstructionFormset, RecipeForm, TagFormset
-# from wom.forms import IngredientFormset, InstructionFormset, RecipeForm
+
 
 from .models import Recipe, FavoriteRecipe
 
@@ -35,7 +37,7 @@ def createrecipe(request, recipe_id=''):
     recipe.pub_date = timezone.now()
     if request.method == "POST":
         recipeform = RecipeForm(
-            request.POST, instance=recipe, prefix="recipe")
+            request.POST, request.FILES, instance=recipe, prefix="recipe")
         instruction_formset = InstructionFormset(
             request.POST, prefix="instruction", queryset=instruction_query_set)
         ingredient_formset = IngredientFormset(
@@ -49,7 +51,8 @@ def createrecipe(request, recipe_id=''):
             # else:
             #     new_recipe.creator = request.user
             new_recipe.creator = request.user
-            
+            # new_recipe.image = request.FILES.get('image')
+            #print(request.FILES)
             new_recipe.pk = None
             new_recipe.save()
             for instrform in instruction_formset:
@@ -87,18 +90,87 @@ def createrecipe(request, recipe_id=''):
 def search(request):
     template = "wom/search_results.html"
 
+    post = filter(request)['object_list']
     if request.method == 'GET':
         search = request.GET.get('q')
         if (not search or search.isspace() or search == ""):
-            post = Recipe.objects.all()
+            post = post
         else:
             search_keywords = search.split()
             q = reduce(operator.and_, (Q(title__icontains=kw)
                        for kw in search_keywords))
-            post = Recipe.objects.filter(q)
+            post = post.filter(q)
     else:
         post = Recipe.objects.all()
     return render(request, template, {'object_list': post})
+
+
+def filter(request):
+    q = Recipe.objects.all()
+    message = ""
+    filtered = False
+    meal_type = request.GET.get('meal_type')
+    course = request.GET.get('course')
+    prep_time = request.GET.get('prep_time')
+    cook_time = request.GET.get('cook_time')
+    sort_by = request.GET.get('sort_by')
+
+    if meal_type != '' and meal_type is not None:
+        q = q.filter(meal_type__iexact=meal_type)
+        filtered = True
+    if course != '' and course is not None:
+        q = q.filter(course__iexact=course)
+        filtered = True
+    if prep_time != '' and prep_time is not None:
+        if prep_time == '1:00:01': 
+            t = timedelta(hours=1)
+            q = q.filter(preparation_time__gte=t)
+        else:
+            print('prep time less than 30 min')
+            times = prep_time.split(':')
+            times = list(map(int, times))
+            t = timedelta(hours=times[0], minutes=times[1], seconds=times[2])
+            q = q.filter(preparation_time__lte=t)
+        filtered = True
+    if cook_time != '' and cook_time is not None:
+        if cook_time == '1:00:01':
+            print('cook time more than an hr')
+            t = timedelta(hours=1)
+            q = q.filter(cooking_time__gte=t)
+            print('greater than')
+        else: 
+            print('prep time less than')
+            times = cook_time.split(':')
+            times = list(map(int, times))
+            t = timedelta( hours=times[0], minutes=times[1], seconds=times[2] )
+            q = q.filter(cooking_time__lte=t)
+        filtered = True   
+    if sort_by != '' and sort_by is not None:
+        if sort_by == 'AZ':
+            q = q.order_by('title') #want to
+        elif sort_by == 'Recent':
+            q = q.order_by('-pub_date')
+        elif sort_by == 'Oldest':
+            q = q.order_by('pub_date')
+        elif sort_by == 'Highest':
+            q = q.order_by('-avgRating')
+        elif sort_by == 'Highest_Week':
+            week_ago = datetime.now(tz=timezone.utc) - timedelta(days=7)
+            q = q.filter(pub_date__gte=week_ago).order_by('-avgRating')
+        elif sort_by == 'Highest_Month':
+            month_ago = datetime.now(tz=timezone.utc) - timedelta(days=30)
+            q = q.filter(pub_date__gte=month_ago).order_by('-avgRating')
+        elif sort_by == 'Highest_Year':
+            year_ago = datetime.now(tz=timezone.utc) - timedelta(days=365)
+            q = q.filter(pub_date__gte=year_ago).order_by('-avgRating') 
+        filtered = True
+    if filtered == False:
+        q = Recipe.objects.all() 
+
+    
+    return {'object_list': q, 'message': message}
+    
+
 
 
 class RecipeView(generic.DetailView):
@@ -143,47 +215,47 @@ def childrenlist(request, pk):
     return render(request, template, {'object_list': q})
 
 
-def filter(request):
-    template = "wom/search_results.html"
+# def filter(request):
+#     template = "wom/search_results.html"
     
-    q = Recipe.objects.all()
-    filtered = False
-    meal_type = request.GET.get('meal_type')
-    course = request.GET.get('course')
-    prep_time = request.GET.get('prep_time')
-    cook_time = request.GET.get('cook_time')
+#     q = Recipe.objects.all()
+#     filtered = False
+#     meal_type = request.GET.get('meal_type')
+#     course = request.GET.get('course')
+#     prep_time = request.GET.get('prep_time')
+#     cook_time = request.GET.get('cook_time')
 
-    if meal_type != '' and meal_type is not None:
-        q = q.filter(meal_type__iexact=meal_type)
-        filtered = True
-    if course != '' and course is not None:
-        q = q.filter(course__iexact=course)
-        filtered = True
-    if prep_time != '' and prep_time is not None:
-        if prep_time == '1:00:01': 
-            t = timedelta(hours=1)
-            q = q.filter(preparation_time__gte=t)
-        else:
-            times = prep_time.split(':')
-            times = list(map(int, times))
-            t = timedelta(hours=times[0], minutes=times[1], seconds=times[2])
-            q = q.filter(preparation_time__lte=t)
-        filtered = True
-    if cook_time != '' and cook_time is not None:
-        if cook_time == '1:00:01':
-            t = timedelta( hours=1)
-            q = q.filter(cooking_time__gte=t)
-        else: 
-            times = cook_time.split(':')
-            times = list(map(int, times))
-            t = timedelta( hours=times[0], minutes=times[1], seconds=times[2] )
-            q = q.filter(cooking_time__lte=t)
-        filtered = True
+#     if meal_type != '' and meal_type is not None:
+#         q = q.filter(meal_type__iexact=meal_type)
+#         filtered = True
+#     if course != '' and course is not None:
+#         q = q.filter(course__iexact=course)
+#         filtered = True
+#     if prep_time != '' and prep_time is not None:
+#         if prep_time == '1:00:01': 
+#             t = timedelta(hours=1)
+#             q = q.filter(preparation_time__gte=t)
+#         else:
+#             times = prep_time.split(':')
+#             times = list(map(int, times))
+#             t = timedelta(hours=times[0], minutes=times[1], seconds=times[2])
+#             q = q.filter(preparation_time__lte=t)
+#         filtered = True
+#     if cook_time != '' and cook_time is not None:
+#         if cook_time == '1:00:01':
+#             t = timedelta( hours=1)
+#             q = q.filter(cooking_time__gte=t)
+#         else: 
+#             times = cook_time.split(':')
+#             times = list(map(int, times))
+#             t = timedelta( hours=times[0], minutes=times[1], seconds=times[2] )
+#             q = q.filter(cooking_time__lte=t)
+#         filtered = True
        
-    if filtered == False:
-        q = Recipe.objects.none() 
+#     if filtered == False:
+#         q = Recipe.objects.none() 
 
-    return render(request, template, {'object_list': q})
+#     return render(request, template, {'object_list': q})
 
 def account(request):
     template = "wom/account.html"
@@ -205,7 +277,7 @@ def update_recipe(request, recipe_id=''):
     recipe_to_update.pub_date = timezone.now()
     if request.method == "POST":
         recipeform = RecipeForm(
-            request.POST, instance=recipe_to_update, prefix="recipe")
+            request.POST, request.FILES, instance=recipe_to_update, prefix="recipe")
         instruction_formset = InstructionFormset(
             request.POST, prefix="instruction", queryset=instruction_query_set)
         ingredient_formset = IngredientFormset(

@@ -33,6 +33,7 @@ class Recipe(models.Model):
     parent = models.ForeignKey(
         'self', on_delete=models.SET_NULL, null=True, related_name='children')
     creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    image = models.ImageField(default='no-image.jpg')
     avgRating = models.FloatField(default=0)
     numRatings = models.IntegerField(default=0)
 
