@@ -17,9 +17,4 @@ class Migration(migrations.Migration):
             name='anonymous_creator_bool',
             field=models.BooleanField(default=False),
         ),
-        migrations.AlterField(
-            model_name='recipe',
-            name='pub_date',
-            field=models.DateTimeField(default=datetime.datetime(2022, 4, 3, 21, 58, 58, 619337, tzinfo=utc), verbose_name='Date Published'),
-        ),
     ]
