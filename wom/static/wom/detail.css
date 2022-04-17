@@ -6,13 +6,15 @@
     margin-bottom: 8vh;
 }
 
-.rating-stars {
-  display: flex;
-  flex-direction: row-reverse;
 ol {
     list-style: decimal inside;
 }
 
 .instruction-item {
     display: list-item;
+}
+
+.rating-stars {
+  display: flex;
+  flex-direction: row-reverse;
 }
