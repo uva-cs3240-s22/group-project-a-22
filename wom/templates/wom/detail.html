@@ -19,11 +19,11 @@
 {% block content %}
 {% if recipe %}
 
-<div class="container-fluid" style="margin-bottom: 50px;">
+<input type="hidden" value="" id="copyToClipboard">
+<div class="container-fluid">
     <div class="row top w-100">
         <div class="col-sm-11 text-center">
             <h1>{{recipe.title}}</h1>
-
             <!-- START OF AVERAGE RATING DISPLAY IMPLEMENTATION -->
             {% if 0_5_avg %}
             {% if 1_0_avg %}
@@ -114,11 +114,10 @@
             <h6>
                 Average score of {{ recipe.avgRating | stringformat:".1f" }}/5.0 across {{ recipe.numRatings }} reviews.
             </h6>
-            <!-- END OF AVERAGE RATING DISPLAY IMPLEMENTATION -->
 
-            </p>
-            <img src="../../static/wom/images/macandcheese-500x500.jpeg" width="500" height="400">
-            </p>
+            <!--            <h2>{{recipe.image.url}}</h2>-->
+            <img src="{{recipe.image.url}}" width="500" height="400">
+
 
 
             {% if recipe.anonymous_creator_bool %}
@@ -248,6 +247,7 @@
             <!-- END OF USER RATING BUTTONS IMPLEMENTATION -->
 
 
+
             {% if user.is_authenticated %}
             {% if is_favorite %}
             <a href="{% url 'wom:fav' recipe.pk %}">
@@ -284,25 +284,56 @@
 
             {% endif %}
 
-
             <a href="{% url 'wom:childrenlist' recipe.pk %}">
                 <button type="button" class="btn btn-outline-primary side-btn">
                     View Children
                 </button>
             </a>
+
             <hr />
 
 
+            <script type="text/javascript">
+                function copy() {
+                    document.getElementById("copyToClipboard").value = window.location.href
+                    var copyText = document.getElementById("copyToClipboard");
 
-            <button type="button" class="btn btn-primary  side-btn">
-                Share
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share"
-                     viewBox="0 0 16 16">
-                    <path
-                            d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z" />
-                </svg>
+                    /* Select the text field */
+                    copyText.select();
 
+                    /* Copy the text inside the text field */
+                    navigator.clipboard.writeText(copyText.value).then(() => {
+                        alert("successfully copied");
+                    })
+                        .catch(() => {
+                            alert("something went wrong");
+                        });;
+                }
+
+
+            </script>
+            <div id="liveAlertPlaceholder"></div>
+            <button type="button" class="btn btn-primary side-btn" id="liveAlertBtn" title="Copy to Clipboard"
+                onclick="copy()">
+                Copy to Clipboard
             </button>
+
+            {% if recipe.creator|slugify == user.username|slugify %}
+            <hr />
+            <a class="nav-link" href="{% url 'wom:update-recipe' recipe.id %}" style="color:black">
+                <button type="button" class="btn btn-primary side-btn">
+                    Edit
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
+                    </svg>
+                </Button>
+
+            </a>
+            {% endif %}
+
+            {% endif %}
             <hr />
             <button type="button" class="btn btn-primary side-btn">
                 Print
@@ -345,9 +376,7 @@
         </div>
     </div>
 
-    {% else %}
-    <p>No recipes available</p>
+
 
 </div>
-{% endif%}
 {% endblock %}
