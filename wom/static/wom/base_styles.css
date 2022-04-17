@@ -1,0 +1,4 @@
+.recipe-row {
+  row-gap: 20px;
+  justify-content: flex-start;
+}
