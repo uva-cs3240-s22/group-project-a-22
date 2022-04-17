@@ -15,7 +15,13 @@
 <div class="container-fluid">
     <div class="row top w-100">
         <div class="col-sm-11 text-center">
-            <h1>{{recipe.title}}</h1>
+            <h1>{{recipe.title}}
+            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="position: absolute; top: 0; right: 0;">
+                <div class="toast-body">
+                    Copied to clipboard
+                </div>
+            </div>
+        </h1>
             <!--            <h2>{{recipe.image.url}}</h2>-->
             <img src="{{recipe.image.url}}" width="500" height="400">
             <h6>
@@ -170,6 +176,8 @@
 
 
             <script type="text/javascript">
+
+
                 function copy() {
                     document.getElementById("copyToClipboard").value = window.location.href
                     var copyText = document.getElementById("copyToClipboard");
@@ -179,7 +187,7 @@
 
                     /* Copy the text inside the text field */
                     navigator.clipboard.writeText(copyText.value).then(() => {
-                        alert("successfully copied");
+                        $('.toast').toast('show')
                     })
                         .catch(() => {
                             alert("something went wrong");

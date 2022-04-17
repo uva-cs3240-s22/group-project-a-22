@@ -93,9 +93,9 @@ def search(request):
     tags_search = filter_result['tags_search']
     if request.method == 'GET':
         if request.GET.get('q'):
-            search = True
+            searched = True
         else:
-            search = False
+            searched = False
         search = request.GET.get('q')
         if (not search or search.isspace() or search == ""):
             post = post
@@ -105,8 +105,9 @@ def search(request):
                        for kw in search_keywords))
             post = post.filter(q)
     else:
+
         post = Recipe.objects.all()
-    return render(request, template, {'object_list': post, 'search': search, "ingredients_search": ingredients_search, 'tags_search': tags_search })
+    return render(request, template, {'object_list': post, 'search': searched, "ingredients_search": ingredients_search, 'tags_search': tags_search })
 
 
 

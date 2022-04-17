@@ -59,21 +59,26 @@
           <b> Tags: </b>
           {% for i in recipe.tag_set.all %}
           {{i}}{% if not forloop.last %}, {% endif %}
-          </li>
           {% endfor %}
-          <br />
+          <br /> 
+          {{recipe.pub_date|date:'N d Y'}}
+          
           <hr />
-          {% if recipe.anonymous_creator_bool %}
-          <b>By: </b>Anonymous <br />
+          
+          
+          <div class="container justify-content-center" style="padding: 0;">
+            {% if recipe.anonymous_creator_bool %}
+          <b>By &nbsp;</b>Anonymous <br />
           {% else %}
-          <b>By: </b>{{ recipe.creator}} <br />
+          <b>By &nbsp;</b>{{ recipe.creator}} <br />
           {% endif %}
-          <b>Posted: </b> {{recipe.pub_date|date:'N d Y'}}
           <a href="{% url 'wom:detail' recipe.id %}">
-            <button type="button" class="btn btn-secondary">
+            <button type="button" class="btn btn-secondary" style="width: 100%;">
               View Details
             </button>
           </a>
+          </div>
+          
         </div>
       </div>
     </div>
