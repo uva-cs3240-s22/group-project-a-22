@@ -259,3 +259,52 @@ class FilterTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertQuerysetEqual(
             response.context['object_list'], Recipe.objects.none(), ordered=False)
+    
+    def test_filter_by_no_tags(self):
+        response = self.client.get('/wom/search/?tags=')
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerysetEqual(
+            response.context['object_list'], Recipe.objects.all(), ordered=False)
+
+    def test_sort_by_one_tag_success(self):
+        response = self.client.get('/wom/search/?tags=Tag+2')
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerysetEqual(
+            response.context['object_list'], Recipe.objects.filter(tag__name='Tag 2'), ordered=False)
+
+    def test_sort_by_one_tag_failure(self):
+        response = self.client.get('/wom/search/?tags=Tag+4')
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerysetEqual(
+            response.context['object_list'], Recipe.objects.none(), ordered=False)
+
+    def test_sort_by_multiple_tags_success(self):
+        response = self.client.get(
+            '/wom/search/?tags=Tag+2&tags=Tag+3')
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerysetEqual(
+            response.context['object_list'], Recipe.objects.filter(tag__name='Tag 2').filter(tag__name='Tag 3'), ordered=False)
+
+    def test_sort_by_multiple_tags_success(self):
+        response = self.client.get(
+            '/wom/search/?tags=Tag+4&tags=Tag+3')
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerysetEqual(
+            response.context['object_list'], Recipe.objects.none(), ordered=False)
+
+    def test_sort_by_tags_plus_others_success(self):
+        response = self.client.get(
+            '/wom/search/?meal_type=breakfast&course=side&prep_time=00%3A30%3A00&cook_time=1%3A00%3A01&tags=Tag+2')
+        filters = {'meal_type__iexact': "breakfast", 'course__iexact': 'side',
+                   'preparation_time__lte': timedelta(minutes=30), 'cooking_time__gte': timedelta(hours=1), 'tag__name': 'Tag 2'}
+
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerysetEqual(
+            response.context['object_list'], Recipe.objects.filter(**filters), ordered=False)
+
+    def test_sort_by_tag_plus_others_failure(self):
+        response = self.client.get(
+            '/wom/search/?meal_type=breakfast&course=side&prep_time=00%3A30%3A00&cook_time=1%3A00%3A01&tags=Tag+1')
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerysetEqual(
+            response.context['object_list'], Recipe.objects.none(), ordered=False)

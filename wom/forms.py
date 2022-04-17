@@ -18,12 +18,17 @@ class RecipeForm(forms.ModelForm):
         }
 
 
+
 class RequiredFormset(forms.BaseModelFormSet):
     def __init__(self, *args, **kwargs):
         super(RequiredFormset, self).__init__(*args, **kwargs)
         for form in self.forms:
             form.empty_permitted = False
+        
 
+
+    
+        
 
 InstructionFormset = forms.modelformset_factory(model=Instruction, formset=RequiredFormset,
                                                 fields=('text',))
