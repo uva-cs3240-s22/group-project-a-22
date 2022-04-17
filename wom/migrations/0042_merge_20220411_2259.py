@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('wom', '0027_alter_recipe_pub_date'),
+        ('wom', '0027_alter_recipe_pub_date_raterecipe'),
         ('wom', '0040_alter_recipe_pub_date'),
         ('wom', '0041_recipe_image'),
     ]

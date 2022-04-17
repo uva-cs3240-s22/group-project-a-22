@@ -49,3 +49,8 @@ function deleteForm(prefix, btn) {
   }
   return false;
 }
+
+function disableField(field_id, form_id) {
+  document.getElementById(field_id).disabled = true;
+  document.getElementById(form_id).submit();
+}
