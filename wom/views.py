@@ -198,19 +198,20 @@ class RecipeView(generic.DetailView):
         """
         context = super().get_context_data(**kwargs)
         recipe = Recipe.objects.get(pk=self.kwargs['pk'])
-        if self.request.user.favorites.filter(recipe=recipe).exists():
-            context['is_favorite'] = {0}
-        if self.request.user.rating.filter(recipe=recipe).exists():
-            score = self.request.user.rating.get(recipe=recipe).score
-            context['first_star'] = {0}
-            if score >= 2:
-                context['second_star'] = {0}
-                if score >= 3:
-                    context['third_star'] = {0}
-                    if score >= 4:
-                        context['fourth_star'] = {0}
-                        if score >= 5:
-                            context['fifth_star'] = {0}
+        if self.request.user.is_anonymous == 0:
+            if self.request.user.favorites.filter(recipe=recipe).exists():
+                context['is_favorite'] = {0}
+            if self.request.user.rating.filter(recipe=recipe).exists():
+                score = self.request.user.rating.get(recipe=recipe).score
+                context['first_star'] = {0}
+                if score >= 2:
+                    context['second_star'] = {0}
+                    if score >= 3:
+                        context['third_star'] = {0}
+                        if score >= 4:
+                            context['fourth_star'] = {0}
+                            if score >= 5:
+                                context['fifth_star'] = {0}
 
         if recipe.avgRating > 0.25:
             context['0_5_avg'] = {0}
