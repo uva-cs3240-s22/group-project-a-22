@@ -15,7 +15,6 @@ import operator
 from functools import reduce
 from django.utils import timezone
 from datetime import timedelta
-
 def dashboard(request):
     return render(request, 'wom/dashboard.html')
 
