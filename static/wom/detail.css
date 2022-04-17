@@ -1,13 +1,14 @@
-.list-group-item {
-    position: relative;
-    display: block;
-    padding: 0.5rem 1rem;
-    color: #212529;
-    text-decoration: none;
-    background-color: #fff;
-    border: 1px solid rgba(0,0,0,.125);
+.side-btn {
+    width: 100%;
 }
 
-p {
-    color: red;
+.top {
+    margin-bottom: 8vh;
+}
+ol {
+    list-style: decimal inside;
+}
+
+.instruction-item {
+    display: list-item;
 }

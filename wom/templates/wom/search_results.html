@@ -7,12 +7,34 @@
 {% endblock css %}
 {% block title %}Recipe Title{{recipe.title}}{% endblock %}
 {% block sidebar %}
+<style>
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    input,label {
+        display: block;
+        width: 100%;
+    }
+    .sidebar {
+        background-color: #F3916C;
+        min-height: 35vh;
+        color: white;
+    }
+    .filter-header{
+        margin: 5% 0 5% 0;
+    }
+    form label {
+        font-weight: bold;
+    }
+</style>
 <div class="col-3">
-    <div class="container-fluid sidebar">
+    <div class="container-fluid sidebar d-flex align-items-center">
         <form action="{% url 'wom:search' %}">
             <div class="form-group">
                 <script type="text/javascript">
-                    $(document).ready(function() {
+                    $(document).ready(function () {
                         $('#sort_by').val("{{ request.GET.sort_by }}")
                         $('#meal_type').val("{{ request.GET.meal_type }}")
                         $('#course').val("{{ request.GET.course }}")
@@ -25,21 +47,28 @@
                         $('#meal_type').val("")
                         $('#course').val("")
                         $('#prep_time').val("")
-                        $('#cook_time').val("")  
+                        $('#cook_time').val("")
+                        $('#search').val("")
                     }
                 </script>
+                <div class="d-flex justify-content-between filter-header">
+                    <h3>Filters</h3>
+                    <button class="btn btn-outline-info" onclick="clearAll()">Clear all</button>
+                </div>
+                
                 <ul>
                     <li>
                         <div class="input-group">
-                        <div class="form-outline">
-                            <input type="search" id="form1" name="q" value="{{ request.GET.q }}"class="form-control" placeholder="Search"/>
-                          </div>
+                            <div class="form-outline">
+                                <input type="search" id="search" name="q" value="{{ request.GET.q }}"
+                                    class="form-control" placeholder="Search by recipe title" />
+                            </div>
                         </div>
                     </li>
                     <li>
                         <label class="control-label" for="sort_by">Sort By:</label>
-                        <select id="sort_by" name="sort_by" >
-                            <option value="" selected></option> 
+                        <select class="form-select" id="sort_by" name="sort_by">
+                            <option value="" selected></option>
                             <option value="AZ">A-Z</option>
                             <option value="Recent">Recent first</option>
                             <option value="Oldest">Oldest first</option>
@@ -51,8 +80,8 @@
                     </li>
                     <li>
                         <label class="control-label" for="meal_type">Meal Type:</label>
-                        <select id="meal_type" name="meal_type" >
-                            <option value="" selected ></option>
+                        <select class="form-select" id="meal_type" name="meal_type">
+                            <option value="" selected></option>
                             <option value="breakfast">Breakfast</option>
                             <option value="lunch">Lunch</option>
                             <option value="dinner">Dinner</option>
@@ -61,8 +90,8 @@
                     </li>
                     <li>
                         <label class="control-label" for="course">Course:</label>
-                        <select id="course" name="course">
-                            <option value="" selected ></option>
+                        <select class="form-select" id="course" name="course">
+                            <option value="" selected></option>
                             <option value="appetizer">Appetizer</option>
                             <option value="entree">Entree</option>
                             <option value="side">Side</option>
@@ -71,7 +100,7 @@
                     </li>
                     <li>
                         <label class="control-label" for="prep_time">Preparation Time:</label>
-                        <select id="prep_time" name="prep_time">
+                        <select class="form-select" id="prep_time" name="prep_time">
                             <option value="" selected></option>
                             <option value="00:10:00"> &lt; 10 minutes</option>
                             <option value="00:20:00"> &lt; 20 minutes</option>
@@ -83,7 +112,7 @@
                     </li>
                     <li>
                         <label class="control-label" for="cook_time">Cooking Time:</label>
-                        <select id="cook_time" name="cook_time">
+                        <select class="form-select" id="cook_time" name="cook_time">
                             <option value="" selected></option>
                             <option value="00:10:00"> &lt; 10 minutes</option>
                             <option value="00:20:00"> &lt; 20 minutes</option>
@@ -96,7 +125,6 @@
 
                 </ul>
                 <button type="submit" class="btn btn-primary">Update Results</button>
-                <button class="btn btn-primary" onclick="clearAll()">Clear all</button>
             </div>
         </form>
     </div>

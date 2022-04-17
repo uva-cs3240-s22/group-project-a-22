@@ -91,6 +91,10 @@ def search(request):
 
     post = filter(request)['object_list']
     if request.method == 'GET':
+        if request.GET.get('q'):
+            search = True
+        else:
+            search = False
         search = request.GET.get('q')
         if (not search or search.isspace() or search == ""):
             post = post
@@ -101,12 +105,11 @@ def search(request):
             post = post.filter(q)
     else:
         post = Recipe.objects.all()
-    return render(request, template, {'object_list': post})
+    return render(request, template, {'object_list': post, 'search': search })
 
 
 def filter(request):
     q = Recipe.objects.all()
-    message = ""
     filtered = False
     meal_type = request.GET.get('meal_type')
     course = request.GET.get('course')
@@ -167,7 +170,7 @@ def filter(request):
         q = Recipe.objects.all() 
 
     
-    return {'object_list': q, 'message': message}
+    return {'object_list': q}
     
 
 

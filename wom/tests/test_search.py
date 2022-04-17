@@ -3,17 +3,19 @@ from wom.models import Recipe
 from datetime import timedelta, timezone, datetime
 
 
-def create_recipe(title, description, meal_type, course, cooking_time, preparation_time):
+def create_recipe(title, description, meal_type, course, cooking_time, preparation_time, pub_date):
     """
     Create a recipe with the given parameters.
     """
+    if not pub_date:
+        pub_date = datetime.now(tz=timezone.utc)
     if not cooking_time:
         cooking_time = timedelta(days=50, seconds=27, microseconds=10,
                                 milliseconds=29000, minutes=5, hours=8, weeks=2)
     if not preparation_time:
         preparation_time = timedelta(days=20, seconds=23, microseconds=13,
                                     milliseconds=29000, minutes=27, hours=3, weeks=2)
-    return Recipe.objects.create(title=title, description=description, cooking_time=cooking_time, preparation_time=preparation_time, meal_type=meal_type, course=course)
+    return Recipe.objects.create(title=title, description=description, cooking_time=cooking_time, preparation_time=preparation_time, meal_type=meal_type, course=course, pub_date=pub_date)
 
 
 class SearchTests(TestCase):

@@ -15,18 +15,48 @@
 </head>
 
 <body>
+ <style>
+   body {
+    background-color: #FDFDFD;
+    color: #232323;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
+.header {
+    background-color: #F3916C;
+    color: white;
+}
+.btn-primary {
+    background-color: #44329E;
+    border-color: #FEDAAA;
+}
+.btn-secondary{
+  background-color: #F3916C;
+  color:white;
+  border-color: #44329E;
+}
+.btn-outline-info{
+  background-color: white;
+  color:#44329E;
+  border-color: #FEDAAA;
+}
+.navbar-light .navbar-nav .nav-link {
+    color: white;
+}
+
+ </style> 
 {% block base_content %}
 <div class="page-container">
 
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+    <div class="container-fluid header">
       <span class="navbar-brand">Word of Mouth</span>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <div class="collapse navbar-collapse d-flex align-items-center" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center">
           <li class="nav-item">
             <a class="nav-link" href="{% url 'wom:search' %}">Recipes</a>
           </li>
@@ -43,9 +73,10 @@
             <a class="nav-link" href="{% url 'wom:account' %}">My Account</a>
           </li>
           {% endif %}
-          <li class="nav-item">
-            <form action="{% url 'wom:search' %}" method="get">
-              <div class="input-group">
+          <li class="nav-item ">
+
+                    <form action="{% url 'wom:search' %}" method="get">
+              <div class="input-group" style="padding-top: 15;">
                 <div class="form-outline">
                   <input type="search" id="form1" name="q" class="form-control" placeholder="Search by recipe title"/>
                 </div>
@@ -54,29 +85,31 @@
                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
                   </svg>
                 </button>
-              </div>
-            </form> 
+
+            </form>
+        </div>
           </li>
-          
+
         </ul>
 
+ 
         <div class="d-flex flex-row">
           {% if user.is_authenticated %}
             <span class="my-auto me-2">Welcome, {{ user.username }}</span>
-            <form method="post" action="{% url "account_logout" %}" class="my-auto">
+            <form method="post" action="{% url 'account_logout' %}" class="my-auto">
               {% csrf_token %}
               {% if redirect_field_value %}
                 <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
               {% endif %}
-              <button class="btn btn-outline-success my-auto" type="submit">Logout</button>
+              <button class="btn btn-primary my-auto" type="submit">Logout</button>
             </form>
           {% else %}
-            <form method="post" action="{% provider_login_url "google" process='login' %}" class="my-auto">
+            <form method="post" action="{% provider_login_url 'google' process='login' %}" class="my-auto">
               {% csrf_token %}
               {% if redirect_field_value %}
                 <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
               {% endif %}
-              <button class="btn btn-outline-success my-auto" type="submit">Login</button>
+              <button class="btn btn-primary my-auto" type="submit">Login</button>
             </form>
           {% endif %}
         </div>
