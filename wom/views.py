@@ -43,6 +43,8 @@ def createrecipe(request, recipe_id=''):
             request.POST, prefix="ingredient", queryset=ingredient_query_set)
         tag_formset = TagFormset(
             request.POST, prefix="tag", queryset=tag_query_set)
+
+
         if recipeform.is_valid() and instruction_formset.is_valid() and ingredient_formset.is_valid() and tag_formset.is_valid():
             new_recipe = recipeform.save(commit=False)
             new_recipe.creator = request.user
@@ -249,18 +251,19 @@ def update_recipe(request, recipe_id=''):
                                                 fields=('text',), extra=0)
     IngredientFormset = modelformset_factory(model=Ingredient, formset=RequiredFormset,
                                                fields=('name', 'quantity', 'units'), extra=0)
-
     TagFormset = modelformset_factory(
         model=Tag, formset=RequiredFormset, fields=('name',), extra=0)
     if request.method == "POST":
         recipeform = RecipeForm(
             request.POST, request.FILES, instance=recipe_to_update, prefix="recipe")
         instruction_formset = InstructionFormset(
-            request.POST, prefix="instruction", queryset=instruction_query_set)
+            request.POST, prefix="instruction",)
         ingredient_formset = IngredientFormset(
-            request.POST, prefix="ingredient", queryset=ingredient_query_set)
+            request.POST, prefix="ingredient",)
         tag_formset = TagFormset(
-            request.POST, prefix="tag", queryset=tag_query_set)
+            request.POST, prefix="tag",)
+
+
 
         if (recipeform.is_valid() and instruction_formset.is_valid() and ingredient_formset.is_valid() and tag_formset.is_valid()):
             recipe_to_update = recipeform.save(commit=False)
