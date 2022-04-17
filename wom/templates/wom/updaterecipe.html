@@ -29,77 +29,78 @@
     return false;
   });
 
-  $(document).on('click', '#instruction-remove-row', function(e) {
+  $(document).on('click', '#instruction-remove-row', function (e) {
     e.preventDefault();
     deleteForm('instruction', $(this));
     return false;
   })
-  $(document).on('click', '#ingredient-remove-row', function(e) {
+  $(document).on('click', '#ingredient-remove-row', function (e) {
     e.preventDefault();
     deleteForm('ingredient', $(this));
     return false;
   })
 
-  $(document).on('click', '#tag-remove-row', function(e) {
+  $(document).on('click', '#tag-remove-row', function (e) {
     e.preventDefault();
     deleteForm('tag', $(this));
     return false;
   })
-  
+
 </script>
 {% endblock %}
 
 {% block content %}
 {% if user.is_authenticated %}
 <h2 class="text-center">Edit Recipe</h2>
-<form method="post" style="margin-left: 5%; margin-right: 5%; margin-bottom: 5%">
+<form method="post" enctype="multipart/form-data" style="margin-left: 5%; margin-right: 5%; margin-bottom: 5%">
   {% csrf_token %}
   {% bootstrap_form recipe_form %}
 
   <h4>Instructions</h4>
   {{ instruction_forms.management_form }}
   {% for instr_form in instruction_forms %}
-    <div class="instruction-form row">
-      <div class="col">{% bootstrap_form instr_form show_label=False%}</div>
-      <button type="button" id="instruction-remove-row" class="col-1 btn btn-danger mb-3">Remove</button>
-    </div>
+  <div class="instruction-form row">
+    <div class="col">{% bootstrap_form instr_form show_label=False%}</div>
+    <button type="button" id="instruction-remove-row" class="col-1 btn btn-danger mb-3">Remove</button>
+
+  </div>
   {% endfor %}
   <button type="button" id="instruction-add-more" class="btn btn-secondary">Add More</button>
 
-  <br/><br/>
+  <br /><br />
 
   <h4>Ingredients</h4>
   {{ ingredient_forms.management_form }}
   {% for ingr_form in ingredient_forms %}
-    <div class="ingredient-form row">
-      {% for field in ingr_form %}
-        <div class="col">
-          {% bootstrap_field field show_label=False %}
-        </div>
-      {% endfor %}
-      <button type="button" id="ingredient-remove-row" class="col-1 btn btn-danger mb-3">Remove</button>
+  <div class="ingredient-form row">
+    {% for field in ingr_form %}
+    <div class="col">
+      {% bootstrap_field field show_label=False %}
     </div>
+    {% endfor %}
+    <button type="button" id="ingredient-remove-row" class="col-1 btn btn-danger mb-3">Remove</button>
+  </div>
   {% endfor %}
   <button type="button" id="ingredient-add-more" class="btn btn-secondary">Add More</button>
 
-  <br/><br/>
+  <br /><br />
 
   <h4>Tags</h4>
   <h6>Please add descriptive tags to this meal for convenient searching later!</h6>
   {{ tag_forms.management_form }}
   {% for tag_form in tag_forms %}
-    <div class="tag-form row">
-      {% for field in tag_form %}
-        <div class="col">
-          {% bootstrap_field field show_label=False %}
-        </div>
-      {% endfor %}
-      <button type="button" id="tag-remove-row" class="col-1 btn btn-danger mb-3">Remove</button>
+  <div class="tag-form row">
+    {% for field in tag_form %}
+    <div class="col">
+      {% bootstrap_field field show_label=False %}
     </div>
+    {% endfor %}
+    <button type="button" id="tag-remove-row" class="col-1 btn btn-danger mb-3">Remove</button>
+  </div>
   {% endfor %}
   <button type="button" id="tag-add-more" class="btn btn-secondary">Add More</button>
 
-  <br/><br/>
+  <br /><br />
 
   {% buttons %}
   <button type="submit" class="btn btn-primary">
@@ -112,4 +113,3 @@
 <p>Please log in to modify recipes you have created.</p>
 {% endif %}
 {% endblock %}
-

@@ -2,6 +2,9 @@ from datetime import timedelta
 from http import HTTPStatus
 from django.test import TestCase
 from django.urls import reverse
+from django.core.files.uploadedfile import SimpleUploadedFile
+import os
+from django.conf import settings
 
 from wom.forms import IngredientFormset, InstructionFormset, RecipeForm, TagFormset
 from django.contrib.auth.models import User
@@ -12,7 +15,9 @@ from wom.models import Ingredient, Instruction, Recipe
 class CreateRecipeFormTests(TestCase):
     def test_full_recipe_form(self):
         user = User.objects.get_or_create(username='testuser')[0]
-
+        self.image_file = open(
+            os.path.join(settings.BASE_DIR, 'wom/static/wom/images/test.jpg'), "rb"
+        )
         form_data = {
             'recipe-title': 'Test Title',
             'recipe-creator': user.pk,
@@ -22,7 +27,14 @@ class CreateRecipeFormTests(TestCase):
             'recipe-meal_type': 'other',
             'recipe-course': 'other',
         }
-        form = RecipeForm(prefix='recipe', data=form_data)
+        files_data = {
+            'recipe-image': SimpleUploadedFile(
+                self.image_file.name,
+                self.image_file.read()
+            )
+        }
+
+        form = RecipeForm(prefix='recipe', data=form_data, files=files_data)
 
         self.assertTrue(form.is_valid())
 
