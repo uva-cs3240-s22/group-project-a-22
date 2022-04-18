@@ -1,14 +1,15 @@
+# https://docs.djangoproject.com/en/4.0/topics/testing/tools/
+# https://docs.djangoproject.com/en/dev/ref/models/querysets/#in
+
 from django.test import Client, TestCase
 from wom.models import Ingredient, Recipe
 from datetime import timedelta, timezone, datetime
 
 
-def create_recipe(title, description, meal_type, course, cooking_time, preparation_time, pub_date, ingredients):
+def create_recipe(title, description, meal_type, course, cooking_time, preparation_time, ingredients):
     """
     Create a recipe with the given parameters.
     """
-    if not pub_date:
-        pub_date = datetime.now(tz=timezone.utc)
     if not cooking_time:
         cooking_time = timedelta(days=50, seconds=27, microseconds=10,
                                  milliseconds=29000, minutes=5, hours=8, weeks=2)
@@ -16,7 +17,7 @@ def create_recipe(title, description, meal_type, course, cooking_time, preparati
         preparation_time = timedelta(days=20, seconds=23, microseconds=13,
                                      milliseconds=29000, minutes=27, hours=3, weeks=2)
     recipe = Recipe.objects.create(title=title, description=description, cooking_time=cooking_time,
-                                   preparation_time=preparation_time, meal_type=meal_type, course=course, pub_date=pub_date)
+                                   preparation_time=preparation_time, meal_type=meal_type, course=course)
 
     for ingredient in ingredients:
         Ingredient.objects.create(

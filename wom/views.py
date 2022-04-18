@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+# https://www.youtube.com/watch?v=vU0VeFN-abU
 from datetime import datetime, timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -15,7 +15,9 @@ import operator
 from functools import reduce
 from django.utils import timezone
 from datetime import timedelta
+
 from django.forms import modelformset_factory
+
 
 
 def createrecipe(request, recipe_id=''):
@@ -92,10 +94,6 @@ def search(request):
     ingredients_search = filter_result['ingredients_search']
     tags_search = filter_result['tags_search']
     if request.method == 'GET':
-        if request.GET.get('q'):
-            searched = True
-        else:
-            searched = False
         search = request.GET.get('q')
         if (not search or search.isspace() or search == ""):
             post = post
@@ -105,14 +103,14 @@ def search(request):
                        for kw in search_keywords))
             post = post.filter(q)
     else:
-
         post = Recipe.objects.all()
-    return render(request, template, {'object_list': post, 'search': searched, "ingredients_search": ingredients_search, 'tags_search': tags_search })
 
+    return render(request, template, {'object_list': post, "ingredients_search": ingredients_search, 'tags_search': tags_search})
 
 
 def filter(request):
     q = Recipe.objects.all()
+    message = ""
     filtered = False
     meal_type = request.GET.get('meal_type')
     course = request.GET.get('course')
@@ -185,12 +183,59 @@ def filter(request):
     if filtered == False:
         q = Recipe.objects.all()
 
-    return {'object_list': q, 'ingredients_search': ingredients, 'tags_search':tags}
+    return {'object_list': q, 'message': message, 'ingredients_search': ingredients, 'tags_search':tags}
 
 
 class RecipeView(generic.DetailView):
     model = Recipe
     template_name = 'wom/detail.html'
+
+    def get_context_data(self, **kwargs):
+        """
+        Creates an 'is_favorite' object that gets passed to the detail template if a
+        Favorite object relating the logged-in user and the recipe being viewed exists.
+
+        In the template, if the 'is_favorite' object exists, the "Save" button is
+        replaced with an "Unsave" button.
+        """
+        context = super().get_context_data(**kwargs)
+        recipe = Recipe.objects.get(pk=self.kwargs['pk'])
+        if self.request.user.is_anonymous == 0:
+            if self.request.user.favorites.filter(recipe=recipe).exists():
+                context['is_favorite'] = {0}
+            if self.request.user.rating.filter(recipe=recipe).exists():
+                score = self.request.user.rating.get(recipe=recipe).score
+                context['first_star'] = {0}
+                if score >= 2:
+                    context['second_star'] = {0}
+                    if score >= 3:
+                        context['third_star'] = {0}
+                        if score >= 4:
+                            context['fourth_star'] = {0}
+                            if score >= 5:
+                                context['fifth_star'] = {0}
+
+        if recipe.avgRating > 0.25:
+            context['0_5_avg'] = {0}
+            if recipe.avgRating > 0.75:
+                context['1_0_avg'] = {0}
+                if recipe.avgRating > 1.25:
+                    context['1_5_avg'] = {0}
+                    if recipe.avgRating > 1.75:
+                        context['2_0_avg'] = {0}
+                        if recipe.avgRating > 2.25:
+                            context['2_5_avg'] = {0}
+                            if recipe.avgRating > 2.75:
+                                context['3_0_avg'] = {0}
+                                if recipe.avgRating > 3.25:
+                                    context['3_5_avg'] = {0}
+                                    if recipe.avgRating > 3.75:
+                                        context['4_0_avg'] = {0}
+                                        if recipe.avgRating > 4.25:
+                                            context['4_5_avg'] = {0}
+                                            if recipe.avgRating > 4.75:
+                                                context['5_0_avg'] = {0}
+        return context
 
 
 def favorite_recipe(request, recipe_id):
