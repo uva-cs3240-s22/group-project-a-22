@@ -33,6 +33,15 @@
     $('#course').val("")
     $('#prep_time').val("")
     $('#cook_time').val("")
+    
+    $('.hidden-ingredient').each(function() {
+      $(this).attr('disabled', true)
+    })
+
+    $('.hidden-tag').each(function() {
+      $(this).attr('disabled', true)
+    })
+
     $('#filter-form').submit()
     return false;
   });
@@ -55,7 +64,7 @@
       <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#filter-collapse">Advanced Search</button>
     </div>
 
-    <div class="collapse" id="filter-collapse">
+    <div class="collapse {{ show_advanced_search }}" id="filter-collapse">
       <div class="form-group">
         <div class="input-group dropdown-group">
           <div class="input-group-prepend">
@@ -140,7 +149,7 @@
                   <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                 </svg>
               </button>
-              <input type="hidden" id="ingredient-{{ ingredient }}" name="ingredients" value="{{ ingredient }}" />
+              <input type="hidden" class="hidden-ingredient" id="ingredient-{{ ingredient }}" name="ingredients" value="{{ ingredient }}" />
             {% endfor %}
           </div>
 
@@ -163,7 +172,7 @@
                   <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                 </svg>
               </button>
-              <input type="hidden" id="tag-{{ tag }}" name="tags" value="{{ tag }}" />
+              <input type="hidden" class="hidden-tag" id="tag-{{ tag }}" name="tags" value="{{ tag }}" />
             {% endfor %}
           </div>
 
