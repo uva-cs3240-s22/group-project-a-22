@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
-from wom.forms import IngredientFormset, InstructionFormset, RecipeForm, TagFormset, RequiredFormset
+from wom.forms import IngredientFormset, InstructionFormset, RecipeForm, TagFormset, RequiredFormset, NotRequiredFormset
 
 
 from .models import Recipe, FavoriteRecipe
@@ -301,7 +301,7 @@ def update_recipe(request, recipe_id=''):
     IngredientFormset = modelformset_factory(model=Ingredient, formset=RequiredFormset,
                                                fields=('name', 'quantity', 'units'), extra=0)
     TagFormset = modelformset_factory(
-        model=Tag, formset=RequiredFormset, fields=('name',), extra=0)
+        model=Tag, formset=NotRequiredFormset, fields=('name',), extra=0)
     if request.method == "POST":
         recipeform = RecipeForm(
             request.POST, request.FILES, instance=recipe_to_update, prefix="recipe")
