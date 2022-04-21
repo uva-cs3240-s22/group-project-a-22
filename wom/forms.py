@@ -24,6 +24,7 @@ class RequiredFormset(forms.BaseModelFormSet):
         super(RequiredFormset, self).__init__(*args, **kwargs)
         for form in self.forms:
             form.empty_permitted = False
+
         
 
 class NotRequiredFormset(forms.BaseModelFormSet):
@@ -32,8 +33,6 @@ class NotRequiredFormset(forms.BaseModelFormSet):
         for form in self.forms:
             form.empty_permitted = True
 
-
-    
         
 
 InstructionFormset = forms.modelformset_factory(model=Instruction, formset=RequiredFormset,

@@ -301,7 +301,7 @@ def update_recipe(request, recipe_id=''):
     IngredientFormset = modelformset_factory(model=Ingredient, formset=RequiredFormset,
                                                fields=('name', 'quantity', 'units'), extra=0)
     TagFormset = modelformset_factory(
-        model=Tag, formset=NotRequiredFormset, fields=('name',), extra=0)
+        model=Tag, formset=NotRequiredFormset, fields=('name',), extra=1)
     if request.method == "POST":
         recipeform = RecipeForm(
             request.POST, request.FILES, instance=recipe_to_update, prefix="recipe")
@@ -332,9 +332,11 @@ def update_recipe(request, recipe_id=''):
                 new_ingredient.recipe = recipe_to_update
                 new_ingredient.save()
             for tag in tag_formset:
-                new_tag = tag.save(commit=False)
-                new_tag.recipe = recipe_to_update
-                new_tag.save()
+                    new_tag = tag.save(commit=False)
+                    new_tag.recipe = recipe_to_update
+                    print("new tag name", new_tag.name)
+                    if new_tag.name != "":
+                        new_tag.save()
             return redirect(reverse('wom:account'))
     else:
         recipeform = RecipeForm(instance=recipe_to_update, prefix="recipe")
