@@ -1,5 +1,5 @@
 .side-btn {
-    width: 100%;
+    width: 10vw;
 }
 
 .top {
@@ -11,4 +11,12 @@ ol {
 
 .instruction-item {
     display: list-item;
+}
+
+
+
+.recipe-metadata{
+border-style: solid;
+border-radius: 2%;
+padding: 10;
 }

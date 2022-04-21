@@ -1,5 +1,5 @@
 .side-btn {
-    width: 100%;
+    width: 20vw;
 }
 
 .top {
@@ -11,4 +11,8 @@ ol {
 
 .instruction-item {
     display: list-item;
+}
+
+p {
+    color: red;
 }
