@@ -170,14 +170,14 @@ def filter(request):
             if ingredient == '' or ingredient is None or ingredient.isspace():
                 ingredients.remove(ingredient)
             else:
-                q = q.filter(ingredient__name=ingredient)
+                q = q.filter(ingredient__name__iexact=ingredient)
         filtered = True
     if tags != [] and tags is not None:
         for tag in tags:
             if tag == '' or tag is None or tag.isspace():
                 tags.remove(tag)
             else:
-                q = q.filter(tag__name=tag)
+                q = q.filter(tag__name__iexact=tag)
         filtered = True
 
     if filtered == False:
