@@ -29,6 +29,8 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'group-project-a22.herokuapp.com']
 
+SECURE_SSL_REDIRECT = True
+
 # Application definition
 
 INSTALLED_APPS = [

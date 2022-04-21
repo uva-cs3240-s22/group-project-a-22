@@ -14,15 +14,17 @@
 <div class="row recipe-row">
 {% if object_list %}
   {% for recipe in object_list %}
+
   <div class="d-inline-flex col" style="justify-content: center;">
     <!-- <div class="card" style="height:min-content"> -->
     <div class="card">
       <div class="col" style="width: 16rem;">
-        <img src="{{recipe.image.url}}" class="card-img-top" alt="recipe image" style="overflow: hidden;">
+        <img src="{{recipe.image.url}}" class="card-img-top" alt="recipe image" style="width: 100%; height: 15vw; object-fit: cover;">
         <div class="card-body">
           <h5 class="card-title">
             {{recipe.title}}
           </h5>
+
 
           <h6>{{ recipe.avgRating | stringformat:".1f" }}
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill"
@@ -74,6 +76,8 @@
 {% else %}
 <p>No recipes available</p>
 {% endif%}
+
 </div>
 
 {% endblock %}
+
