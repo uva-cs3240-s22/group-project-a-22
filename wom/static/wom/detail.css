@@ -13,10 +13,25 @@ ol {
     display: list-item;
 }
 
+.recipe-metadata-div {
+    border-style: solid;
+    border-radius: 2%;
+    border-color: #F3916C;
+    height: fit-content;
+    text-align: initial;
+    margin: 0 0 0 10;
+}
 
+.recipe-metadata {
+    display: flex;
+    justify-content: space-between;
+}
 
-.recipe-metadata{
-border-style: solid;
-border-radius: 2%;
-padding: 10;
+.prep-data {
+    padding: 10;
+    margin: 10
+}
+
+.side-buttons {
+    margin: 0 -10 0 0;
 }

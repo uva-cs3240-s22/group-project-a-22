@@ -18,30 +18,7 @@
 
 {% block content %}
 {% if recipe %}
-<style>
-    .recipe-metadata-div {
-        border-style: solid;
-        border-radius: 2%;
-        border-color: #F3916C;
-        height: fit-content;
-        text-align: initial;
-        margin: 0 0 0 10;
-    }
 
-    .recipe-metadata {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .prep-data {
-        padding: 10;
-        margin: 10
-    }
-
-    .side-buttons {
-        margin: 0 -10 0 0;
-    }
-</style>
 <div class="container-fluid" style="margin-bottom: 50px;">
     <div class="text-center">
         <div class="row justify-content-right">
@@ -222,6 +199,7 @@
             </div>
             <div class="col-2 side-buttons">
                 <!-- START OF USER RATING BUTTONS IMPLEMENTATION -->
+                
                 {% if user.is_authenticated %}
                 <div class="btn-group rating-stars" role="group">
                     <a href="{% url 'wom:rate' recipe.pk 5 %}">
@@ -379,33 +357,34 @@
                             View Children
                         </button>
                     </a>
+                    <hr />
+
+
+
+                    <button type="button" class="btn btn-primary  side-btn">
+                        Share
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-share" viewBox="0 0 16 16">
+                            <path
+                                d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z" />
+                        </svg>
+    
+                    </button>
+                    <hr />
+                    <button type="button" class="btn btn-primary side-btn">
+                        Print
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-printer" viewBox="0 0 16 16">
+                            <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"></path>
+                            <path
+                                d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z">
+                            </path>
+                        </svg>
+    
+                    </button>
                 </div>
 
-                <hr />
 
-
-
-                <button type="button" class="btn btn-primary  side-btn">
-                    Share
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-share" viewBox="0 0 16 16">
-                        <path
-                            d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z" />
-                    </svg>
-
-                </button>
-                <hr />
-                <button type="button" class="btn btn-primary side-btn">
-                    Print
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-printer" viewBox="0 0 16 16">
-                        <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"></path>
-                        <path
-                            d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z">
-                        </path>
-                    </svg>
-
-                </button>
             </div>
         </div>
     </div>
