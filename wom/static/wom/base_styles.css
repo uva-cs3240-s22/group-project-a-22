@@ -9,3 +9,7 @@ body {
 .btn-primary {
     background-color: #44329E;
 }
+.recipe-row {
+  row-gap: 20px;
+  justify-content: flex-start;
+}

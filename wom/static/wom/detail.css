@@ -5,6 +5,7 @@
 .top {
     margin-bottom: 8vh;
 }
+
 ol {
     list-style: decimal inside;
 }
@@ -34,4 +35,22 @@ ol {
 
 .side-buttons {
     margin: 0 -10 0 0;
+}
+.rating-stars {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.list-group-item {
+  position:relative;
+  display:block;
+  color:#212529;
+  text-decoration:none;
+  background-color:#fff;
+  border:1px solid rgba(0,0,0,.125);
+  padding:.5rem 1rem;
+}
+
+.fork-button {
+  margin-bottom: 10px;
 }
