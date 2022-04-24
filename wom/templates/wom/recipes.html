@@ -15,15 +15,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  .cards {
-    border-style: solid;
-    border-color: #F3916C;
-    border-radius: 2%;
-    margin-top: 2vh;
-  }
-  .card-img-top {
-    height: 50%;
-  }
+
 </style>
 {% if search %}
 <h1 style="padding-left: 12"> Search results for '{{request.GET.q}}'</h1>
@@ -35,7 +27,7 @@
   <!-- {% if object_list %} -->
   {% for recipe in object_list %}
   <div class="col-3">
-    <div class="cards" style="width: 18rem;">
+    <div class="card" style="width: 18rem;">
       <img src="{{recipe.image.url}}" class="card-img-top" alt="recipe image">
       <div class="card-body">
         <h5 class="card-title">
@@ -90,6 +82,4 @@
 {% endif%}
 
 </div>
-
 {% endblock %}
-

@@ -18,68 +18,74 @@
 
 {% block content %}
 {% if recipe %}
-
+<input type="hidden" value="" id="copyToClipboard">
 <div class="container-fluid" style="margin-bottom: 50px;">
     <div class="text-center">
         <div class="row justify-content-right">
-
+            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; top: 0; right: 0;">
+                <div class="toast-body">
+                    Copied to clipboard
+                </div>
+            </div>
         </div>
         <div class="row">
-            <div class="col-3">&nbsp;</div>
-            <div class="col-7">
+            <div id="title-info">
                 <h1>{{recipe.title}}</h1>
-                {% if recipe.parent %}
-                <p>Forked from <a href="{% url 'wom:detail' recipe.parent_id %}">{{ recipe.parent.title }}</a></p>
-                {% endif %}
+
                 {% if recipe.anonymous_creator_bool %}
                 <p style="font-size:large;"><b>Creator: </b>Anonymous </p>
                 {% else %}
                 <p style="font-size:large;"><b>Creator: </b>{{ recipe.creator}} </p>
                 {% endif %}
-
+                {% if recipe.parent %}
+                <p>Forked from <a href="{% url 'wom:detail' recipe.parent_id %}">{{ recipe.parent.title }}</a></p>
+                {% endif %}
             </div>
         </div>
         <div class="row">
-            <div class="col-3 recipe-metadata-div d-flex flex-column">
-                <div class="recipe-metadata">
-                    <p><b>Date published: </b></p>
-                    <p style="font-size:large;"> {{recipe.pub_date|date:'N d Y'}} </p>
+            <div class="col-10">
+                <div class="row">
+                    <div class="col-3 recipe-metadata-div d-flex flex-column">
+                        <div class="recipe-metadata">
+                            <p><b>Date published: </b></p>
+                            <p style="font-size:large;"> {{recipe.pub_date|date:'N d Y'}} </p>
+                        </div>
+                        <div class="recipe-metadata">
+                            <p><b>Tags: </b></p>
+                            <p style="font-size:large;">
+                                {% for i in recipe.tag_set.all %}
+                                {{i}}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </p>
+                        </div>
+                        <div class="recipe-metadata">
+                            <p><b>Preparation time: </b></p>
+                            <p style="font-size:large;"> {{recipe.preparation_time}} </p>
+                        </div>
+                        <div class="recipe-metadata">
+                            <p><b>Cooking time: </b></p>
+                            <p style="font-size:large;"> {{recipe.cooking_time}} </p>
+                        </div>
+                        <div class="recipe-metadata">
+                            <p><b>Meal type: </b></p>
+                            <p style="font-size:large;"> {{recipe.meal_type}} </p>
+                        </div>
+                        <div class="recipe-metadata">
+                            <p><b>Course: </b></p>
+                            <p style="font-size:large;"> {{recipe.course}} </p>
+                        </div>
+        
+                    </div>
+                    <div class="col-8">
+                        <div class="container d-flex justify-content-center">
+                            <img src="../../static/wom/images/macandcheese-500x500.jpeg" width="600" height="400"> 
+                        </div>
+                       
+                    </div>
+                    
                 </div>
-                <div class="recipe-metadata">
-                    <p><b>Tags: </b></p>
-                    <p style="font-size:large;">
-                        {% for i in recipe.tag_set.all %}
-                        {{i}}{% if not forloop.last %}, {% endif %}
-                        {% endfor %}
-                    </p>
-                </div>
-                <div class="recipe-metadata">
-                    <p><b>Preparation time: </b></p>
-                    <p style="font-size:large;"> {{recipe.preparation_time}} </p>
-                </div>
-                <div class="recipe-metadata">
-                    <p><b>Cooking time: </b></p>
-                    <p style="font-size:large;"> {{recipe.cooking_time}} </p>
-                </div>
-                <div class="recipe-metadata">
-                    <p><b>Meal type: </b></p>
-                    <p style="font-size:large;"> {{recipe.meal_type}} </p>
-                </div>
-                <div class="recipe-metadata">
-                    <p><b>Course: </b></p>
-                    <p style="font-size:large;"> {{recipe.course}} </p>
-                </div>
 
-            </div>
-
-
-
-
-
-
-            <div class="col-7">
-
-                <img src="../../static/wom/images/macandcheese-500x500.jpeg" width="600" height="400">
+                
                 <div>
                     <!-- START OF AVERAGE RATING DISPLAY IMPLEMENTATION -->
                     {% if 0_5_avg %}
@@ -300,7 +306,7 @@
                 </a>
             </div>
             </p>
-            <hr />
+            
             {% endif %}
             <!-- END OF USER RATING BUTTONS IMPLEMENTATION -->
                         
@@ -320,7 +326,8 @@
                                 d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" />
                         </svg>
                     </button>
-                </a> {% else %}
+                </a> 
+                {% else %}
                 <a href="{% url 'wom:fav' recipe.pk %}">
                     <button type="button" class="btn btn-primary side-btn">
                         Save
@@ -357,28 +364,35 @@
                     <hr />
 
 
+                    <script type="text/javascript">
 
-                    <button type="button" class="btn btn-primary  side-btn">
-                        Share
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-share" viewBox="0 0 16 16">
-                            <path
-                                d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z" />
-                        </svg>
-    
+
+                        function copy() {
+                            document.getElementById("copyToClipboard").value = window.location.href
+                            var copyText = document.getElementById("copyToClipboard");
+        
+                            /* Select the text field */
+                            copyText.select();
+        
+                            /* Copy the text inside the text field */
+                            navigator.clipboard.writeText(copyText.value).then(() => {
+                                $('.toast').toast('show')
+                            })
+                                .catch(() => {
+                                    alert("something went wrong");
+                                });;
+                        }
+        
+        
+                    </script>
+                    <div id="liveAlertPlaceholder"></div>
+                    <button type="button" class="btn btn-primary side-btn" id="liveAlertBtn" title="Copy to Clipboard"
+                        onclick="copy()">
+                        Copy to Clipboard
+        
                     </button>
                     <hr />
-                    <button type="button" class="btn btn-primary side-btn">
-                        Print
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-printer" viewBox="0 0 16 16">
-                            <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"></path>
-                            <path
-                                d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z">
-                            </path>
-                        </svg>
-    
-                    </button>
+
                 </div>
             </div>
 
@@ -406,7 +420,7 @@
             </ul>
         </div>
     </div>
-    <div class="col-md-6 d-flex flex-column">
+    <div class="col-md-5 d-flex flex-column">
         <h2 class="text-center">Steps</h2>
         <div class="card" style="width: 21.5em;margin:0 auto;">
             <ol>
@@ -418,10 +432,12 @@
 
 
     </div>
+    <div class="col-1">&nbsp;</div>
 </div>
 
 {% else %}
 <p>No recipes available</p>
 
 </div>
+{% endif %}
 {% endblock %}

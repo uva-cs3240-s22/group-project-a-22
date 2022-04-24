@@ -18,7 +18,7 @@ ol {
     border-style: solid;
     border-radius: 2%;
     border-color: #F3916C;
-    height: fit-content;
+    justify-content: space-between;
     text-align: initial;
     margin: 0 0 0 10;
 }
@@ -38,7 +38,6 @@ ol {
 }
 .rating-stars {
   display: flex;
-  flex-direction: row-reverse;
 }
 
 .list-group-item {
@@ -53,4 +52,8 @@ ol {
 
 .fork-button {
   margin-bottom: 10px;
+}
+
+#title-info{
+    margin: auto;
 }

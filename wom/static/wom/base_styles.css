@@ -1,15 +1,64 @@
-body {
-    background-color: #FDFDFD;
-    color: #232323;
-}
 
-.header {
-    background-color: #F0F0F0;
-}
-.btn-primary {
-    background-color: #44329E;
-}
+
+
+
 .recipe-row {
   row-gap: 20px;
   justify-content: flex-start;
 }
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+   body {
+    background-color: #FDFDFD;
+    color: #232323;
+    font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    
+}
+
+.header {
+    background-color: #F3916C;
+    color: white;
+}
+.btn-primary {
+    background-color: #44329E;
+    border-color: #FEDAAA;
+}
+.btn-secondary{
+  background-color: #F3916C;
+  color:white;
+  border-color: #44329E;
+}
+.btn-outline-info{
+  background-color: white;
+  color:#44329E;
+  border-color: #FEDAAA;
+}
+.navbar-light .navbar-nav .nav-link {
+    color: white;
+}
+
+.navbar-light .navbar-brand{
+    color: white;
+}
+
+.footer{
+    color: white;
+    background-color: #F3916C; 
+    height:65px; 
+    width: 100%; 
+    bottom:15; 
+    padding-right:20px
+}
+
+.card {
+    border-style: solid;
+    border-color: #F3916C;
+    border-radius: 2%;
+    margin-top: 2vh;
+  }
+  .card-img-top {
+    height: 50%;
+  }
