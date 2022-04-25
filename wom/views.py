@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
-from wom.forms import IngredientFormset, InstructionFormset, RecipeForm, TagFormset, RequiredFormset
+from wom.forms import IngredientFormset, InstructionFormset, RecipeForm, TagFormset, RequiredFormset, NotRequiredFormset
 
 
 from .models import Recipe, FavoriteRecipe
@@ -17,7 +17,6 @@ from django.utils import timezone
 from datetime import timedelta
 
 from django.forms import modelformset_factory
-
 
 
 def createrecipe(request, recipe_id=''):
@@ -303,7 +302,7 @@ def update_recipe(request, recipe_id=''):
     IngredientFormset = modelformset_factory(model=Ingredient, formset=RequiredFormset,
                                              fields=('name', 'quantity', 'units'), extra=0)
     TagFormset = modelformset_factory(
-        model=Tag, formset=RequiredFormset, fields=('name',), extra=0)
+        model=Tag, formset=NotRequiredFormset, fields=('name',), extra=1)
     if request.method == "POST":
         recipeform = RecipeForm(
             request.POST, request.FILES, instance=recipe_to_update, prefix="recipe")
@@ -334,7 +333,9 @@ def update_recipe(request, recipe_id=''):
             for tag in tag_formset:
                 new_tag = tag.save(commit=False)
                 new_tag.recipe = recipe_to_update
-                new_tag.save()
+                print("new tag name", new_tag.name)
+                if new_tag.name != "":
+                    new_tag.save()
             return redirect(reverse('wom:account'))
     else:
         recipeform = RecipeForm(instance=recipe_to_update, prefix="recipe")

@@ -29,7 +29,11 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'group-project-a22.herokuapp.com']
 
-SECURE_SSL_REDIRECT = True
+if 'test' in sys.argv:
+    SECURE_SSL_REDIRECT = False
+else:
+    SECURE_SSL_REDIRECT = True
+
 
 # Application definition
 
