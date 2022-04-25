@@ -19,7 +19,7 @@
   <!-- {% if object_list %} -->
   {% for recipe in object_list %}
   <div class="col-3">
-    <div class="card" style="width: 18rem;">
+    <div class="card">
       <img src="{{recipe.image.url}}" class="card-img-top" alt="recipe image">
       <div class="card-body">
         <h5 class="card-title">
@@ -36,7 +36,8 @@
           <em class="description">
             {{recipe.description}} <br />
           </em>
-          <!-- <b> Creator: </b> {{ recipe.creator|default_if_none:"Anonymous" }} <br /> -->
+          <b> Prep time: </b> {{recipe.preparation_time}} <br />
+          <b> Cooking time: </b>{{recipe.cooking_time}} <br />
           <b> Tags: </b>
           {% for i in recipe.tag_set.all %}
           {{i}}{% if not forloop.last %}, {% endif %}
@@ -53,6 +54,7 @@
           {% else %}
           <b>By &nbsp;</b>{{ recipe.creator}} <br />
           {% endif %}
+
           <a href="{% url 'wom:detail' recipe.id %}">
             <button type="button" class="btn btn-secondary" style="width: 100%;">
               View Details

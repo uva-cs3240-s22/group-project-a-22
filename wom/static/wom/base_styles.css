@@ -58,6 +58,7 @@ html, body {
     border-color: #F3916C;
     border-radius: 2%;
     margin-top: 2vh;
+    height: fit-content; 
   }
   .description {
     display: -webkit-box;
