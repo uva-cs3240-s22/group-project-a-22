@@ -7,22 +7,14 @@
 {% endblock css %}
 {% block title %}Recipe Title{{recipe.title}}{% endblock %}
 {% block content %}
-<style>
-  .description {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
 
-</style>
 {% if search %}
 <h1 style="padding-left: 12"> Search results for '{{request.GET.q}}'</h1>
+
 {% endif %}
 {% if object_list %}
 <div class="row justify-content-center">{{ object_list|length }} Results </div>
-<div class="row">
+<div class="row recipe-row" >
   {% block sidebar %}{% endblock %}
   <!-- {% if object_list %} -->
   {% for recipe in object_list %}
