@@ -174,11 +174,11 @@ def filter(request):
         filtered = True
     if ingredients != [] and ingredients is not None:
         for ingredient in ingredients:
-            q = q.filter(ingredient__name=ingredient)
+            q = q.filter(ingredient__name__iexact=ingredient)
         filtered = True
     if tags != [] and tags is not None:
         for tag in tags:
-            q = q.filter(tag__name=tag)
+            q = q.filter(tag__name__iexact=tag)
         filtered = True
 
     if filtered == False:
