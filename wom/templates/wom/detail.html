@@ -204,7 +204,7 @@
                 {% if is_favorite %}
                 <a href="{% url 'wom:fav' recipe.pk %}">
                     <button type="button" class="btn btn-danger side-btn">
-                        Unsave
+                        Unfavorite
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-bookmark-fill" viewBox="0 0 16 16">
                             <path
@@ -215,7 +215,7 @@
                 {% else %}
                 <a href="{% url 'wom:fav' recipe.pk %}">
                     <button type="button" class="btn btn-primary side-btn">
-                        Save
+                        Favorite
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-bookmarks" viewBox="0 0 16 16">
                             <path
