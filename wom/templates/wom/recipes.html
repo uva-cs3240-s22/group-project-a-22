@@ -7,6 +7,7 @@
 {% endblock css %}
 {% block title %}Recipe Title{{recipe.title}}{% endblock %}
 {% block content %}
+<h2 class="text-center">All Recipes</h2>
 
 {% if search %}
 <h1 style="padding-left: 12"> Search results for '{{request.GET.q}}'</h1>

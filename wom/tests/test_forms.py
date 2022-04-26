@@ -138,6 +138,9 @@ class CreateRecipeFormTests(TestCase):
         self.assertFalse(form.is_valid())
 
     def test_incomplete_tagform(self):
+        """
+        Recipes should be able to have 0 tags
+        """
         form_data = {
             'tag-TOTAL_FORMS': 1,
             'tag-INITIAL_FORMS': 0,
@@ -145,7 +148,7 @@ class CreateRecipeFormTests(TestCase):
         }
         form = TagFormset(prefix='tag', data=form_data)
 
-        self.assertFalse(form.is_valid())
+        self.assertTrue(form.is_valid())
 
 
 class CreateRecipeForkTests(TestCase):
