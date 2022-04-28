@@ -18,12 +18,7 @@
 
 {% block content %}
 {% if recipe %}
-<style>
-    .side-buttons {
-        font-size: 1.5vw;
-    }
 
-</style>
 <input type="hidden" value="" id="copyToClipboard">
 <div class="container-fluid" style="margin-bottom: 50px;">
     <div class="text-center">
@@ -184,7 +179,7 @@
 
             </div>
         </div>
-        <hr/>
+
             
             {% endif %}
             {% if first_star %}
@@ -200,13 +195,10 @@
                     </button>
                 </a>
             </div>
-            <hr />
+
             {% endif %}
             <!-- END OF USER RATING BUTTONS IMPLEMENTATION -->
                         
-
-                
-
 
 
                 {% if user.is_authenticated %}
@@ -233,7 +225,7 @@
                     </button>
                 </a>
                 {% endif %}
-                <hr />
+
                 <div class="d-flex flex-column">
                     <a href="{% url 'wom:createrecipe' recipe.pk %}">
                         <button type="button" class="btn btn-primary side-btn">
@@ -255,7 +247,7 @@
                             View Variations
                         </button>
                     </a>
-                    <hr />
+
 
 
                     <script type="text/javascript">
@@ -288,13 +280,13 @@
                             <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z"/>
                           </svg>
                     </button>
-                    <hr />
+
 
                 </div>
             </div>
 
             </div>
-            <etailiv>
+            <div class="text-center">
                 <!-- START OF AVERAGE RATING DISPLAY IMPLEMENTATION -->
                 {% if 0_5_avg %}
                 {% if 1_0_avg %}
