@@ -17,11 +17,11 @@
 <div class="row recipe-row">
     {% for favorite in object_list %}
 
-    <div class="d-inline-flex col" style="justify-content: center;">
+    <div class="d-inline-flex col-xs-12 col-md-3" style="justify-content: center;">
         <!-- <div class="card" style="height:min-content"> -->
-        <div class="card">
-            <div class="col" style="width: 16rem;">
-                <img src="{{favorite.recipe.image.url}}" class="card-img-top" alt="recipe image" style="width: 100%; height: 15vw; object-fit: cover;">
+        <div class="card" style>
+            <div class="col" >
+                <img src="{{favorite.recipe.image.url}}" class="card-img-top" alt="recipe image" style="width: 100%; object-fit: cover;">
 
                 <div class="card-body">
                     <h5 class="card-title">
@@ -39,29 +39,27 @@
 
                     <div class="card-text">
                         <p>
-                            <em>
+                            <em class="description">
                                 {{favorite.recipe.description}} <br />
                             </em>
                             <!-- <b> Creator: </b> {{ favorite.recipe.creator|default_if_none:"Anonymous" }} <br /> -->
-                            {% if recipe.anonymous_creator_bool %}
-                            <b>Creator: </b>Anonymous <br />
-                            {% else %}
-                            <b>Creator: </b>{{ recipe.creator}} <br />
-                            {% endif %}
+
+                            <b> Prep time: </b> {{favorite.recipe.preparation_time}} <br />
+                            <b> Cooking time: </b>{{favorite.recipe.cooking_time}} <br />
                             <b> Tags: </b>
                             {% for i in favorite.recipe.tag_set.all %}
                             {{i}}{% if not forloop.last %}, {% endif %}
                             </li>
                             {% endfor %}
                             <br />
-                            <b> Prep time: </b> {{favorite.recipe.preparation_time}} <br />
-                            <b> Cooking time: </b>{{favorite.recipe.cooking_time}} <br />
-                            <b> Meal type: </b> {{favorite.recipe.meal_type}} <br />
-                            <b> Course: </b> {{favorite.recipe.course}} <br />
-                            <b>Date published: </b> {{favorite.recipe.pub_date}}
-                            <p> (Favorited on {{ favorite.fav_date }})</p>
+                        <p> (Favorited on {{ favorite.fav_date }})</p>
                         </p>
-
+                        <hr />
+                        {% if recipe.anonymous_creator_bool %}
+                        <b>Creator: </b>Anonymous <br />
+                        {% else %}
+                        <b>Creator: </b>{{ recipe.creator}} <br />
+                        {% endif %}
 
                         <a href="{% url 'wom:detail' favorite.recipe.id %}">
                             <button type="button" class="btn btn-outline-primary">

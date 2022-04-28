@@ -1,9 +1,3 @@
-/* .paragraph-24 {
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-} */
 
 .filter-form-container {
   margin: 10px auto;
@@ -17,7 +11,7 @@
 }
 
 .form-group {
-  padding: 20px 0;
+  padding: 1vh 0;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -68,4 +62,12 @@
 .search-button {
   width: fit-content;
   margin-right: 10px;
+}
+
+#filter-collapse {
+  border-style: solid;
+  border-width: thin;
+  border-radius: 1%;
+  padding: 1vh;
+  border-color: #e9ecef;
 }
