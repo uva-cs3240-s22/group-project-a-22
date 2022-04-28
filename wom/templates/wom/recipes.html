@@ -13,10 +13,11 @@
 <h1 style="padding-left: 12"> Search results for '{{request.GET.q}}'</h1>
 
 {% endif %}
+{% block sidebar %}{% endblock %}
 {% if object_list %}
 <div class="row justify-content-center">{{ object_list|length }} Results </div>
 <div class="row recipe-row" >
-  {% block sidebar %}{% endblock %}
+  
   <!-- {% if object_list %} -->
   {% for recipe in object_list %}
   <div class="col-3">
@@ -72,7 +73,7 @@
 </div>
 </div>
   {% endif %}
-{% else %}
+  {% else %}
 <p>No recipes available</p>
 {% endif%}
 
