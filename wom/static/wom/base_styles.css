@@ -96,3 +96,8 @@ footer{
     line-height: 1.2;
 }
 
+#rating-box{
+    border-style: solid;
+    border-color: #F3916C;
+    border-width: thin;
+}
