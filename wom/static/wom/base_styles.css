@@ -10,7 +10,10 @@ html, body {
    body {
     background-color: #FDFDFD;
     color: #232323;
-    font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;  
+    font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif; 
+    height: 100vh; 
+    display: flex;
+    flex-direction: column;
 }
 
 .header {
@@ -38,8 +41,11 @@ html, body {
 .navbar-light .navbar-brand{
     color: white;
 }
-
+footer{
+    margin-top: auto;
+}
 .footer{
+    
     color: white;
     background-color: #F3916C; 
     height:65px; 
