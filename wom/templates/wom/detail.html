@@ -18,6 +18,12 @@
 
 {% block content %}
 {% if recipe %}
+<script type="text/javascript">
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+})
+</script>
 
 <input type="hidden" value="" id="copyToClipboard">
 <div class="container-fluid" style="margin-bottom: 50px;">
@@ -95,7 +101,7 @@
             {% if user.is_authenticated %}                
 
             <div id="rating-box">
-                Your Rating
+                Add Rating
             <div class="btn-group rating-stars" role="group">
                <a href="{% url 'wom:rate' recipe.pk 1 %}" > 
                    <button type="button" class="btn rounded-circle btn-sm">
@@ -228,7 +234,7 @@
 
                 <div class="d-flex flex-column">
                     <a href="{% url 'wom:createrecipe' recipe.pk %}">
-                        <button type="button" class="btn btn-primary side-btn">
+                        <button type="button" class="btn btn-primary side-btn" data-bs-toggle="tooltip" data-bs-placement="left" title="Modify this recipe by creating a variation of your own!">
                             Create Variation
                             {% comment %} https://icon-sets.iconify.design/uil/code-branch/ {% endcomment %}
                             <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em"
@@ -243,7 +249,7 @@
 
 
                     <a href="{% url 'wom:childrenlist' recipe.pk %}">
-                        <button type="button" class="btn btn-outline-primary side-btn">
+                        <button type="button" class="btn btn-outline-primary side-btn" data-bs-toggle="tooltip" data-bs-placement="left" title="View variations of this recipe created by other users">
                             View Variations
                         </button>
                     </a>
