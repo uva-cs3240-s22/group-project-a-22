@@ -51,21 +51,23 @@
                             {{i}}{% if not forloop.last %}, {% endif %}
                             </li>
                             {% endfor %}
+                            
                             <br />
+                            <b>Posted: </b>{{favorite.recipe.pub_date|date:'N d Y'}}
                         <p> (Favorited on {{ favorite.fav_date }})</p>
                         </p>
                         <hr />
                         {% if recipe.anonymous_creator_bool %}
                         <b>Creator: </b>Anonymous <br />
                         {% else %}
-                        <b>Creator: </b>{{ recipe.creator}} <br />
+                        <b>By: </b>{{ favorite.recipe.creator}} <br />
                         {% endif %}
 
                         <a href="{% url 'wom:detail' favorite.recipe.id %}">
-                            <button type="button" class="btn btn-outline-primary">
-                                View Details
+                            <button type="button" class="btn btn-secondary" style="width: 100%;">
+                              View Details
                             </button>
-                        </a>
+                          </a>
                     </div>
 
 
