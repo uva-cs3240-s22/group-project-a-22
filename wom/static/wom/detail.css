@@ -65,3 +65,8 @@ ol {
 .side-buttons .btn{
     margin-top: 3vh;
 }
+
+.instructions ol {
+    text-align: initial;
+    padding: 20;
+}
