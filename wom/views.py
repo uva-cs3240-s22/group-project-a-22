@@ -56,17 +56,20 @@ def createrecipe(request, recipe_id=''):
                 new_instruction = instrform.save(commit=False)
                 new_instruction.pk = None
                 new_instruction.recipe = new_recipe
-                new_instruction.save()
+                if new_instruction.text != "":
+                    new_instruction.save()
             for ingrform in ingredient_formset:
                 new_ingredient = ingrform.save(commit=False)
                 new_ingredient.pk = None
                 new_ingredient.recipe = new_recipe
-                new_ingredient.save()
+                if new_ingredient.name != "" and new_ingredient.quantity != "" and new_ingredient.units != "":
+                    new_ingredient.save()
             for tag in tag_formset:
                 new_tag = tag.save(commit=False)
                 new_tag.pk = None
                 new_tag.recipe = new_recipe
-                new_tag.save()
+                if new_tag.name != "":
+                    new_tag.save()
             return redirect(reverse('wom:search'))
     else:
         recipeform = RecipeForm(instance=recipe, prefix="recipe")
@@ -325,15 +328,16 @@ def update_recipe(request, recipe_id=''):
             for instrform in instruction_formset:
                 new_instruction = instrform.save(commit=False)
                 new_instruction.recipe = recipe_to_update
-                new_instruction.save()
+                if new_instruction.text != "":
+                    new_instruction.save()
             for ingrform in ingredient_formset:
                 new_ingredient = ingrform.save(commit=False)
                 new_ingredient.recipe = recipe_to_update
-                new_ingredient.save()
+                if new_ingredient.name != "" and new_ingredient.quantity != "" and new_ingredient.units != "":
+                    new_ingredient.save()
             for tag in tag_formset:
                 new_tag = tag.save(commit=False)
                 new_tag.recipe = recipe_to_update
-                print("new tag name", new_tag.name)
                 if new_tag.name != "":
                     new_tag.save()
             return redirect(reverse('wom:account'))
