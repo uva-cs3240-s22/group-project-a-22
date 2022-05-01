@@ -2,3 +2,116 @@
   row-gap: 20px;
   justify-content: flex-start;
 }
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+   body {
+    background-color: #FDFDFD;
+    color: #232323;
+    font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif; 
+    height: 100vh; 
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    background-color: #F3916C;
+    color: white;
+}
+.btn-primary {
+    background-color: #44329E;
+    border-color: #FEDAAA;
+}
+.btn-secondary{
+  background-color: #F3916C;
+  color:white;
+  border-color: #44329E;
+}
+.btn-outline-info{
+  background-color: white;
+  color:#44329E;
+  border-color: #FEDAAA;
+}
+.btn-outline-primary {
+    background-color: #9384e2;
+    color: white;
+    border-color: #FEDAAA;
+  }
+.navbar-light .navbar-nav .nav-link {
+    color: white;
+}
+
+.navbar-light .navbar-brand{
+    color: white;
+}
+footer{
+    margin-top: auto;
+}
+.footer{
+    
+    color: white;
+    background-color: #F3916C; 
+    height:65px; 
+    width: 100%; 
+    bottom:15; 
+    padding-right:20px
+}
+
+.card {
+    border-style: solid;
+    border-color: #F3916C;
+    border-radius: 2%;
+    margin-top: 2vh;
+    height: fit-content; 
+  }
+  .description {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .card-img-top {
+    width: 100%;
+    height: 20vw;
+    object-fit: contain;
+}
+
+.recipe-row{
+    margin:auto;
+
+}
+
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
+    color: black;
+    background-color: #F1EDFF;
+    border-color:#44329E;
+}
+.btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active, .btn-secondary.active, .open>.dropdown-toggle.btn-secondary {
+    color: black;
+    background-color: #FDEFDB;
+    border-color:#44329E;
+
+}
+.btn-outline-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
+    color: black;
+    background-color: #F1EDFF;
+    border-color:#44329E;
+
+}
+.create-recipe-label{
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+#rating-box{
+    border-style: solid;
+    border-color: #F3916C;
+    border-width: thin;
+}

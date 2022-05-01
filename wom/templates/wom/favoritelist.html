@@ -17,71 +17,59 @@
 <div class="row recipe-row">
     {% for favorite in object_list %}
 
-    <div class="d-inline-flex col" style="justify-content: center;">
-        <!-- <div class="card" style="height:min-content"> -->
+    <div class="col-3">
         <div class="card">
-            <div class="col" style="width: 16rem;">
-                <img src="{{favorite.recipe.image.url}}" class="card-img-top" alt="recipe image" style="width: 100%; height: 15vw; object-fit: cover;">
+            <img src="{{favorite.recipe.image.url}}" class="card-img-top" alt="recipe image">
+            <div class="card-body">
+                <h5 class="card-title">
+                    {{favorite.recipe.title}}
+                </h5>
+                <h6>{{ recipe.avgRating | stringformat:".1f" }}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                    </svg>
+                </h6>
+                <div class="card-text">
+                    <em class="description">
+                        {{favorite.recipe.description}} <br />
+                    </em>
+                    <b> Prep time: </b> {{favorite.recipe.preparation_time}} <br />
+                    <b> Cooking time: </b>{{favorite.recipe.cooking_time}} <br />
+                    <b> Tags: </b>
+                    {% for i in favorite.recipe.tag_set.all %}
+                    {{i}}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                    <br />
+                    {{favorite.recipe.pub_date|date:'N d Y'}}
 
-                <div class="card-body">
-                    <h5 class="card-title">
-                        {{favorite.recipe.title}}
-                    </h5>
-                    <h6>{{ favorite.recipe.avgRating | stringformat:".1f" }}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold"
-                            class="bi bi-star-fill" viewBox="0 0 16 16">
-                            <path
-                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                        </svg>
-                    </h6>
+                    <hr />
 
-                    <!-- <p class="card-text text-truncate" height="200" width="200">{{favorite.recipe.description}}</p> -->
 
-                    <div class="card-text">
-                        <p>
-                            <em>
-                                {{favorite.recipe.description}} <br />
-                            </em>
-                            <!-- <b> Creator: </b> {{ favorite.recipe.creator|default_if_none:"Anonymous" }} <br /> -->
-                            {% if recipe.anonymous_creator_bool %}
-                            <b>Creator: </b>Anonymous <br />
-                            {% else %}
-                            <b>Creator: </b>{{ recipe.creator}} <br />
-                            {% endif %}
-                            <b> Tags: </b>
-                            {% for i in favorite.recipe.tag_set.all %}
-                            {{i}}{% if not forloop.last %}, {% endif %}
-                            </li>
-                            {% endfor %}
-                            <br />
-                            <b> Prep time: </b> {{favorite.recipe.preparation_time}} <br />
-                            <b> Cooking time: </b>{{favorite.recipe.cooking_time}} <br />
-                            <b> Meal type: </b> {{favorite.recipe.meal_type}} <br />
-                            <b> Course: </b> {{favorite.recipe.course}} <br />
-                            <b>Date published: </b> {{recipe.pub_date}}
-                        <p> (Favorited on {{ favorite.fav_date }})</p>
-                        </p>
-
+                    <div class="container justify-content-center" style="padding: 0;">
+                        {% if favorite.recipe.anonymous_creator_bool %}
+                        <b>By &nbsp;</b>Anonymous <br />
+                        {% else %}
+                        <b>By &nbsp;</b>{{ favorite.recipe.creator}} <br />
+                        {% endif %}
 
                         <a href="{% url 'wom:detail' favorite.recipe.id %}">
-                            <button type="button" class="btn btn-outline-primary">
+                            <button type="button" class="btn btn-secondary" style="width: 100%;">
                                 View Details
                             </button>
                         </a>
                     </div>
 
-
-
                 </div>
             </div>
         </div>
     </div>
-
     {% endfor %}
 </div>
+</div>
 {% else %}
-<p>You haven't favorited any recipes.</p>
-<!-- </div> -->
+<p class="text-center">You haven't favorited any recipes.</p>
 {% endif %}
 {% else %}
 <p>Please log in to view favorited recipes.</p>

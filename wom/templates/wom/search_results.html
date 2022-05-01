@@ -1,5 +1,7 @@
 {% extends "wom/recipes.html" %}
 {% load static %}
+{% load bootstrap5 %}
+{% bootstrap_javascript %}
 {% block css %}
 {% block extrahead %}
 <script type="text/javascript" src="{% static 'wom/js/formControls.js' %}"></script>
@@ -12,6 +14,15 @@
 
   $(document).on('click', '#tag-remove', function (e) {
     disableField(this.value, 'filter-form')
+    return false;
+  });
+
+  $(document).on('click', '#collapse-icon', function (e) {
+    var $up_icon = $("#up-icon"); 
+    var $down_icon = $("#down-icon"); 
+    $up_icon.css("display", $up_icon.css("display") === 'none' ? '' : 'none');
+    
+    $down_icon.css("display", $down_icon.css("display") === 'none' ? '' : 'none');
     return false;
   });
 
@@ -31,6 +42,15 @@
     $('#course').val("")
     $('#prep_time').val("")
     $('#cook_time').val("")
+    
+    $('.hidden-ingredient').each(function() {
+      $(this).attr('disabled', true)
+    })
+
+    $('.hidden-tag').each(function() {
+      $(this).attr('disabled', true)
+    })
+
     $('#filter-form').submit()
     return false;
   });
@@ -49,131 +69,141 @@
             <span class="input-group-text">Title</span>
           </div>
           <input type="search" id="title_search" name="q" value="{{ request.GET.q }}"class="form-control" placeholder="Search"/>
+          <button class="btn btn-primary" id="collapse-icon" type="button" data-bs-toggle="collapse" data-bs-target="#filter-collapse">
+            Advanced Search
+            <svg id="down-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-down" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5zM8 6a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 .708-.708L7.5 12.293V6.5A.5.5 0 0 1 8 6z"/>
+            </svg>
+            <svg id="up-icon"xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-up" viewBox="0 0 16 16" style="display: none;">
+              <path fill-rule="evenodd" d="M8 10a.5.5 0 0 0 .5-.5V3.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 3.707V9.5a.5.5 0 0 0 .5.5zm-7 2.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+          </button>
       </div>
     </div>
 
-    <div class="form-group">
-      <div class="input-group dropdown-group">
-        <div class="input-group-prepend">
-          <label for="sort_by" class="input-group-text">Sort By:</label>
-        </div>
-        <select id="sort_by" name="sort_by" class="form-control" onchange="this.form.submit()">
-            <option value="" selected></option> 
-            <option value="AZ">A-Z</option>
-            <option value="Recent">Recent first</option>
-            <option value="Oldest">Oldest first</option>
-            <option value="Highest">Highest Rated of All Time</option>
-            <option value="Highest_Year">Highest Rated this Year</option>
-            <option value="Highest_Month">Highest Rated this Month</option>
-            <option value="Highest_Week">Highest Rated this Week</option>
-        </select>
-      </div>
-
-      <div class="input-group dropdown-group">
-        <div class="input-group-prepend">
-          <label for="meal_type" class="input-group-text">Meal Type:</label>
-        </div>
-        <select id="meal_type" name="meal_type" class="form-control" onchange="this.form.submit()">
-            <option value="" selected ></option>
-            <option value="breakfast">Breakfast</option>
-            <option value="lunch">Lunch</option>
-            <option value="dinner">Dinner</option>
-            <option value="dessert">Dessert</option>
-        </select>
-      </div>
-
-      <div class="input-group dropdown-group">
-        <div class="input-group-prepend">
-          <label for="course" class="input-group-text">Course:</label>
-        </div>
-        <select id="course" name="course" class='form-control' onchange="this.form.submit()">
-            <option value="" selected ></option>
-            <option value="appetizer">Appetizer</option>
-            <option value="entree">Entree</option>
-            <option value="side">Side</option>
-            <option value="snack">Snack</option>
-        </select>
-      </div>
-
-      <div class="input-group dropdown-group">
-        <div class="input-group-prepend">
-          <label for="prep_time" class="input-group-text">Preparation Time:</label>
-        </div>
-        <select id="prep_time" name="prep_time" class="form-control" onchange="this.form.submit()">
-            <option value="" selected></option>
-            <option value="00:10:00"> &lt; 10 minutes</option>
-            <option value="00:20:00"> &lt; 20 minutes</option>
-            <option value="00:30:00"> &lt; 30 minutes</option>
-            <option value="00:45:00"> &lt; 45 minutes</option>
-            <option value="1:00:00"> &lt; 1 hour</option>
-            <option value="1:00:01"> &gt; 1 hour </option>
-        </select>
-      </div>
-
-      <div class="input-group dropdown-group">
-        <div class="input-group-prepend">
-          <label for="cook_time" class="input-group-text">Cooking Time:</label>
-        </div>
-        <select id="cook_time" name="cook_time" class="form-control" onchange="this.form.submit()">
-            <option value="" selected></option>
-            <option value="00:10:00"> &lt; 10 minutes</option>
-            <option value="00:20:00"> &lt; 20 minutes</option>
-            <option value="00:30:00"> &lt; 30 minutes</option>
-            <option value="00:45:00"> &lt; 45 minutes</option>
-            <option value="1:00:00"> &lt; 1 hour</option>
-            <option value="1:00:01"> &gt; 1 hour</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <div class="multi-item-group">
-        <div class="multi-item-list">
-          {% for ingredient in ingredients_search %}
-            <button type="button" id="ingredient-remove" value="ingredient-{{ ingredient }}" class="multi-item input-group-text">
-              {{ ingredient }} &nbsp
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16" color="red">
-                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-              </svg>
-            </button>
-            <input type="hidden" id="ingredient-{{ ingredient }}" name="ingredients" value="{{ ingredient }}" />
-          {% endfor %}
-        </div>
-
-        <div class="input-group single-field-group">
+    <div class="collapse {{ show_advanced_search }}" id="filter-collapse">
+      <div class="form-group">
+        <div class="input-group dropdown-group">
           <div class="input-group-prepend">
-            <label for="ingredient-add" class="input-group-text">Ingredients:</label>
+            <label for="sort_by" class="input-group-text">Sort By:</label>
           </div>
-          <input type='text' id='ingredient-add' name='ingredients' class="form-control"></input>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <div class="multi-item-group">
-        <div class="multi-item-list">
-          {% for tag in tags_search %}
-            <button type="button" id="tag-remove" value="tag-{{ tag }}" class="multi-item input-group-text">
-              {{ tag }} &nbsp
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16" color="red">
-                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-              </svg>
-            </button>
-            <input type="hidden" id="tag-{{ tag }}" name="tags" value="{{ tag }}" />
-          {% endfor %}
+          <select id="sort_by" name="sort_by" class="form-select" onchange="this.form.submit()">
+              <option value="" selected></option> 
+              <option value="AZ">A-Z</option>
+              <option value="Recent">Recent first</option>
+              <option value="Oldest">Oldest first</option>
+              <option value="Highest">Highest Rated of All Time</option>
+              <option value="Highest_Year">Highest Rated this Year</option>
+              <option value="Highest_Month">Highest Rated this Month</option>
+              <option value="Highest_Week">Highest Rated this Week</option>
+          </select>
         </div>
 
-        <div class="input-group single-field-group">
+        <div class="input-group dropdown-group">
           <div class="input-group-prepend">
-            <label for="tag-add" class="input-group-text">Tags:</label>
+            <label for="meal_type" class="input-group-text">Meal Type:</label>
           </div>
-          <input type='text' id='tag-add' name='tags' class="form-control"></input>
+          <select id="meal_type" name="meal_type" class="form-select" onchange="this.form.submit()">
+              <option value="" selected ></option>
+              <option value="breakfast">Breakfast</option>
+              <option value="lunch">Lunch</option>
+              <option value="dinner">Dinner</option>
+              <option value="dessert">Dessert</option>
+          </select>
+        </div>
+
+        <div class="input-group dropdown-group">
+          <div class="input-group-prepend">
+            <label for="course" class="input-group-text">Course:</label>
+          </div>
+          <select id="course" name="course" class='form-select' onchange="this.form.submit()">
+              <option value="" selected ></option>
+              <option value="appetizer">Appetizer</option>
+              <option value="entree">Entree</option>
+              <option value="side">Side</option>
+              <option value="snack">Snack</option>
+          </select>
+        </div>
+
+        <div class="input-group dropdown-group">
+          <div class="input-group-prepend">
+            <label for="prep_time" class="input-group-text">Preparation Time:</label>
+          </div>
+          <select id="prep_time" name="prep_time" class="form-select" onchange="this.form.submit()">
+              <option value="" selected></option>
+              <option value="00:10:00"> &le; 10 minutes</option>
+              <option value="00:20:00"> &le; 20 minutes</option>
+              <option value="00:30:00"> &le; 30 minutes</option>
+              <option value="00:45:00"> &le; 45 minutes</option>
+              <option value="1:00:00"> &le; 1 hour</option>
+              <option value="1:00:01"> &gt; 1 hour </option>
+          </select>
+        </div>
+
+        <div class="input-group dropdown-group">
+          <div class="input-group-prepend">
+            <label for="cook_time" class="input-group-text">Cooking Time:</label>
+          </div>
+          <select id="cook_time" name="cook_time" class="form-select" onchange="this.form.submit()">
+              <option value="" selected></option>
+              <option value="00:10:00"> &le; 10 minutes</option>
+              <option value="00:20:00"> &le; 20 minutes</option>
+              <option value="00:30:00"> &le; 30 minutes</option>
+              <option value="00:45:00"> &le; 45 minutes</option>
+              <option value="1:00:00"> &le; 1 hour</option>
+              <option value="1:00:01"> &gt; 1 hour</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="multi-item-group">
+          <div class="multi-item-list">
+            {% for ingredient in ingredients_search %}
+              <button type="button" id="ingredient-remove" value="ingredient-{{ ingredient }}" class="multi-item input-group-text">
+                {{ ingredient }} &nbsp
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16" color="red">
+                  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
+              </button>
+              <input type="hidden" class="hidden-ingredient" id="ingredient-{{ ingredient }}" name="ingredients" value="{{ ingredient }}" />
+            {% endfor %}
+          </div>
+
+          <div class="input-group single-field-group">
+            <div class="input-group-prepend">
+              <label for="ingredient-add" class="input-group-text">Ingredients:</label>
+            </div>
+            <input type='text' id='ingredient-add' name='ingredients' class="form-control"></input>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="multi-item-group">
+          <div class="multi-item-list">
+            {% for tag in tags_search %}
+              <button type="button" id="tag-remove" value="tag-{{ tag }}" class="multi-item input-group-text">
+                {{ tag }} &nbsp
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16" color="red">
+                  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
+              </button>
+              <input type="hidden" class="hidden-tag" id="tag-{{ tag }}" name="tags" value="{{ tag }}" />
+            {% endfor %}
+          </div>
+
+          <div class="input-group single-field-group">
+            <div class="input-group-prepend">
+              <label for="tag-add" class="input-group-text">Tags:</label>
+            </div>
+            <input type='text' id='tag-add' name='tags' class="form-control"></input>
+          </div>
         </div>
       </div>
     </div>
-
     <div class="form-group">
-      <button type="submit" class="btn btn-secondary search-button">Search</button>
+      <button type="submit" class="btn btn-primary search-button">Search</button>
       <button class="btn btn-secondary search-button" id="search-clear">Clear all</button>
     </div>
   </form>

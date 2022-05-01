@@ -1,0 +1,18 @@
+.side-btn {
+    width: 20vw;
+}
+
+.top {
+    margin-bottom: 8vh;
+}
+ol {
+    list-style: decimal inside;
+}
+
+.instruction-item {
+    display: list-item;
+}
+
+p {
+    color: red;
+}

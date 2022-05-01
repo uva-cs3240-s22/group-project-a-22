@@ -1,5 +1,5 @@
 .side-btn {
-    width: 100%;
+    width: 10vw;
 }
 
 .top {
@@ -14,9 +14,30 @@ ol {
     display: list-item;
 }
 
+.recipe-metadata-div {
+    border-style: solid;
+    border-radius: 2%;
+    border-color: #F3916C;
+    justify-content: space-between;
+    text-align: initial;
+    margin: 0 0 0 10;
+}
+
+.recipe-metadata {
+    display: flex;
+    justify-content: space-between;
+}
+
+.prep-data {
+    padding: 10;
+    margin: 10
+}
+
+.side-buttons {
+    margin: 0 -10 0 0;
+}
 .rating-stars {
   display: flex;
-  flex-direction: row-reverse;
 }
 
 .list-group-item {
@@ -31,4 +52,8 @@ ol {
 
 .fork-button {
   margin-bottom: 10px;
+}
+
+#title-info{
+    margin: auto;
 }
