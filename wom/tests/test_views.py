@@ -136,6 +136,7 @@ class CreateRecipeViewTests(TestCase):
         self.assertRedirects(response, reverse(
             'wom:detail', kwargs={"pk":1}), status_code=302, target_status_code=200, fetch_redirect_response=True)
 
+
     def test_create_page_post_no_instructions(self):
         user = User.objects.get_or_create(username='testuser')[0]
         self.client.force_login(user)
@@ -242,6 +243,7 @@ class CreateRecipeViewTests(TestCase):
             ingredients[2].name, 'Test Ingredient 3')
         self.assertRedirects(response, reverse(
             'wom:detail', kwargs={"pk":1}), status_code=302, target_status_code=200, fetch_redirect_response=True)
+
 
 
 class SearchViewTests(TestCase):
