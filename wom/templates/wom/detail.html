@@ -54,7 +54,7 @@
             <div class="col-10">
                 <div class="row">
                     <div class="col-3 recipe-metadata-div d-flex flex-column">
-                        <div class="recipe-metadata">
+                        <div class="recipe-metadata" style="padding-top:2vh">
                             <p><b>Date published: </b></p>
                             <p style="font-size:large;"> {{recipe.pub_date|date:'N d Y'}} </p>
                         </div>
@@ -86,7 +86,7 @@
                     </div>
                     <div class="col-8">
                         <div class="container d-flex justify-content-center">
-                            <img src="../../static/wom/images/macandcheese-500x500.jpeg" width="600" height="400">
+                            <img src="{{recipe.image.url}}" width="600" height="400" style="object-fit:cover;">
                         </div>
 
                     </div>
@@ -453,7 +453,7 @@
     </div>
     <div class="col-md-5 d-flex flex-column">
         <h2 class="text-center">Steps</h2>
-        <div class="card" style="width: 21.5em;margin:0 auto;">
+        <div class="card" style="width: 21.5em;margin:auto;">
             <ol>
                 {% for i in recipe.instruction_set.all %}
                 <li>{{i}}</li>
