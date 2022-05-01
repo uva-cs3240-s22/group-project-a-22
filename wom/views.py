@@ -69,6 +69,7 @@ def createrecipe(request, recipe_id=''):
                 new_tag.pk = None
                 new_tag.recipe = new_recipe
                 new_tag.save()
+
             return HttpResponseRedirect(reverse('wom:detail', args=(new_recipe.pk,)))
     else:
         recipeform = RecipeForm(instance=recipe, prefix="recipe")
