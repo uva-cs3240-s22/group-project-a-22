@@ -51,6 +51,8 @@ def createrecipe(request, recipe_id=''):
             # new_recipe.image = request.FILES.get('image')
             # print(request.FILES)
             new_recipe.pk = None
+            new_recipe.avgRating = 0
+            new_recipe.numRatings = 0
             new_recipe.save()
             for instrform in instruction_formset:
                 new_instruction = instrform.save(commit=False)
@@ -67,7 +69,8 @@ def createrecipe(request, recipe_id=''):
                 new_tag.pk = None
                 new_tag.recipe = new_recipe
                 new_tag.save()
-            return redirect(reverse('wom:search'))
+
+            return HttpResponseRedirect(reverse('wom:detail', args=(new_recipe.pk,)))
     else:
         recipeform = RecipeForm(instance=recipe, prefix="recipe")
         instruction_formset = InstructionFormset(

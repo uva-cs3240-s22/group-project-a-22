@@ -252,7 +252,7 @@ class CreateRecipeForkTests(TestCase):
         new_ingredients = list(new_recipe.ingredient_set.all())
 
         self.assertRedirects(response, reverse(
-            'wom:search'), status_code=302, target_status_code=200, fetch_redirect_response=True)
+            'wom:detail', kwargs={"pk":2}), status_code=302, target_status_code=200, fetch_redirect_response=True)
         self.assertEqual(new_recipe.title, old_recipe.title)
         self.assertEqual(new_recipe.parent_id, old_recipe.pk)
         self.assertEqual(new_recipe.meal_type, 'lunch')

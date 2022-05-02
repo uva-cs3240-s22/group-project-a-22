@@ -45,7 +45,7 @@ class Ingredient(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     quantity = models.FloatField()
-    units = models.CharField(max_length=5)
+    units = models.CharField(max_length=10)
 
     def __str__(self):
         return self.name + " (" + str(self.quantity) + " " + self.units + ")"
