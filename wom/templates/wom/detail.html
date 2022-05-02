@@ -47,7 +47,7 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         <div class="row justify-content-right">
             <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; top: 0; right: 0;">
                 <div class="toast-body">
-                    Copied to clipboard
+                    Copied link!
                 </div>
             </div>
         </div>
@@ -118,7 +118,7 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             {% if user.is_authenticated %}                
 
             <div id="rating-box">
-                Add Rating
+                Your Rating
             <div class="btn-group rating-stars" role="group">
                <a href="{% url 'wom:rate' recipe.pk 1 %}" > 
                    <button type="button" class="btn rounded-circle btn-sm">
