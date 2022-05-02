@@ -1,5 +1,25 @@
+<!-- /***************************************************************************************
+*  REFERENCES
+*  Title: Bootstrap List Group
+*  Author: Bootstrap
+*  Code version: 5.1
+*  URL: https://getbootstrap.com/docs/5.1/components/list-group/#numbered
+*  Software License: MIT
+*
+*  Title: Bootstrap Card
+*  Author: Bootstrap
+*  Code version: 5.1
+*  URL: https://getbootstrap.com/docs/5.1/components/card
+*  Software License: MIT
+*
+*  Title: Bootstrap Tooltips
+*  Author: Bootstrap
+*  Code version: 5.1
+*  URL: https://getbootstrap.com/docs/5.1/components/tooltips
+*  Software License: MIT
+***************************************************************************************/ -->
+
 <!--
-    https://getbootstrap.com/docs/5.1/components/list-group/#numbered
     https://getbootstrap.com/docs/5.1/components/card/
 
 -->
@@ -182,7 +202,6 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                         {% endif %}
                     </button>
                 </a>
-
             </div>
         </div>
 
@@ -247,18 +266,13 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 
                     {% endif %}
 
-
                     <a href="{% url 'wom:childrenlist' recipe.pk %}">
                         <button type="button" class="btn btn-outline-primary side-btn" data-bs-toggle="tooltip" data-bs-placement="left" title="View variations of this recipe created by other users">
                             View Variations
                         </button>
                     </a>
 
-
-
                     <script type="text/javascript">
-
-
                         function copy() {
                             document.getElementById("copyToClipboard").value = window.location.href
                             var copyText = document.getElementById("copyToClipboard");
@@ -274,8 +288,6 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                                     alert("something went wrong");
                                 });;
                         }
-        
-        
                     </script>
                     <div id="liveAlertPlaceholder"></div>
                     <button type="button" class="btn btn-primary side-btn" id="liveAlertBtn" title="Copy Link"
@@ -407,18 +419,13 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                 <p style="font-size:large;"><em>{{recipe.description}}</em></p>
             </div>
             <!-- END OF AVERAGE RATING DISPLAY IMPLEMENTATION -->
-            
-
         </div>
     </div>
-
-
 </div>
 
 </div>
 
 <div class="row prep-data">
-
     <div class="col-md-6 d-flex justify-content-right flex-column ">
         <h2 class="text-center">Ingredients</h2>
         <div class="card" style="width: 21.5em;margin:0 auto;">
@@ -441,14 +448,12 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                 {% endfor %}
             </ol>
         </div>
-
-
     </div>
     <div class="col-1">&nbsp;</div>
 </div>
 
 {% else %}
-<p>No recipes available</p>
+<p class="text-center">No recipe found</p>
 
 </div>
 {% endif %}
