@@ -1,3 +1,15 @@
+<!-- *******************************************
+*  REFERENCES
+* 1. 
+*  Title: Stack overflow post: How to check if a user is logged in (how to properly use user.is_authenticated)?
+*  Author: Ren
+*  Date: June 30, 2020
+*  URL: https://stackoverflow.com/questions/3644902/how-to-check-if-a-user-is-logged-in-how-to-properly-use-user-is-authenticated 
+*  Software License: Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)
+*
+*
+* ************************************************* -->
+
 {% extends "wom/base.html" %}
 
 {% load bootstrap5 %}
@@ -48,7 +60,7 @@
 {% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
+{% if user.is_authenticated %} <!-- source #1 -->
 <div class="container col-8 recipe-form">
   <h2 class="text-center">Create New Recipe</h2>
   <form method="post" enctype="multipart/form-data" style="margin-left: 5%; margin-right: 5%; margin-bottom: 5%">
