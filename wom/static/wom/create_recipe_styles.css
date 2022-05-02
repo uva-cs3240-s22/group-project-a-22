@@ -1,6 +1,24 @@
 .recipe-form {
     margin: auto;
 }
+
 .btn {
     width: fit-content;
+}
+
+.visually-hidden {
+  position: relative!important;
+}
+
+.instruction-form {
+  padding-left: 1em;
+}
+
+.instruction-form::before {
+  font-size: 20;
+  font-weight: 400;
+}
+
+.form-check {
+  display: none;
 }

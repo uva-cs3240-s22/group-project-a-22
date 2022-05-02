@@ -1,3 +1,15 @@
+<!-- *******************************************
+*  REFERENCES
+* 1. 
+*  Title: Stack overflow post: How to check if a user is logged in (how to properly use user.is_authenticated)?
+*  Author: Ren
+*  Date: June 30, 2020
+*  URL: https://stackoverflow.com/questions/3644902/how-to-check-if-a-user-is-logged-in-how-to-properly-use-user-is-authenticated 
+*  Software License: Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)
+*
+*
+* ************************************************* -->
+
 {% extends "wom/base.html" %}
 
 {% load bootstrap5 %}
@@ -12,17 +24,17 @@
 <script>
   $(document).on('click', '#instruction-add-more', function (e) {
     e.preventDefault();
-    cloneMore('.instruction-form:last', 'instruction');
+    cloneMore('.instruction-form', 'instruction');
     return false;
   });
   $(document).on('click', '#ingredient-add-more', function (e) {
     e.preventDefault();
-    cloneMore('.ingredient-form:last', 'ingredient');
+    cloneMore('.ingredient-form', 'ingredient');
     return false;
   });
   $(document).on('click', '#tag-add-more', function (e) {
     e.preventDefault();
-    cloneMore('.tag-form:last', 'tag');
+    cloneMore('.tag-form', 'tag');
     return false;
   });
 
@@ -49,78 +61,73 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-<div class="container col-8 recipe-form">
-  <h2 class="text-center">Create New Recipe</h2>
-  <form method="post" enctype="multipart/form-data" style="margin-left: 5%; margin-right: 5%; margin-bottom: 5%">
-    {% csrf_token %}
-    {% bootstrap_form recipe_form %}
+  <div class="container col-8 recipe-form">
+    <h2 class="text-center">Create New Recipe</h2>
+    <form method="post" enctype="multipart/form-data" style="margin-left: 5%; margin-right: 5%; margin-bottom: 5%">
+      {% csrf_token %}
+      {% bootstrap_form recipe_form %}
 
-    <h4>Instructions</h4>
-    {{ instruction_forms.management_form }}
-    {% for instr_form in instruction_forms %}
-    <div class="instruction-form row">
-      <div class="col">{% bootstrap_form instr_form show_label=False%}</div>
-      <button type="button" id="instruction-add-more" class="btn btn-secondary add"
-        style="height:fit-content; width:fit-content;">Add More</button>
-      <button type="button" id="instruction-remove-row" class="col-1 btn btn-danger mb-3 remove"
-        style="margin-left: 1%;">Remove</button>
-
-    </div>
-    {% endfor %}
-
-
-    <br /><br />
-
-    <h4>Ingredients</h4>
-    {{ ingredient_forms.management_form }}
-    {% for ingr_form in ingredient_forms %}
-    <div class="ingredient-form row">
-      {% for field in ingr_form %}
-      <div class="col">
-        {% bootstrap_field field show_label=False %}
-      </div>
+      <h4>Instructions</h4>
+      {{ instruction_forms.management_form }}
+      <ol class="list-group list-group-numbered">
+      {% for instr_form in instruction_forms %}
+        <li class="instruction-form list-item row">
+          <div class="col">{% bootstrap_form instr_form show_label=False%}</div>
+          <button type="button" id="instruction-remove-row" class="col-2 btn btn-danger mb-3 remove" style="margin-left: 1%;">Remove</button>
+        </li>
       {% endfor %}
-      <button type="button" id="ingredient-add-more" class="btn btn-secondary add"
-        style="height:fit-content; width:fit-content;">Add More</button>
-      <button type="button" id="ingredient-remove-row" class="col-1 btn btn-danger mb-3 remove"
-        style="margin-left: 1%;">Remove</button>
-    </div>
-    {% endfor %}
+      <button type="button" id="instruction-add-more" class="btn btn-secondary add" style="height:fit-content; width:fit-content;">Add More</button>
+      </ol>
 
 
-    <br /><br />
+      <br/><br/>
 
-    <h4>Tags</h4>
-    <h6>Please add descriptive tags to this meal for convenient searching later!</h6>
-    {{ tag_forms.management_form }}
-    {% for tag_form in tag_forms %}
-    <div class="tag-form row">
-      {% for field in tag_form %}
-      <div class="col">
-        {% bootstrap_field field show_label=False %}
-      </div>
+      <h4>Ingredients</h4>
+      {{ ingredient_forms.management_form }}
+      {% for ingr_form in ingredient_forms %}
+        <div class="ingredient-form row">
+          {% for field in ingr_form %}
+            <div class="col">
+              {% bootstrap_field field show_label=False %}
+            </div>
+          {% endfor %}
+          <button type="button" id="ingredient-remove-row" class="col-1 btn btn-danger mb-3 remove" style="margin-left: 1%;">Remove</button>
+        </div>
       {% endfor %}
-      <button type="button" id="tag-add-more" class="btn btn-secondary add"
-        style="height:fit-content; width:fit-content;">Add More</button>
-      <button type="button" id="tag-remove-row" class="col-1 btn btn-danger mb-3 remove"
-        style="margin-left: 1%;">Remove</button>
-    </div>
-    {% endfor %}
+      <button type="button" id="ingredient-add-more" class="btn btn-secondary add" style="height:fit-content; width:fit-content;">Add More</button>
 
 
-    <br /><br />
+      <br/><br/>
 
-    {% buttons %}
-    <div class="d-flex justify-content-center">
-      <button type="submit" class="btn btn-primary" style="font-size:larger; min-width: 10vw;">
-        Submit
-      </button>
-    </div>
+      <h4>Tags</h4>
+      <h6>Please add descriptive tags to this meal for convenient searching later!</h6>
+      {{ tag_forms.management_form }}
+      {% for tag_form in tag_forms %}
+        <div class="tag-form row">
+          {% for field in tag_form %}
+            <div class="col">
+              {% bootstrap_field field show_label=False %}
+            </div>
+          {% endfor %}
+          <button type="button" id="tag-remove-row" class="col-1 btn btn-danger mb-3 remove" style="margin-left: 1%;">Remove</button>
+        </div>
+      {% endfor %}
+      <button type="button" id="tag-add-more" class="btn btn-secondary add" style="height:fit-content; width:fit-content;">Add More</button>
 
-    {% endbuttons %}
 
-  </form>
-  {% else %}
+      <br/><br/>
+
+      {% buttons %}
+        <div class="d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary" style="font-size:larger; min-width: 10vw;">
+            Submit
+          </button>
+        </div>
+      {% endbuttons %}
+
+    </form>
+  </div>
+{% else %}
   <div style="text-align: center;">
     <p class="text-center">Log in with Google to create a new recipe.</p>
     <form method="post" action="{% provider_login_url 'google' process='login' %}" class="my-auto">
@@ -131,7 +138,5 @@
       <button class="btn btn-primary my-auto" type="submit">Login</button>
     </form>
   </div>
-  
-</div>
 {% endif %}
 {% endblock %}

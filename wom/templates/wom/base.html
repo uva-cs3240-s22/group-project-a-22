@@ -1,3 +1,26 @@
+{% comment %} 
+# REFERENCES:
+# Title: Django-AllAuth Templates Documentation
+# Author: Django-AllAuth
+# URL: https://django-allauth.readthedocs.io/en/latest/templates.html
+# Software License: MIT
+#
+# Title: Bootstrap Navbar Documentation
+# Author: Bootstrap
+# URL: https://getbootstrap.com/docs/4.0/components/navbar/
+# Software License: MIT
+#
+# Title: StackOverflow Response to "How to disable intermediate signout page in Django allauth"
+# Author: Kalob Taulien
+# Date: December 27, 2018
+# URL: https://stackoverflow.com/a/53949131
+#
+# Title: StackOverflow Response to "How to exclude logo from collapsed navbar? [Bootstrap/HTML]"
+# Author: Ali Klein
+# Date: May 2, 2021
+# URL: https://stackoverflow.com/a/67352904
+{% endcomment %}
+
 {# Load the libraries #}
 {% load bootstrap5 %}
 {% load static %}
@@ -17,11 +40,10 @@
 <body>
   
 {% block base_content %}
-<div class="page-container">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    
+<div class="page-container ">
+  <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container-fluid header">
-      <img src="../../static/wom/images/fork.png" style="width:45px; height:auto; float:left;">
+      <img src="../../static/wom/images/fork.png" style="width:45px; height:auto; float:left;"/>
       <span class="navbar-brand">Word of Mouth</span>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
@@ -46,8 +68,7 @@
           </li>
           {% endif %}
           <li class="nav-item ">
-
-                    <form action="{% url 'wom:search' %}" method="get">
+            <form action="{% url 'wom:search' %}" method="get">
               <div class="input-group" style="padding-top: 15;">
                 <div class="form-outline">
                   <input type="search" id="form1" name="q" class="form-control" placeholder="Search by recipe title"/>
@@ -57,35 +78,30 @@
                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
                   </svg>
                 </button>
-          </li>
-
-        </ul>
+              </div>
             </form>
-            <div class="d-flex flex-row justify-content-center">
-              {% if user.is_authenticated %}
-                <div class="my-auto me-2">Welcome, {{ user.username }}</div>
-                <form method="post" action="{% url 'account_logout' %}" class="my-auto">
-                  {% csrf_token %}
-                  {% if redirect_field_value %}
-                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-                  {% endif %}
-                  <button class="btn btn-primary my-auto" type="submit">Logout</button>
-                </form>
-              {% else %}
-                <form method="post" action="{% provider_login_url 'google' process='login' %}" class="my-auto">
-                  {% csrf_token %}
-                  {% if redirect_field_value %}
-                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-                  {% endif %}
-                  <button class="btn btn-primary my-auto" type="submit">Login</button>
-                </form>
+          </li>
+        </ul>
+        <div class="d-flex flex-row justify-content-center">
+          {% if user.is_authenticated %}
+            <div class="my-auto me-2">Welcome, {{ user.username }}</div>
+            <form method="post" action="{% url 'account_logout' %}" class="my-auto">
+              {% csrf_token %}
+              {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
               {% endif %}
-            </div>
+              <button class="btn btn-primary my-auto" type="submit">Logout</button>
+            </form>
+          {% else %}
+            <form method="post" action="{% provider_login_url 'google' process='login' %}" class="my-auto">
+              {% csrf_token %}
+              {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+              {% endif %}
+              <button class="btn btn-primary my-auto" type="submit">Login</button>
+            </form>
+          {% endif %}
         </div>
-
-
- 
-
       </div>
     </div>
   </nav>
@@ -93,18 +109,16 @@
   <div class="content">
       {% block content %}{% endblock %}
   </div>
-
+  
+  <footer>
+    <div class="footer" >
+      <img src="../../static/wom/images/fork.png" style="width:45px; height:auto; float:right; margin-top: 10px">
+      <h6 class="text-center" style="padding-top: 15px;">
+        Copyright © 2022: Group A-22
+      </h6>
+      <div class="text-center" style="font-size:smaller"><a href="https://www.flaticon.com/free-icons/fork" title="fork icons">Fork icons created by Freepik - Flaticon</a></div>
+    </div>
+  </footer>
 </div>
 {% endblock %}
-<footer>
-
-  <div class="footer" >
-    <img src="../../static/wom/images/fork.png" style="width:45px; height:auto; float:right; padding-top: 10px;">
-    <h6 class="text-center" style="padding-top: 15px;">
-      Copyright © 2022: Group A-22
-    </h6>
-    <div class="text-center" style="font-size:smaller"><a href="https://www.flaticon.com/free-icons/fork" title="fork icons">Fork icons created by Freepik - Flaticon</a></div>
-  </div>
-</footer>
 </body>
-

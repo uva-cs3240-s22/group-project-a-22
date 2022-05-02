@@ -1,6 +1,15 @@
+/**************************
+ * REFERENCES:
+ * Title: Adding Forms Dynamically to a Django Formset
+ * Author: Taranjeet Singh
+ * Date: July 10, 2017
+ * URL: https://medium.com/all-about-django/adding-forms-dynamically-to-a-django-formset-375f1090c2b0
+ **************************/
+
 function cloneMore(selector, prefix) {
-  var newElement = $(selector).clone(true);
+  var newElement = $(selector + ":last").clone(true);
   var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
+  var elementId = $(selector + ":first").find("#id_" + prefix + "-0-id").val();
   newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function() {
     var name = $(this).attr('name').replace('-' + (total-1) + '-', '-' + total +'-');
     var id = 'id_' + name;
@@ -13,9 +22,10 @@ function cloneMore(selector, prefix) {
       $(this).attr({'for': forValue});
     }
   });
+  newElement.find('#id_' + prefix + '-' + total + '-id').val(elementId);
   total++;
   $('#id_' + prefix + '-TOTAL_FORMS').val(total);
-  $(selector).after(newElement);
+  $(selector + ":last").after(newElement);
   return false;
 }
 

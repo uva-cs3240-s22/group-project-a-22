@@ -10,6 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+#######################
+# REFERENCES:
+# Title: Getting Started with Django Social Authentication
+# Author: Moeedlodhi
+# Date: June 21, 2021
+# URL: https://medium.com/geekculture/getting-started-with-django-social-authentication-80ee7dc26fe0
+#######################
+
 from pathlib import Path
 import os
 import dj_database_url

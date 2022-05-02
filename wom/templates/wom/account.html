@@ -1,3 +1,39 @@
+
+<!-- *******************************************
+*  REFERENCES
+* 1. 
+*  Title: Stack overflow post: Django template tag if doesn't compare as expected
+*  Author: neverwalkaloner
+*  Date: Nov 14, 2020
+*  URL: https://stackoverflow.com/questions/64835042/django-template-tag-if-doesnt-compare-as-expected
+*  Software License: Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)
+*
+* 2.
+*  Title: Bootstrap Nav Pills Documentation
+*  Author: Bootstrap 
+*  URL: https://getbootstrap.com/docs/4.0/components/navs/#pills 
+*  Software License: MIT
+*
+* 3.
+*  Title: Bootstrap Trash Icon Documentation
+*  Author: Bootstrap 
+*  URL: https://icons.getbootstrap.com/icons/trash/
+*  Software License: MIT
+*
+* 4.
+*  Title: “delete confirmation message on click” Code Answer’s
+*  Author: Light Leopard 
+*  URL: https://www.codegrepper.com/code-examples/css/delete+confirmation+message+on+click 
+*  Date: May 7 2020 
+*
+* 5.
+*  Title: Bootstrap Pen Icon Documentation
+*  Author: Bootstrap 
+*  URL: https://icons.getbootstrap.com/icons/pen/
+*  Software License: MIT
+*
+************************************************** -->
+
 {% extends "wom/base.html" %}
 
 {% load bootstrap5 %}
@@ -20,19 +56,18 @@
 
 <div class="row recipe-row">
     {% for recipe in object_list %}
-    {% if recipe.creator|slugify == user.username|slugify %}
+    <!--  Only displaying recipes whose usernames match the logged in user -->
+    {% if recipe.creator|slugify == user.username|slugify %} <!-- source #1 -->
     <div class="col-3">
         <div class="card">
             <div class="card-header">
-                <ul class="nav nav-pills card-header-pills">
+                <ul class="nav nav-pills card-header-pills"> <!-- source #2 -->
                     <li class="nav-item">
                         <a class="nav-link active" href="{% url 'wom:delete-recipe' recipe.id %}"
                             style="background-color:#44329E"
-
-                            
-                            onclick="return confirm('Are you sure you want to delete this recipe?')">
+                            onclick="return confirm('Are you sure you want to delete this recipe?')"> <!-- source #4 -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-trash" viewBox="0 0 16 16">
+                                class="bi bi-trash" viewBox="0 0 16 16"> <!-- source #3 -->
                                 <path
                                     d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
                                 <path fill-rule="evenodd"
@@ -43,7 +78,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'wom:update-recipe' recipe.id %}" style="color:black">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-pen" viewBox="0 0 16 16">
+                                class="bi bi-pen" viewBox="0 0 16 16"> <!-- source #5 -->
                                 <path
                                     d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
                             </svg>
