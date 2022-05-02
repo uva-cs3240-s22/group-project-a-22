@@ -1,12 +1,22 @@
 # https://www.youtube.com/watch?v=vU0VeFN-abU
 # *******************************************
-# *  REFERENCES
-# * 1.
-# *  Title: Update and Edit Venues - Django Wednesdays #10
-# *  Author: Codemy.com
-# *  Date: Mar 24, 2021
-# *  URL: https://www.youtube.com/watch?v=jCM-m_3Ysqk
-# *
+# REFERENCES:
+# Title: Update and Edit Venues - Django Wednesdays #10
+# Author: Codemy.com
+# Date: Mar 24, 2021
+# URL: https://www.youtube.com/watch?v=jCM-m_3Ysqk
+#
+# Title: Django Formsets Documentation
+# Author: Django
+# Date:
+# Code version: 4.0
+# URL: https://docs.djangoproject.com/en/4.0/topics/forms/formsets/
+# Software License: BSD-2
+#
+# Title: Editing Multiple Objects in Django with Forms
+# Author: Collin Grady
+# Date: February 18, 2008
+# URL: https://collingrady.wordpress.com/2008/02/18/editing-multiple-objects-in-django-with-newforms/
 # * *************************************************
 from datetime import datetime, timedelta
 from django.shortcuts import render, redirect, get_object_or_404

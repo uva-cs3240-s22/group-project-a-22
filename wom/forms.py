@@ -1,3 +1,11 @@
+#######################
+# REFERENCES:
+# Title: StackOverflow Response to "Django formsets: make first required?"
+# Author: mpen
+# Date: February 9, 2011
+# URL: https://stackoverflow.com/a/4951032
+#######################
+
 from mimetypes import init
 from django import forms
 from .models import Recipe, Instruction, Ingredient, Tag
