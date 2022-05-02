@@ -56,6 +56,7 @@
 <div class="row recipe-row">
 
     {% for recipe in object_list %}
+    <!--  Only displaying recipes whose usernames match the logged in user -->
     {% if recipe.creator|slugify == user.username|slugify %} <!-- source #1 -->
     <div class="col-3">
         <div class="card">
