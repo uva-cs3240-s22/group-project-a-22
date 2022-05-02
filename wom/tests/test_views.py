@@ -80,7 +80,7 @@ class CreateRecipeViewTests(TestCase):
         response = self.client.get(reverse('wom:createrecipe'))\
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertContains(response, "Please log in to create a new recipe.")
+        self.assertContains(response, "Log in with Google to create a new recipe.")
 
     def test_create_page_get(self):
         user = User.objects.get_or_create(username='testuser')[0]
@@ -134,7 +134,8 @@ class CreateRecipeViewTests(TestCase):
                          'Test Instruction')
         self.assertEqual(recipe.ingredient_set.first().name, 'Test Ingredient')
         self.assertRedirects(response, reverse(
-            'wom:search'), status_code=302, target_status_code=200, fetch_redirect_response=True)
+            'wom:detail', kwargs={"pk":1}), status_code=302, target_status_code=200, fetch_redirect_response=True)
+
 
     def test_create_page_post_no_instructions(self):
         user = User.objects.get_or_create(username='testuser')[0]
@@ -241,7 +242,8 @@ class CreateRecipeViewTests(TestCase):
         self.assertEqual(
             ingredients[2].name, 'Test Ingredient 3')
         self.assertRedirects(response, reverse(
-            'wom:search'), status_code=302, target_status_code=200, fetch_redirect_response=True)
+            'wom:detail', kwargs={"pk":1}), status_code=302, target_status_code=200, fetch_redirect_response=True)
+
 
 
 class SearchViewTests(TestCase):

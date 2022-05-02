@@ -1,4 +1,13 @@
 # https://www.youtube.com/watch?v=vU0VeFN-abU
+# *******************************************
+# *  REFERENCES
+# * 1.
+# *  Title: Update and Edit Venues - Django Wednesdays #10
+# *  Author: Codemy.com
+# *  Date: Mar 24, 2021
+# *  URL: https://www.youtube.com/watch?v=jCM-m_3Ysqk
+# *
+# * *************************************************
 from datetime import datetime, timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -57,9 +66,9 @@ def createrecipe(request, recipe_id=''):
         if recipeform.is_valid() and instruction_formset.is_valid() and ingredient_formset.is_valid() and tag_formset.is_valid():
             new_recipe = recipeform.save(commit=False)
             new_recipe.creator = request.user
-            # new_recipe.image = request.FILES.get('image')
-            # print(request.FILES)
             new_recipe.pk = None
+            new_recipe.avgRating = 0
+            new_recipe.numRatings = 0
             new_recipe.save()
             for instrform in instruction_formset:
                 new_instruction = instrform.save(commit=False)
@@ -79,7 +88,7 @@ def createrecipe(request, recipe_id=''):
                 new_tag.recipe = new_recipe
                 if new_tag.name != "":
                     new_tag.save()
-            return redirect(reverse('wom:search'))
+            return HttpResponseRedirect(reverse('wom:detail', args=(new_recipe.pk,)))
     else:
         recipeform = RecipeForm(instance=recipe, prefix="recipe")
         instruction_formset = InstructionFormset(
@@ -300,6 +309,11 @@ def delete_recipe(request, recipe_id=''):
 
 
 def update_recipe(request, recipe_id=''):
+    """
+    Source #1
+    Loads a form with the recipe's current info and lets the user modify
+    all data.
+    """
     recipe_to_update = Recipe.objects.get(pk=recipe_id)
     template = 'wom/updaterecipe.html'
 

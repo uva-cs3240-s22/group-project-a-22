@@ -46,6 +46,12 @@ body {
   border-color: #FEDAAA;
 }
 
+.btn-outline-primary {
+  background-color: #9384e2;
+  color: white;
+  border-color: #FEDAAA;
+}
+
 .navbar-light .navbar-nav .nav-link {
   color: white;
 }
@@ -93,13 +99,23 @@ footer{
   margin:auto;
 }
 
+
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
   color: black;
   background-color: #F1EDFF;
+  border-color:#44329E;
 }
+
 .btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active, .btn-secondary.active, .open>.dropdown-toggle.btn-secondary {
   color: black;
   background-color: #FDEFDB;
+  border-color:#44329E;
+}
+
+.btn-outline-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
+  color: black;
+  background-color: #F1EDFF;
+  border-color:#44329E;
 }
 
 .create-recipe-label{
