@@ -17,6 +17,10 @@ body {
   flex-direction: column;
 }
 
+.navbar {
+  padding-top: 0;
+}
+
 .header {
   background-color: #F3916C;
   color: white;

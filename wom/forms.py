@@ -21,9 +21,10 @@ class RecipeForm(forms.ModelForm):
 class RequiredFormset(forms.BaseModelFormSet):
     def __init__(self, *args, **kwargs):
         super(RequiredFormset, self).__init__(*args, **kwargs)
-        # for form in self.forms:
-        #     form.empty_permitted = False
-        self.forms[0].empty_permitted = False
+        for form in self.forms:
+            form.empty_permitted = True
+        if (self.forms):
+            self.forms[0].empty_permitted = False
 
 
 class NotRequiredFormset(forms.BaseModelFormSet):
@@ -31,14 +32,3 @@ class NotRequiredFormset(forms.BaseModelFormSet):
         super(NotRequiredFormset, self).__init__(*args, **kwargs)
         for form in self.forms:
             form.empty_permitted = True
-
-
-InstructionFormset = forms.modelformset_factory(model=Instruction, formset=RequiredFormset,
-                                                fields=('text',))
-
-
-IngredientFormset = forms.modelformset_factory(model=Ingredient, formset=RequiredFormset,
-                                               fields=('name', 'quantity', 'units'))
-
-TagFormset = forms.modelformset_factory(
-    model=Tag, formset=NotRequiredFormset, fields=('name',))

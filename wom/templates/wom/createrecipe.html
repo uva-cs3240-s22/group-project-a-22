@@ -12,17 +12,17 @@
 <script>
   $(document).on('click', '#instruction-add-more', function (e) {
     e.preventDefault();
-    cloneMore('.instruction-form:last', 'instruction');
+    cloneMore('.instruction-form', 'instruction');
     return false;
   });
   $(document).on('click', '#ingredient-add-more', function (e) {
     e.preventDefault();
-    cloneMore('.ingredient-form:last', 'ingredient');
+    cloneMore('.ingredient-form', 'ingredient');
     return false;
   });
   $(document).on('click', '#tag-add-more', function (e) {
     e.preventDefault();
-    cloneMore('.tag-form:last', 'tag');
+    cloneMore('.tag-form', 'tag');
     return false;
   });
 
@@ -42,7 +42,6 @@
     deleteForm('tag', $(this));
     return false;
   })
-  
 </script>
 
 {% endblock %}

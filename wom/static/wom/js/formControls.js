@@ -1,6 +1,8 @@
 function cloneMore(selector, prefix) {
-  var newElement = $(selector).clone(true);
+  var newElement = $(selector + ":last").clone(true);
   var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
+  var elementId = $(selector + ":first").find("#id_" + prefix + "-0-id").val();
+  console.log(elementId);
   newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function() {
     var name = $(this).attr('name').replace('-' + (total-1) + '-', '-' + total +'-');
     var id = 'id_' + name;
@@ -13,9 +15,10 @@ function cloneMore(selector, prefix) {
       $(this).attr({'for': forValue});
     }
   });
+  newElement.find('#id_' + prefix + '-' + total + '-id').val(elementId);
   total++;
   $('#id_' + prefix + '-TOTAL_FORMS').val(total);
-  $(selector).after(newElement);
+  $(selector + ":last").after(newElement);
   return false;
 }
 
@@ -39,6 +42,8 @@ function deleteForm(prefix, btn) {
   var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
   if (total > 1) {
     btn.closest('.' + prefix + '-form').remove();
+    // btn.closest('.' + prefix + '-form').css("display","none");
+    // btn.prev().find('.form-check-input').attr("checked", true);
     var forms = $('.' + prefix + '-form');
     $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
     for (var i = 0, formCount=forms.length; i < formCount; i++) {

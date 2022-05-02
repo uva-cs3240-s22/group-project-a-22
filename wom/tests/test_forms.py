@@ -1,22 +1,33 @@
 from datetime import timedelta
 from http import HTTPStatus
+from django.forms import modelformset_factory
 from django.test import TestCase
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 import os
 from django.conf import settings
 
-from wom.forms import IngredientFormset, InstructionFormset, RecipeForm, TagFormset
+from wom.forms import NotRequiredFormset, RecipeForm, RequiredFormset
 from django.contrib.auth.models import User
 
-from wom.models import Ingredient, Instruction, Recipe
+from wom.models import Ingredient, Instruction, Recipe, Tag
+
+InstructionFormset = modelformset_factory(
+    model=Instruction, formset=RequiredFormset, fields=('text',))
+
+IngredientFormset = modelformset_factory(
+    model=Ingredient, formset=RequiredFormset, fields=('name', 'quantity', 'units',))
+
+TagFormset = modelformset_factory(
+    model=Tag, formset=NotRequiredFormset, fields=('name',))
 
 
 class CreateRecipeFormTests(TestCase):
     def test_full_recipe_form(self):
         user = User.objects.get_or_create(username='testuser')[0]
         self.image_file = open(
-            os.path.join(settings.BASE_DIR, 'wom/static/wom/images/test.jpg'), "rb"
+            os.path.join(settings.BASE_DIR,
+                         'wom/static/wom/images/test.jpg'), "rb"
         )
         form_data = {
             'recipe-title': 'Test Title',
@@ -120,6 +131,7 @@ class CreateRecipeFormTests(TestCase):
         form = IngredientFormset(prefix="ingredient", data=form_data)
 
         self.assertFalse(form.is_valid())
+
     def test_full_tag_form(self):
         form_data = {
             'tag-TOTAL_FORMS': 3,
@@ -218,7 +230,7 @@ class CreateRecipeForkTests(TestCase):
             'recipe-preparation_time': '00:15:00',
             'recipe-meal_type': 'lunch',
             'recipe-course': 'entree',
-            'recipe-anonymous_creator_bool':True,
+            'recipe-anonymous_creator_bool': True,
             'instruction-TOTAL_FORMS': 3,
             'instruction-INITIAL_FORMS': 0,
             'instruction-0-text': 'Instruction',
