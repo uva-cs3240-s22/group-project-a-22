@@ -70,9 +70,23 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                 <div class="row">
                     <div class="col-3 recipe-metadata-div d-flex flex-column">
                         <div class="recipe-metadata">
-                            <p><b>Date published: </b></p>
-                            <p style="font-size:large;"> {{recipe.pub_date|date:'N d Y'}} </p>
+                            <p><b>Preparation time: </b></p>
+                            <p style="font-size:large;"> {{recipe.preparation_time}} </p>
                         </div>
+                        <div class="recipe-metadata">
+                            <p><b>Cooking time: </b></p>
+                            <p style="font-size:large;"> {{recipe.cooking_time}} </p>
+                        </div>
+
+                        <div class="recipe-metadata">
+                            <p><b>Meal type: </b></p>
+                            <p style="font-size:large;"> {{recipe.meal_type}} </p>
+                        </div>
+                        <div class="recipe-metadata">
+                            <p><b>Course: </b></p>
+                            <p style="font-size:large;"> {{recipe.course}} </p>
+                        </div>
+
                         <div class="recipe-metadata">
                             <p><b>Tags: </b></p>
                             <p style="font-size:large;">
@@ -82,22 +96,9 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                             </p>
                         </div>
                         <div class="recipe-metadata">
-                            <p><b>Preparation time: </b></p>
-                            <p style="font-size:large;"> {{recipe.preparation_time}} </p>
+                            <p><b>Date published: </b></p>
+                            <p style="font-size:large;"> {{recipe.pub_date|date:'N d Y'}} </p>
                         </div>
-                        <div class="recipe-metadata">
-                            <p><b>Cooking time: </b></p>
-                            <p style="font-size:large;"> {{recipe.cooking_time}} </p>
-                        </div>
-                        <div class="recipe-metadata">
-                            <p><b>Meal type: </b></p>
-                            <p style="font-size:large;"> {{recipe.meal_type}} </p>
-                        </div>
-                        <div class="recipe-metadata">
-                            <p><b>Course: </b></p>
-                            <p style="font-size:large;"> {{recipe.course}} </p>
-                        </div>
-        
                     </div>
                     <div class="col-8">
                         <div class="container d-flex justify-content-center">
