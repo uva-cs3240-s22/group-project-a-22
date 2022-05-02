@@ -1,5 +1,18 @@
-# https://docs.djangoproject.com/en/4.0/topics/testing/tools/
-# https://docs.djangoproject.com/en/dev/ref/models/querysets/#in
+# /***************************************************************************************
+# *  REFERENCES
+# *  Title: Django QuerySet API reference
+# *  Code version: 4.0
+# *  URL: https://docs.djangoproject.com/en/dev/ref/models/querysets/#in
+# *  Software License: BSD-3
+# *
+# *  Title: Django Testing tools
+# *  Code Version: 4.0
+# *  URL: https://docs.djangoproject.com/en/4.0/topics/testing/tools/
+# *  Software License: BSD-3
+# ***************************************************************************************/
+
+
+
 
 from django.test import Client, TestCase
 from wom.models import Ingredient, Recipe
@@ -153,7 +166,6 @@ class FilterTests(TestCase):
     def test_filter_by_meal_type(self):
         response = self.client.get('/wom/search/?meal_type=dinner')
         self.assertEqual(response.status_code, 200)
-        # print('Filter by meal' , response.context['object_list'])
         self.assertQuerysetEqual(
             response.context['object_list'].order_by('title'), Recipe.objects.all().filter(meal_type__iexact="dinner").order_by('title'))
 
@@ -162,7 +174,6 @@ class FilterTests(TestCase):
             '/wom/search/?meal_type=breakfast&course=side&prep_time=00%3A30%3A00&cook_time=1%3A00%3A01')
         filters = {'meal_type__iexact': "breakfast", 'course__iexact': 'side',
                    'preparation_time__lte': timedelta(minutes=30), 'cooking_time__gte': timedelta(hours=1)}
-        # print('Filter by many' , response.context['object_list'])
         self.assertEqual(response.status_code, 200)
         self.assertQuerysetEqual(
             response.context['object_list'].order_by('title'), Recipe.objects.all().filter(**filters).order_by('title'))
@@ -172,35 +183,30 @@ class FilterTests(TestCase):
             '/wom/search/?meal_type=dinner&course=side&prep_time=00%3A30%3A00&cook_time=1%3A00%3A01')
         filters = {'meal_type__iexact': "dinner", 'course__iexact': 'side', 'preparation_time__lte': timedelta(
             minutes=30), 'cooking_time__gte': timedelta(hours=1, seconds=1)}
-        # print('Filter by many no results' , response.context['object_list'])
         self.assertEqual(response.status_code, 200)
         self.assertQuerysetEqual(
             response.context['object_list'].order_by('title'), Recipe.objects.all().filter(**filters).order_by('title'))
 
     def test_sort_by_hightest_rated_all_time(self):
         response = self.client.get('/wom/search/?sort_by=Highest')
-        # print('Filter by highest' , response.context['object_list'])
         self.assertEqual(response.status_code, 200)
         self.assertQuerysetEqual(
             response.context['object_list'], Recipe.objects.all().order_by('-avgRating'))
 
     def test_sort_by_hightest_rated_this_week(self):
         response = self.client.get('/wom/search/?sort_by=Highest_Week')
-        # print('Filter by week' , response.context['object_list'])
         self.assertEqual(response.status_code, 200)
         self.assertQuerysetEqual(response.context['object_list'], Recipe.objects.all().filter(
             pub_date__gte=(datetime.now(tz=timezone.utc) - timedelta(days=7))).order_by('-avgRating'))
 
     def test_sort_by_highest_rated_this_month(self):
         response = self.client.get('/wom/search/?sort_by=Highest_Month')
-        # print('Filter by month' , response.context['object_list'])
         self.assertEqual(response.status_code, 200)
         self.assertQuerysetEqual(response.context['object_list'], Recipe.objects.all().filter(
             pub_date__gte=(datetime.now(tz=timezone.utc) - timedelta(days=30))).order_by('-avgRating'))
 
     def test_sort_by_highest_rated_this_year(self):
         response = self.client.get('/wom/search/?sort_by=Highest_Month')
-        # print('Filter by year' , response.context['object_list'])
         self.assertEqual(response.status_code, 200)
         self.assertQuerysetEqual(response.context['object_list'], Recipe.objects.all().filter(
             pub_date__gte=(datetime.now(tz=timezone.utc) - timedelta(days=365))).order_by('-avgRating'))

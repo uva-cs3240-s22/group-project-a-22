@@ -245,41 +245,6 @@ class CreateRecipeViewTests(TestCase):
             'wom:detail', kwargs={"pk":1}), status_code=302, target_status_code=200, fetch_redirect_response=True)
 
 
-
-class SearchViewTests(TestCase):
-    def test_empty_search_input(self):
-        """
-        search function ___ when a user clicks search after inputting
-        an empty string or whitespace
-        """
-        response = self.client.get(reverse('wom:search'))
-        self.assertEqual(response.status_code, 200)
-        self.assertQuerysetEqual(
-            response.context['object_list'], Recipe.objects.all())
-
-    def test_link_to_detail_page(self):
-        """
-        search function ___ when a user clicks the title of a recipe on
-        the search results page
-        """
-
-    def test_title(self):
-        """
-        search function returns 200 response and when a user clicks the title of a recipe on
-        the search results page
-        """
-
-    def test_description(self):
-        """
-        search function returns queryset that contains all keywords within title
-        """
-
-    def test_empty_description(self):
-        """
-        search function returns queryset that begin with the character
-        """
-
-
 class FavoriteViewTests(TestCase):
     def test_backend_add_favorite(self):
         """

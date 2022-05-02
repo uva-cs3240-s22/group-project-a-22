@@ -53,8 +53,8 @@
 <h2 style="text-align: center;">My Recipes</h2>
 
 {% if object_list %}
-<div class="row recipe-row">
 
+<div class="row recipe-row">
     {% for recipe in object_list %}
     <!--  Only displaying recipes whose usernames match the logged in user -->
     {% if recipe.creator|slugify == user.username|slugify %} <!-- source #1 -->
@@ -127,7 +127,6 @@
                             </button>
                         </a>
                     </div>
-
                 </div>
             </div>
         </div>

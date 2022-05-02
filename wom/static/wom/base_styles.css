@@ -5,7 +5,6 @@
 
 html, body {
   max-width: 100%;
-  overflow-x: hidden;
 }
    
 body {
@@ -59,7 +58,9 @@ body {
 .navbar-light .navbar-brand{
   color: white;
 }
-
+.navbar{
+    padding: 0;
+}
 footer{
   margin-top: auto;
 }
@@ -74,12 +75,20 @@ footer{
 }
 
 .card {
-  border-style: solid;
-  border-color: #F3916C;
-  border-radius: 2%;
-  margin-top: 2vh;
-  height: fit-content; 
-}
+    border-style: solid;
+    border-color: #F3916C;
+    border-radius: 2%;
+    margin-top: 2vh;
+    height: fit-content; 
+  }
+  .description {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
 
 .description {
   display: -webkit-box;

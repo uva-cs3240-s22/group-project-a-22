@@ -1,6 +1,27 @@
-# https://www.youtube.com/watch?v=vU0VeFN-abU
-# *******************************************
-# REFERENCES:
+# /***************************************************************************************
+# REFERENCES
+# Title: Build a dynamic filtering form with Django // 5 - Filtering by search
+# Author: JustDjango
+# URL: https://www.youtube.com/watch?v=vU0VeFN-abU
+# 
+# Title: Django: Query using contains each value in a list
+# Author: Ignacio Vazquez-Abrams
+# URL: https://stackoverflow.com/questions/33869242/django-queryset-filter-by-weeksfrom
+# Date: Jan 28, 2011
+# Software License: " Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)
+# 
+# Title: Making Queries
+# Author: Django 
+# Code version: 4.0
+# URL: https://docs.djangoproject.com/en/3.2/topics/db/queries/
+# Software License: BSD-3
+# 
+# Title: Passing multiple arguments into Django's filter()
+# Author: blhsing
+# URL: https://stackoverflow.com/questions/51392868/passing-multiple-arguments-into-djangos-filter
+# Date: Jul 18, 2018
+# Software License: " Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)
+# 
 # Title: Update and Edit Venues - Django Wednesdays #10
 # Author: Codemy.com
 # Date: Mar 24, 2021
@@ -192,7 +213,7 @@ def filter(request):
         filtered = True
     if sort_by != '' and sort_by is not None:
         if sort_by == 'AZ':
-            q = q.order_by('title')  # want to
+            q = q.order_by('title')  
         elif sort_by == 'Recent':
             q = q.order_by('-pub_date')
         elif sort_by == 'Oldest':

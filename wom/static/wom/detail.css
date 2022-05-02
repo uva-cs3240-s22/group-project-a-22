@@ -57,3 +57,16 @@ ol {
 #title-info{
     margin: auto;
 }
+
+.side-buttons {
+    font-size: 1.5vw;
+}
+
+.side-buttons .btn{
+    margin-top: 3vh;
+}
+
+.instructions ol {
+    text-align: initial;
+    padding: 20;
+}
