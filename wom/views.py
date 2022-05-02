@@ -38,6 +38,12 @@
 # Author: Collin Grady
 # Date: February 18, 2008
 # URL: https://collingrady.wordpress.com/2008/02/18/editing-multiple-objects-in-django-with-newforms/
+#
+# Title: Learn Django 3 - Creating a User Bookmark / Favourites Features - Part 10
+# Author: Very Academy
+# Date: August 13, 2020
+# URL: https://www.youtube.com/watch?v=H4QPHLmsZMU
+#
 # * *************************************************
 from datetime import datetime, timedelta
 from django.shortcuts import render, redirect, get_object_or_404

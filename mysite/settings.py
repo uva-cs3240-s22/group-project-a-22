@@ -12,10 +12,22 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 #######################
 # REFERENCES:
+# 1.
 # Title: Getting Started with Django Social Authentication
 # Author: Moeedlodhi
 # Date: June 21, 2021
 # URL: https://medium.com/geekculture/getting-started-with-django-social-authentication-80ee7dc26fe0
+# 2.
+# Title: Storing Django Static and Media Files on Amazon S3
+# Author: Michael Herman
+# Date: April 27th, 2021
+# Code Version: boto3-1.17.58, Django-3.2, django-storages-1.11.1, gunicorn-20.1.0
+# URL: https://testdriven.io/blog/storing-django-static-and-media-files-on-amazon-s3/
+# 3.
+# Title: Amazon S-3 (django-storages documentation)
+# Code Version: 1.12.3
+# URL: https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
+# Software License: BSD-3
 #######################
 
 from pathlib import Path
@@ -184,6 +196,7 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+# Reference 2 and 3
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = 'wom-photo'

@@ -20,7 +20,6 @@
 ***************************************************************************************/ -->
 
 
-
 {% extends "wom/base.html" %}
 {% load socialaccount %}
 {% load account %}
@@ -437,7 +436,7 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     </div>
     <div class="col-md-5 d-flex flex-column">
         <h2 class="text-center">Steps</h2>
-        <div class="card instructions" style="width: 21.5em;margin:0 auto;">
+        <div class="card" style="width: 40em;margin:auto;">
             <ol>
                 {% for i in recipe.instruction_set.all %}
                 <li>{{i}}</li>

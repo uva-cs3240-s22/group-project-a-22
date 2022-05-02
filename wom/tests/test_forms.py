@@ -12,6 +12,16 @@ from django.contrib.auth.models import User
 
 from wom.models import Ingredient, Instruction, Recipe, Tag
 
+#######################
+# REFERENCES:
+# 1.
+# Title: Stack Overflow Post: Unit test form with ImageField in django
+# Author: Nurzhan Nogerbek
+# Date: September 15, 2017
+# URL: https://stackoverflow.com/questions/46233737/unit-test-form-with-imagefield-in-django
+# Software License: Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)
+#######################
+
 InstructionFormset = modelformset_factory(
     model=Instruction, formset=RequiredFormset, fields=('text',))
 

@@ -1,3 +1,11 @@
+# *******************************************
+# REFERENCES:
+# Title: Django Tutorial #27 - Foreign Keys
+# Author: The Net Ninja
+# Date: Jan 3, 2018
+# URL: https://www.youtube.com/watch?v=zJWhizYFKP0
+#
+# * *************************************************
 from datetime import timedelta
 
 from django.db import models
