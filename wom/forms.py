@@ -1,3 +1,11 @@
+#######################
+# REFERENCES:
+# Title: StackOverflow Response to "Django formsets: make first required?"
+# Author: mpen
+# Date: February 9, 2011
+# URL: https://stackoverflow.com/a/4951032
+#######################
+
 from mimetypes import init
 from django import forms
 from .models import Recipe, Instruction, Ingredient, Tag
@@ -18,29 +26,17 @@ class RecipeForm(forms.ModelForm):
         }
 
 
-
 class RequiredFormset(forms.BaseModelFormSet):
     def __init__(self, *args, **kwargs):
         super(RequiredFormset, self).__init__(*args, **kwargs)
         for form in self.forms:
-            form.empty_permitted = False
+            form.empty_permitted = True
+        if (self.forms):
+            self.forms[0].empty_permitted = False
 
-        
 
 class NotRequiredFormset(forms.BaseModelFormSet):
     def __init__(self, *args, **kwargs):
         super(NotRequiredFormset, self).__init__(*args, **kwargs)
         for form in self.forms:
             form.empty_permitted = True
-
-        
-
-InstructionFormset = forms.modelformset_factory(model=Instruction, formset=RequiredFormset,
-                                                fields=('text',))
-
-
-IngredientFormset = forms.modelformset_factory(model=Ingredient, formset=RequiredFormset,
-                                               fields=('name', 'quantity', 'units'))
-
-TagFormset = forms.modelformset_factory(
-    model=Tag, formset=NotRequiredFormset, fields=('name',))

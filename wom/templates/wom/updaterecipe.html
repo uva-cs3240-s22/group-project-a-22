@@ -11,21 +11,22 @@
 <h2 style="text-align: center;">Modify Recipe</h2>
 
 {% block extrahead %}
+<link rel="stylesheet" type="text/css" href="{% static 'wom/create_recipe_styles.css' %}" />
 <script type="text/javascript" src="{% static 'wom/js/formControls.js' %}"></script>
 <script>
   $(document).on('click', '#instruction-add-more', function (e) {
     e.preventDefault();
-    cloneMore('.instruction-form:last', 'instruction');
+    cloneMore('.instruction-form', 'instruction');
     return false;
   });
   $(document).on('click', '#ingredient-add-more', function (e) {
     e.preventDefault();
-    cloneMore('.ingredient-form:last', 'ingredient');
+    cloneMore('.ingredient-form', 'ingredient');
     return false;
   });
   $(document).on('click', '#tag-add-more', function (e) {
     e.preventDefault();
-    cloneMore('.tag-form:last', 'tag');
+    cloneMore('.tag-form', 'tag');
     return false;
   });
 
@@ -44,8 +45,7 @@
     e.preventDefault();
     deleteForm('tag', $(this));
     return false;
-  })
-
+  });
 </script>
 {% endblock %}
 
@@ -58,13 +58,14 @@
 
   <h4>Instructions</h4>
   {{ instruction_forms.management_form }}
+  <ol class="list-group list-group-numbered">
   {% for instr_form in instruction_forms %}
-  <div class="instruction-form row">
-    <div class="col">{% bootstrap_form instr_form show_label=False%}</div>
-    <button type="button" id="instruction-remove-row" class="col-1 btn btn-danger mb-3">Remove</button>
-
-  </div>
-  {% endfor %}
+    <li class="instruction-form row">
+      <div class="col">{% bootstrap_form instr_form show_label=False%}</div>
+      <button type="button" id="instruction-remove-row" class="col-1 btn btn-danger mb-3">Remove</button>
+    </li>
+    {% endfor %}
+  </ol>
   <button type="button" id="instruction-add-more" class="btn btn-secondary">Add More</button>
 
   <br /><br />
@@ -103,9 +104,11 @@
   <br /><br />
 
   {% buttons %}
-  <button type="submit" class="btn btn-primary">
-    Save Changes
-  </button>
+  <div class="d-flex justify-content-center">
+    <button type="submit" class="btn btn-primary">
+      Save Changes
+    </button>
+  </div>
   {% endbuttons %}
 
 </form>
