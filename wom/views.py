@@ -374,7 +374,7 @@ def update_recipe(request, recipe_id=''):
                 new_tag.recipe = recipe_to_update
                 if new_tag.name != "":
                     new_tag.save()
-            return redirect(reverse('wom:account'))
+            return HttpResponseRedirect(reverse('wom:detail', args=(recipe_to_update.pk,)))
     else:
         recipeform = RecipeForm(instance=recipe_to_update, prefix="recipe")
         instruction_formset = InstructionFormset(
