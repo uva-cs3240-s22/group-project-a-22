@@ -60,7 +60,7 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                 <p style="font-size:large;"><b>Creator: </b>{{ recipe.creator}} </p>
                 {% endif %}
                 {% if recipe.parent %}
-                <p>Forked from <a href="{% url 'wom:detail' recipe.parent_id %}">{{ recipe.parent.title }}</a></p>
+                <p>Variation of <a href="{% url 'wom:detail' recipe.parent_id %}">{{ recipe.parent.title }}</a></p>
                 {% endif %}
             </div>
         </div>

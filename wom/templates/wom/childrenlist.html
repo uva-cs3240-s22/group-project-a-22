@@ -1,5 +1,5 @@
 {% extends "wom/base.html" %}
-{% block title %}Children{% endblock %}
+{% block title %}Variations{% endblock %}
 
 {% load socialaccount %}
 {% load account %}
@@ -10,7 +10,7 @@
 
 {% if object_list %}
 <div class="row recipe-row">
-    <h2 class="text-center">Variations</h2>
+    <h2 class="text-center">Recipe Variations</h2>
     {% for recipe in object_list %}
 
     <div class="col-3">
