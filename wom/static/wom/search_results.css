@@ -72,8 +72,13 @@
   border-color: #e9ecef;
 }
 
+.recipe-row {
+  margin-top: 20;
+}
+
 .card {
   height: 100%;
+  margin-top: 0;
 }
 
 .card-body {

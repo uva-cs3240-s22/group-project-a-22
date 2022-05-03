@@ -40,7 +40,7 @@
 {% load static %}
 {% block css %}
 {% block extrahead %}
-<link rel="stylesheet" type="text/css" href="{% static 'wom/recipes.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'wom/search_results.css' %}" />
 {% endblock %}
 {% endblock css %}
 {% load socialaccount %}
@@ -110,23 +110,24 @@
                     {% endfor %}
                     <br />
                     {{recipe.pub_date|date:'N d Y'}}
+                </div>
+                <div class="card-bottom">
+                  <hr />
 
-                    <hr />
 
+                  <div class="container justify-content-center" style="padding: 0;">
+                      {% if recipe.anonymous_creator_bool %}
+                      <b>By &nbsp;</b>Anonymous <br />
+                      {% else %}
+                      <b>By &nbsp;</b>{{ recipe.creator}} <br />
+                      {% endif %}
 
-                    <div class="container justify-content-center" style="padding: 0;">
-                        {% if recipe.anonymous_creator_bool %}
-                        <b>By &nbsp;</b>Anonymous <br />
-                        {% else %}
-                        <b>By &nbsp;</b>{{ recipe.creator}} <br />
-                        {% endif %}
-
-                        <a href="{% url 'wom:detail' recipe.id %}">
-                            <button type="button" class="btn btn-secondary" style="width: 100%;">
-                                View Details
-                            </button>
-                        </a>
-                    </div>
+                      <a href="{% url 'wom:detail' recipe.id %}">
+                          <button type="button" class="btn btn-secondary" style="width: 100%;">
+                              View Details
+                          </button>
+                      </a>
+                  </div>
                 </div>
             </div>
         </div>

@@ -6,6 +6,12 @@
 {% load bootstrap5 %}
 {% load static %}
 
+{% block css %}
+{% block extrahead %}
+<link rel="stylesheet" type="text/css" href="{% static 'wom/search_results.css' %}" />
+{% endblock %}
+{% endblock css %}
+
 {% block content %}
 
 {% if user.is_authenticated %}
@@ -43,24 +49,25 @@
                     {% endfor %}
                     <br />
                     {{favorite.recipe.pub_date|date:'N d Y'}}
+                </div>
 
-                    <hr />
+                <div class="card-bottom">
+                  <hr />
 
 
-                    <div class="container justify-content-center" style="padding: 0;">
-                        {% if favorite.recipe.anonymous_creator_bool %}
-                        <b>By &nbsp;</b>Anonymous <br />
-                        {% else %}
-                        <b>By &nbsp;</b>{{ favorite.recipe.creator}} <br />
-                        {% endif %}
+                  <div class="container justify-content-center" style="padding: 0;">
+                      {% if favorite.recipe.anonymous_creator_bool %}
+                      <b>By &nbsp;</b>Anonymous <br />
+                      {% else %}
+                      <b>By &nbsp;</b>{{ favorite.recipe.creator}} <br />
+                      {% endif %}
 
-                        <a href="{% url 'wom:detail' favorite.recipe.id %}">
-                            <button type="button" class="btn btn-secondary" style="width: 100%;">
-                                View Details
-                            </button>
-                          </a>
-                    </div>
-
+                      <a href="{% url 'wom:detail' favorite.recipe.id %}">
+                          <button type="button" class="btn btn-secondary" style="width: 100%;">
+                              View Details
+                          </button>
+                        </a>
+                  </div>
                 </div>
             </div>
         </div>

@@ -6,6 +6,12 @@
 {% load bootstrap5 %}
 {% load static %}
 
+{% block css %}
+{% block extrahead %}
+<link rel="stylesheet" type="text/css" href="{% static 'wom/search_results.css' %}" />
+{% endblock %}
+{% endblock css %}
+
 {% block content %}
 
 {% if object_list %}
@@ -14,57 +20,58 @@
     {% for recipe in object_list %}
 
     <div class="col-3">
-        <div class="card">
-            <img src="{{recipe.image.url}}" class="card-img-top" alt="recipe image">
-            <div class="card-body">
-                <h5 class="card-title">
-                    {{recipe.title}}
-                </h5>
-                <h6>{{ recipe.avgRating | stringformat:".1f" }}
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill"
-                        viewBox="0 0 16 16">
-                        <path
-                            d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                    </svg>
-                </h6>
-                <div class="card-text">
-                    <em class="description">
-                        {{recipe.description}} <br />
-                    </em>
-                    <b> Prep time: </b> {{recipe.preparation_time}} <br />
-                    <b> Cooking time: </b>{{recipe.cooking_time}} <br />
-                    <b> Tags: </b>
-                    {% for i in recipe.tag_set.all %}
-                    {{i}}{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                    <br />
-                    {{recipe.pub_date|date:'N d Y'}}
-
-                    <hr />
-
-
-                    <div class="container justify-content-center" style="padding: 0;">
-                        {% if recipe.anonymous_creator_bool %}
-                        <b>By &nbsp;</b>Anonymous <br />
-                        {% else %}
-                        <b>By &nbsp;</b>{{ recipe.creator}} <br />
-                        {% endif %}
-
-                        <a href="{% url 'wom:detail' recipe.id %}">
-                            <button type="button" class="btn btn-secondary" style="width: 100%;">
-                                View Details
-                            </button>
-                        </a>
-                    </div>
-
-                </div>
+      <div class="card">
+        <img src="{{recipe.image.url}}" class="card-img-top img-fluid" alt="recipe image" style="width: 100%; height: 15vw; object-fit: cover;">
+        <div class="card-body">
+          <h5 class="card-title">
+            {{recipe.title}}
+          </h5>
+          <h6>{{ recipe.avgRating | stringformat:".1f" }}
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill"
+              viewBox="0 0 16 16">
+              <path
+                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+            </svg>
+          </h6>
+          <div class="card-text">
+            <em class="description">
+              {{recipe.description}} <br />
+            </em>
+            <b> Prep time: </b> {{recipe.preparation_time}} <br />
+            <b> Cooking time: </b>{{recipe.cooking_time}} <br />
+            <b> Tags: </b>
+            {% for i in recipe.tag_set.all %}
+            {{i}}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+            <br /> 
+            <b>Posted: </b>{{recipe.pub_date|date:'N d Y'}}
+          </div>
+  
+          
+          <div class="card-bottom">
+            <hr />
+  
+  
+            <div class="container justify-content-center" style="padding: 0;">
+              {% if recipe.anonymous_creator_bool %}
+            <b>By &nbsp;</b>Anonymous <br />
+            {% else %}
+            <b>By &nbsp;</b>{{ recipe.creator}} <br />
+            {% endif %}
+  
+            <a href="{% url 'wom:detail' recipe.id %}">
+              <button type="button" class="btn btn-secondary" style="width: 100%;">
+                View Details
+              </button>
+            </a>
             </div>
+          </div>
         </div>
+      </div>
     </div>
     {% endfor %}
-    {% else %}
+</div>
+{% else %}
     <p class="text-center">This recipe has no variations.</p>
-</div>
-</div>
 {% endif %}
 {% endblock %}
