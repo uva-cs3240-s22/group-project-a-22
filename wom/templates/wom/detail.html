@@ -437,7 +437,7 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     <div class="col-md-5 d-flex flex-column">
         <h2 class="text-center">Steps</h2>
         <div class="card" style="margin:auto;">
-            <ol>
+            <ol class="step-list">
                 {% for i in recipe.instruction_set.all %}
                 <li>{{i}}</li>
                 {% endfor %}

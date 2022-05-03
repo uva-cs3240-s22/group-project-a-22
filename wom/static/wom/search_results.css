@@ -71,3 +71,16 @@
   padding: 1vh;
   border-color: #e9ecef;
 }
+
+.card {
+  height: 100%;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-bottom {
+  margin-top: auto;
+}

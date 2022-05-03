@@ -70,3 +70,8 @@ ol {
     text-align: initial;
     padding: 20;
 }
+
+.step-list {
+  margin: 0;
+  padding: 15px;
+}
